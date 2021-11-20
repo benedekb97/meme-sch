@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entities;
+namespace App\Entities\Traits;
 
 interface ResourceInterface
 {

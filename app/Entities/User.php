@@ -7,6 +7,8 @@ namespace App\Entities;
 use App\Entities\Traits\NameableTrait;
 use App\Entities\Traits\ResourceTrait;
 use App\Entities\Traits\TimestampableTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class User implements UserInterface
 {
@@ -19,6 +21,18 @@ class User implements UserInterface
     private ?string $email;
 
     private ?string $authSchInternalId = null;
+
+    private ?string $nickName = null;
+
+    private Collection $posts;
+
+    private Collection $votes;
+
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+        $this->votes = new ArrayCollection();
+    }
 
     public function getAuthIdentifierName(): string
     {
@@ -78,5 +92,72 @@ class User implements UserInterface
     public function setAuthSchInternalId(?string $authSchInternalId): void
     {
         $this->authSchInternalId = $authSchInternalId;
+    }
+
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function hasPost(PostInterface $post): bool
+    {
+        return $this->posts->contains($post);
+    }
+
+    public function addPost(PostInterface $post): void
+    {
+        if (!$this->hasPost($post)) {
+            $this->posts->add($post);
+            $post->setUser($this);
+        }
+    }
+
+    public function removePost(PostInterface $post): void
+    {
+        if ($this->hasPost($post)) {
+            $this->posts->removeElement($post);
+            $post->setUser(null);
+        }
+    }
+
+    public function getNickName(): ?string
+    {
+        return $this->nickName;
+    }
+
+    public function setNickName(?string $nickName): void
+    {
+        $this->nickName = $nickName;
+    }
+
+    public function hasNickName(): bool
+    {
+        return isset($this->nickName);
+    }
+
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function hasVote(VoteInterface $vote): bool
+    {
+        return $this->votes->contains($vote);
+    }
+
+    public function addVote(VoteInterface $vote): void
+    {
+        if (!$this->hasVote($vote)) {
+            $this->votes->add($vote);
+            $vote->setUser($this);
+        }
+    }
+
+    public function removeVote(VoteInterface $vote): void
+    {
+        if ($this->hasVote($vote)) {
+            $this->votes->removeElement($vote);
+            $vote->setUser(null);
+        }
     }
 }
