@@ -45,7 +45,7 @@
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Bezárás"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('posts.create') }}" method="POST" enctype="multipart/form-data" id="new-post-form" novalidate>
+                        <form onkeydown="return event.key !== 'Enter';" action="{{ route('posts.create') }}" method="POST" enctype="multipart/form-data" id="new-post-form" novalidate>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" id="post-csrf-token"/>
                             <div class="mb-3 form-floating">
                                 <input maxlength="255" type="text" class="form-control" id="post-title" placeholder="Poszt címe" name="title" required/>

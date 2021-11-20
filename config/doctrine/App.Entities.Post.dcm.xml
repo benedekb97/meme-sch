@@ -18,14 +18,22 @@
         </field>
 
         <many-to-one field="user" target-entity="App\Entities\User" inversed-by="posts">
-            <join-column name="user_id"/>
+            <join-column name="user_id" on-delete="CASCADE"/>
         </many-to-one>
 
-        <one-to-many field="comments" target-entity="App\Entities\Comment" mapped-by="post"/>
+        <one-to-many field="comments" target-entity="App\Entities\Comment" mapped-by="post">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
 
         <field name="filePath" column="file_path" nullable="true"/>
 
-        <one-to-many field="votes" target-entity="App\Entities\Vote" mapped-by="post"/>
+        <one-to-many field="votes" target-entity="App\Entities\Vote" mapped-by="post">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
     </entity>
 
 </doctrine-mapping>

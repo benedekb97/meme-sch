@@ -18,11 +18,11 @@
         </field>
 
         <many-to-one field="user" target-entity="App\Entities\User" inversed-by="comments">
-            <join-column name="user_id"/>
+            <join-column name="user_id" on-delete="CASCADE"/>
         </many-to-one>
 
         <many-to-one field="post" target-entity="App\Entities\Post" inversed-by="comments">
-            <join-column name="post_id"/>
+            <join-column name="post_id" on-delete="CASCADE"/>
         </many-to-one>
 
         <one-to-many field="votes" target-entity="App\Entities\Vote" mapped-by="comment"/>
