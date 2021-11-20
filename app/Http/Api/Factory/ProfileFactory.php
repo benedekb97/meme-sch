@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Api\Factory;
+
+use App\Http\Api\Entity\Profile;
+use App\Http\Api\Entity\ProfileInterface;
+use Illuminate\Support\Arr;
+
+class ProfileFactory implements ProfileFactoryInterface
+{
+    public function createFromAuthSchResponse(array $response): ProfileInterface
+    {
+        $profile = new Profile();
+
+        $profile->setInternalId($response['internal_id']);
+        $profile->setDisplayName($response['displayName']);
+        $profile->setSurname($response['sn']);
+        $profile->setGivenNames($response['givenName']);
+        $profile->setEmailAddress($response['mail']);
+
+        return $profile;
+    }
+}

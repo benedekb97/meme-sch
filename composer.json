@@ -5,9 +5,17 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
+        "ext-http": "*",
+        "ext-json": "*",
+        "doctrine/dbal": "^2.9",
+        "doctrine/inflector": "^1.4|^2.0",
         "fruitcake/laravel-cors": "^2.0",
+        "gedmo/doctrine-extensions": "^3.1",
         "guzzlehttp/guzzle": "^7.0.1",
+        "laravel-doctrine/extensions": "^1.4",
+        "laravel-doctrine/migrations": "^2.3",
+        "laravel-doctrine/orm": "^1.7",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5"
