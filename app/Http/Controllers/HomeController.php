@@ -34,4 +34,14 @@ class HomeController extends Controller
             ]
         );
     }
+
+    public function profile()
+    {
+        return view(
+            'pages.profile',
+            [
+                'user' => $this->getUser(),
+            ]
+        );
+    }
 }
