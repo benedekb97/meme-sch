@@ -50,8 +50,6 @@ class AuthenticationController extends Controller
 
     private UserFactoryInterface $userFactory;
 
-    private AuthManager $authManager;
-
     public function __construct(
         EntityManager $entityManager,
         Store           $sessionStore,
@@ -65,14 +63,22 @@ class AuthenticationController extends Controller
         $this->authSchApi = $authSchApi;
         $this->userRepository = $userRepository;
         $this->userFactory = $userFactory;
-        $this->authManager = $authManager;
 
-        parent::__construct($entityManager);
+        parent::__construct($entityManager, $authManager);
     }
 
     public function redirect(): RedirectResponse
     {
         return new RedirectResponse($this->buildRedirectUrl());
+    }
+
+    public function login()
+    {
+        if ($this->auth->check()) {
+            return new RedirectResponse(route('index'));
+        }
+
+        return view('pages.login');
     }
 
     public function callback(Request $request): Response
@@ -113,18 +119,18 @@ class AuthenticationController extends Controller
 
         $profile = $this->authSchApi->getProfile($accessToken);
 
-        $user = $this->getUser($profile);
+        $user = $this->getUserFromProfile($profile);
 
         $this->entityManager->flush();
 
-        $this->authManager->guard(config('auth.defaults.guard'))->login($user);
+        $this->auth->login($user);
 
         return redirect()->intended(route('index'));
     }
 
     public function logout(): RedirectResponse
     {
-        $this->authManager->guard(config('auth.defaults.guard'))->logout();
+        $this->auth->logout();
 
         return new RedirectResponse(route('index'));
     }
@@ -162,7 +168,7 @@ class AuthenticationController extends Controller
         return implode('+', $scopes);
     }
 
-    private function getUser(ProfileInterface $profile): UserInterface
+    private function getUserFromProfile(ProfileInterface $profile): UserInterface
     {
         $user = $this->userRepository->findOneByEmail($profile->getEmailAddress());
 

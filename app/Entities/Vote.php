@@ -48,15 +48,21 @@ class Vote implements VoteInterface
     {
         if ($voteable instanceof CommentInterface) {
             $this->comment = $voteable;
+
+            return;
         }
 
         if ($voteable instanceof PostInterface) {
             $this->post = $voteable;
+
+            return;
         }
 
         if ($voteable === null) {
             $this->comment = null;
             $this->post = null;
+
+            return;
         }
 
         throw new LogicException(

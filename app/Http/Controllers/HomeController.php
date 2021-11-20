@@ -4,25 +4,34 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Entities\PostInterface;
-use App\Entities\UserInterface;
-use Illuminate\Support\Facades\Auth;
+use App\Services\Repository\PostRepositoryInterface;
+use Doctrine\ORM\EntityManager;
+use Illuminate\Auth\AuthManager;
 
 class HomeController extends Controller
 {
+    private PostRepositoryInterface $postRepository;
+
+    public function __construct(
+        EntityManager $entityManager,
+        AuthManager $authManager,
+        PostRepositoryInterface $postRepository
+    ) {
+        $this->postRepository = $postRepository;
+
+        parent::__construct($entityManager, $authManager);
+    }
+
     public function index()
     {
-        if (Auth::check()) {
-            /** @var UserInterface $user */
-            $user = Auth::user();
+        $posts = $this->postRepository->findAllWithOffset();
 
-            /** @var PostInterface $post */
-            foreach ($user->getPosts() as $post) {
-                dump('Downvotes: ' . $post->getDownvoteCount());
-                dd ('Upvotes: ' .$post->getUpvoteCount());
-            }
-        }
-
-        return view('pages.index');
+        return view(
+            'pages.index',
+            [
+                'posts' => $posts,
+                'user' => $this->getUser(),
+            ]
+        );
     }
 }

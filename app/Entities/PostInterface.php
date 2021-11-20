@@ -8,6 +8,7 @@ use App\Entities\Traits\ResourceInterface;
 use App\Entities\Traits\TimestampableInterface;
 use App\Entities\Traits\NameableInterface;
 use App\Entities\Traits\UserAwareInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface PostInterface extends
     ResourceInterface,
@@ -19,4 +20,6 @@ interface PostInterface extends
     public function getFilePath(): ?string;
 
     public function setFilePath(?string $filePath): void;
+
+    public function getComments(): Collection;
 }

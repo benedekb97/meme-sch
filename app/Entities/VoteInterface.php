@@ -13,6 +13,11 @@ interface VoteInterface extends ResourceInterface, TimestampableInterface, UserA
     public const TYPE_UP = 'up';
     public const TYPE_DOWN = 'down';
 
+    public const TYPE_MAP = [
+        'Upvote' => self::TYPE_UP,
+        'Downvote' => self::TYPE_DOWN,
+    ];
+
     public function getType(): ?string;
 
     public function setType(?string $type): void;

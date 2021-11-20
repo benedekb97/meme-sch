@@ -160,4 +160,24 @@ class User implements UserInterface
             $vote->setUser(null);
         }
     }
+
+    public function hasUpvoted(VoteableInterface $voteable): bool
+    {
+        return $this->votes->filter(
+            static function (VoteInterface $vote) use ($voteable): bool
+            {
+                return $vote->getVoteable() === $voteable && $vote->getType() === VoteInterface::TYPE_UP;
+            }
+        )->count() > 0;
+    }
+
+    public function hasDownvoted(VoteableInterface $voteable): bool
+    {
+        return $this->votes->filter(
+            static function (VoteInterface $vote) use ($voteable): bool
+            {
+                return $vote->getVoteable() === $voteable && $vote->getType() === VoteInterface::TYPE_DOWN;
+            }
+        )->count() > 0;
+    }
 }

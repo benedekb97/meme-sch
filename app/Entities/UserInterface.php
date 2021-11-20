@@ -49,4 +49,8 @@ interface UserInterface extends
     public function addVote(VoteInterface $vote): void;
 
     public function removeVote(VoteInterface $vote): void;
+
+    public function hasUpvoted(VoteableInterface $voteable): bool;
+
+    public function hasDownvoted(VoteableInterface $voteable): bool;
 }

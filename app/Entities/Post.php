@@ -22,9 +22,12 @@ class Post implements PostInterface
 
     private Collection $votes;
 
+    private Collection $comments;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getFilePath(): ?string
@@ -81,5 +84,10 @@ class Post implements PostInterface
                 return $vote->getType() === VoteInterface::TYPE_DOWN;
             }
         )->count();
+    }
+
+    public function getComments(): Collection
+    {
+        return $this->comments;
     }
 }

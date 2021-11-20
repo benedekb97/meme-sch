@@ -26,6 +26,8 @@
         <one-to-many field="posts" target-entity="App\Entities\Post" mapped-by="user"/>
 
         <field name="nickName" column="nick_name" nullable="true"/>
+
+        <one-to-many field="votes" target-entity="App\Entities\Vote" mapped-by="user"/>
     </entity>
 
 </doctrine-mapping>

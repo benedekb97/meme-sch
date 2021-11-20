@@ -2,7 +2,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
 
-    <entity name="App\Entities\Post" table="posts">
+    <entity name="App\Entities\Post" table="posts" repository-class="App\Services\Repository\PostRepository">
         <id name="id">
             <generator strategy="AUTO"/>
         </id>
@@ -20,6 +20,8 @@
         <many-to-one field="user" target-entity="App\Entities\User" inversed-by="posts">
             <join-column name="user_id"/>
         </many-to-one>
+
+        <one-to-many field="comments" target-entity="App\Entities\Comment" mapped-by="post"/>
 
         <field name="filePath" column="file_path" nullable="true"/>
 

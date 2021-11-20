@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="hu">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>@yield('title')</title>
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
+    </head>
+    <body>
+        <header class="p-3 bg-dark text-white">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li>
+                            <a href="{{ route('index') }}" class="nav-link px-2 text-white">Főoldal</a>
+                        </li>
+                    </ul>
+                    <div class="text-end mb-3 mb-lg-0 me-lg-3">
+                        <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#new-post-modal">
+                            <i class="bi bi-cloud-plus"></i>&nbsp;Új poszt
+                        </button>
+                    </div>
+                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                        <input type="search" class="form-control form-control-dark" placeholder="Keresés..." aria-label="Keresés"/>
+                    </form>
+                    <div class="text-end">
+                        @if (!Auth::check())
+                            <a href="{{ route('auth.redirect') }}" class="btn btn-outline-light me-2">Bejelentkezés</a>
+                        @else
+                            <a href="{{ route('auth.logout') }}" class="btn btn-outline-light me-2">Kijelentkezés</a>
+                            <a href="{{ route('profile') }}" class="btn btn-outline-light me-2">Profilom</a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="container">
+            @yield('content')
+        </main>
+        <div class="modal fade" id="new-post-modal" tabindex="-1" aria-labelledby="new-post-modal">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg modal-fullscreen-lg-down">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Új poszt létrehozása</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Bezárás"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('posts.create') }}" method="POST" enctype="multipart/form-data" id="new-post-form" novalidate>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}" id="post-csrf-token"/>
+                            <div class="mb-3 form-floating">
+                                <input maxlength="255" type="text" class="form-control" id="post-title" placeholder="Poszt címe" name="title" required/>
+                                <label for="post-title">Poszt címe</label>
+                                <div class="invalid-feedback" id="post-title-invalid-feedback"></div>
+                                <div class="valid-feedback" id="post-title-valid-feedback"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="post-file" class="form-label">Fájl kiválasztása</label>
+                                <input required accept="image/jpeg, image/png, image/gif" type="file" class="form-control" id="post-file" name="file" onchange="loadFile(event)"/>
+                                <div class="invalid-feedback" id="post-file-invalid-feedback"></div>
+                                <div class="valid-feedback" id="post-file-valid-feedback"></div>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <img id="image-preview" src="" class="visually-hidden img-fluid" alt="Upload preview"/>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Mégse</button>
+                        <button class="btn btn-primary" type="button" onclick="submitNewPostForm()">Mentés</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="{{ asset('js/app.js') }}"></script>
+    </body>
+</html>
