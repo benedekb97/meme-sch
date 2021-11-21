@@ -44,7 +44,7 @@
                             <div class="position-relative d-inline" style="left:3px;">
                                 Elfogadásra váró posztok
                                 @isset($unapprovedPostCount)
-                                    <span class="badge rounded-pill bg-danger mx-1 @if($unapprovedPostCount === 0) visually-hidden @endif" id="unapproved-count-offcanvas">
+                                    <span class="badge rounded-pill bg-danger mx-1 @if($unapprovedPostCount === 0) visually-hidden @endif" id="unapproved-count-sidebar">
                                         {{ $unapprovedPostCount }}
                                     </span>
                                 @endisset
@@ -57,7 +57,7 @@
                             <div class="position-relative d-inline" style="left:3px;" >
                                 Törölt posztok
                                 @isset($deletedPostCount)
-                                    <span class="badge rounded-pill bg-secondary mx-1 @if($deletedPostCount === 0) visually-hidden @endif" id="deleted-count-offcanvas">
+                                    <span class="badge rounded-pill bg-secondary mx-1 @if($deletedPostCount === 0) visually-hidden @endif" id="deleted-count-sidebar">
                                         {{ $deletedPostCount }}
                                     </span>
                                 @endisset
