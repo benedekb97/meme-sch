@@ -53,4 +53,8 @@ interface UserInterface extends
     public function hasUpvoted(VoteableInterface $voteable): bool;
 
     public function hasDownvoted(VoteableInterface $voteable): bool;
+
+    public function isAdministrator(): bool;
+
+    public function setAdministrator(bool $administrator): void;
 }

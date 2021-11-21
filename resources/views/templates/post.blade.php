@@ -5,7 +5,7 @@
                 <h5 class="card-title">{{ $post->getName() }}</h5>
                 <img alt="{{ $post->getName() }}" class="rounded mx-auto d-block img-fluid mb-3" src="{{ route('image', ['postId' => $post->getId()]) }}"/>
                 <div class="d-flex justify-content-between">
-                    <div class="text-muted">{{ $post->getUser()->getNickName() ?? $post->getUser()->getName() }}</div>
+                    <div class="text-muted @if($post->isAnonymous()) {{ 'fst-italic' }} @endif">{{ !$post->isAnonymous() ? $post->getUser()->getNickName() ?? $post->getUser()->getName() : 'Anonymous' }}</div>
                     <div class="">
                         <button type="button" class="btn btn-light upvote-post" data-post-id="{{ $post->getId() }}" data-url="{{ route('posts.vote', ['postId' => $post->getId()]) }}">
                             @if ($user->hasUpvoted($post))

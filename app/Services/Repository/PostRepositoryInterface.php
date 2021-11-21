@@ -9,4 +9,6 @@ use Doctrine\Persistence\ObjectRepository;
 interface PostRepositoryInterface extends ObjectRepository
 {
     public function findAllWithOffset(int $offset = 0): array;
+
+    public function findAllUnapproved(): array;
 }

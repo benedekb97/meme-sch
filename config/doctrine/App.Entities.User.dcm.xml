@@ -28,6 +28,8 @@
         <field name="nickName" column="nick_name" nullable="true"/>
 
         <one-to-many field="votes" target-entity="App\Entities\Vote" mapped-by="user"/>
+
+        <field name="administrator" type="boolean"/>
     </entity>
 
 </doctrine-mapping>

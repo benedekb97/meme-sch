@@ -107,6 +107,10 @@ class PostController extends Controller
         $post->setFilePath($filePath);
         $post->setAnonymous($anonymous);
 
+        if (!$anonymous) {
+            $post->setApprovedAtNow();
+        }
+
         $this->entityManager->persist($post);
         $this->entityManager->flush();
 

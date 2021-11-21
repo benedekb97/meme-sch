@@ -28,6 +28,8 @@ class User implements UserInterface
 
     private Collection $votes;
 
+    private bool $administrator = false;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -179,5 +181,15 @@ class User implements UserInterface
                 return $vote->getVoteable() === $voteable && $vote->getType() === VoteInterface::TYPE_DOWN;
             }
         )->count() > 0;
+    }
+
+    public function isAdministrator(): bool
+    {
+        return $this->administrator;
+    }
+
+    public function setAdministrator(bool $administrator): void
+    {
+        $this->administrator = $administrator;
     }
 }

@@ -32,6 +32,8 @@ class Post implements PostInterface
 
     private ?DateTimeInterface $approvedAt = null;
 
+    private ?DateTimeInterface $deletedAt = null;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
@@ -132,5 +134,20 @@ class Post implements PostInterface
     public function setApprovedAtNow(): void
     {
         $this->approvedAt = new DateTime();
+    }
+
+    public function isDeleted(): bool
+    {
+        return isset($this->deletedAt);
+    }
+
+    public function delete(): void
+    {
+        $this->deletedAt = new DateTime();
+    }
+
+    public function restore(): void
+    {
+        $this->deletedAt = null;
     }
 }

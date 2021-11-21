@@ -37,4 +37,10 @@ interface PostInterface extends
     public function getApprovedAt(): ?DateTimeInterface;
 
     public function setApprovedAtNow(): void;
+
+    public function isDeleted(): bool;
+
+    public function delete(): void;
+
+    public function restore(): void;
 }
