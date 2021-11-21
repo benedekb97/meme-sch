@@ -127,7 +127,12 @@ class PostController extends Controller
         $this->entityManager->persist($post);
         $this->entityManager->flush();
 
-        $this->entityManager->refresh($post);
+        $vote = $this->voteProvider->provideForUserAndVoteable($this->getUser(), $post);
+
+        $vote->setType(VoteInterface::TYPE_UP);
+
+        $this->entityManager->persist($vote);
+        $this->entityManager->flush();
 
         $postHtml = view('templates.post', ['post' => $post, 'user' => $this->getUser()])->render();
 
