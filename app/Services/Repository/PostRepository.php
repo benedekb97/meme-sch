@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class PostRepository extends EntityRepository implements PostRepositoryInterface
 {
@@ -24,14 +25,49 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
             ->getResult();
     }
 
-    public function findAllUnapproved(): array
+    private function createUnapprovedQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.deletedAt IS NULL')
             ->andWhere('o.anonymous = :anonymous')
             ->andWhere('o.approvedBy IS NULL')
-            ->setParameter('anonymous', true)
+            ->setParameter('anonymous', true);
+    }
+
+    private function createDeletedQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.deletedAt IS NOT NULL')
+            ->addOrderBy('o.deletedAt', 'DESC');
+    }
+
+    public function findAllUnapproved(): array
+    {
+        return $this->createUnapprovedQueryBuilder()
             ->getQuery()
             ->getResult();
+    }
+
+    public function findAllDeleted(): array
+    {
+        return $this->createDeletedQueryBuilder()
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countDeleted(): int
+    {
+        return (int)$this->createDeletedQueryBuilder()
+            ->select('count(o.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countUnapproved(): int
+    {
+        return (int)$this->createUnapprovedQueryBuilder()
+            ->select('count(o.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

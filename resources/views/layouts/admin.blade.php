@@ -30,17 +30,38 @@
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
                         <a href="{{ route('admin.index') }}" class="nav-link text-white @if(Route::currentRouteName() === 'admin.index'){{ 'active' }}@endif">
-                            <i class="bi bi-house-door-fill"></i> Home
+                            <i class="bi bi-house-door-fill"></i> Főoldal
                         </a>
                     </li>
                     <li class="nav-item mt-3">
-                        <a class="nav-link text-white @if(Route::currentRouteName() === 'admin.posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.posts') }}">
-                            <i class="bi bi-file-earmark-post"></i> Posts
+                        <a class="position-relative nav-link text-white @if(Route::currentRouteName() === 'admin.posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.posts') }}">
+                            <i class="bi bi-file-earmark-post"></i> Posztok
                         </a>
                     </li>
                     <li class="nav-item mt-3">
-                        <a class="nav-link text-white @if(Route::currentRouteName() === 'admin.approvals'){{ 'active' }}@endif" role="button" href="{{ route('admin.approvals') }}">
-                            <i class="bi bi-check-circle-fill"></i> Approvals
+                        <a class="position-relative nav-link text-white @if(Route::currentRouteName() === 'admin.approvals'){{ 'active' }}@endif" role="button" href="{{ route('admin.approvals') }}">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <div class="position-relative d-inline" style="left:3px;">
+                                Elfogadásra váró posztok
+                                @isset($unapprovedPostCount)
+                                    <span class="badge rounded-pill bg-danger mx-1 @if($unapprovedPostCount === 0) visually-hidden @endif" id="unapproved-count-offcanvas">
+                                        {{ $unapprovedPostCount }}
+                                    </span>
+                                @endisset
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <a class="position-relative nav-link text-white @if(Route::currentRouteName() === 'admin.deleted-posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.deleted-posts') }}">
+                            <i class="bi bi-trash-fill"></i>
+                            <div class="position-relative d-inline" style="left:3px;" >
+                                Törölt posztok
+                                @isset($deletedPostCount)
+                                    <span class="badge rounded-pill bg-secondary mx-1 @if($deletedPostCount === 0) visually-hidden @endif" id="deleted-count-offcanvas">
+                                        {{ $deletedPostCount }}
+                                    </span>
+                                @endisset
+                            </div>
                         </a>
                     </li>
                 </ul>
@@ -51,7 +72,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                         <li>
-                            <a class="dropdown-item" href="#">kagi</a>
+                            <a class="dropdown-item" href="{{ route('index') }}">Vissza a főoldalra</a>
                         </li>
                     </ul>
                 </div>
@@ -83,17 +104,38 @@
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
                         <a href="{{ route('admin.index') }}" class="nav-link text-white @if(Route::currentRouteName() === 'admin.index'){{ 'active' }}@endif">
-                            <i class="bi bi-house-door-fill"></i> Home
+                            <i class="bi bi-house-door-fill"></i> Főoldal
                         </a>
                     </li>
                     <li class="nav-item mt-3">
                         <a class="nav-link text-white @if(Route::currentRouteName() === 'admin.posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.posts') }}">
-                            <i class="bi bi-file-earmark-post"></i> Posts
+                            <i class="bi bi-file-earmark-post"></i> Posztok
                         </a>
                     </li>
                     <li class="nav-item mt-3">
-                        <a class="nav-link text-white @if(Route::currentRouteName() === 'admin.approvals'){{ 'active' }}@endif" role="button" href="{{ route('admin.approvals') }}">
-                            <i class="bi bi-check-circle-fill"></i> Approvals
+                        <a class="position-relative nav-link text-white @if(Route::currentRouteName() === 'admin.approvals'){{ 'active' }}@endif" role="button" href="{{ route('admin.approvals') }}">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <div class="position-relative d-inline" style="left:3px;">
+                                Elfogadásra váró posztok
+                                @isset($unapprovedPostCount)
+                                    <span class="badge rounded-pill bg-danger mx-1 @if($unapprovedPostCount === 0) visually-hidden @endif" id="unapproved-count-offcanvas">
+                                        {{ $unapprovedPostCount }}
+                                    </span>
+                                @endisset
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item mt-3">
+                        <a class="position-relative nav-link text-white @if(Route::currentRouteName() === 'admin.deleted-posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.deleted-posts') }}">
+                            <i class="bi bi-trash-fill"></i>
+                            <div class="position-relative d-inline" style="left:3px;" >
+                                Törölt posztok
+                                @isset($deletedPostCount)
+                                    <span class="badge rounded-pill bg-secondary mx-1 @if($deletedPostCount === 0) visually-hidden @endif" id="deleted-count-offcanvas">
+                                        {{ $deletedPostCount }}
+                                    </span>
+                                @endisset
+                            </div>
                         </a>
                     </li>
                 </ul>

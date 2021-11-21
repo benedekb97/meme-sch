@@ -42,6 +42,8 @@ Route::group(
                 Route::get('posts', [DashboardController::class, 'posts'])->name('posts');
                 Route::get('approvals', [DashboardController::class, 'approvals'])->name('approvals');
 
+                Route::get('deleted-posts', [DashboardController::class, 'deletedPosts'])->name('deleted-posts');
+
                 Route::group(
                     [
                         'prefix' => 'posts',
@@ -49,6 +51,8 @@ Route::group(
                     ],
                     static function () {
                         Route::patch('{postId}/approve', [AdminPostController::class, 'approve'])->name('approve');
+                        Route::patch('{postId}/restore', [AdminPostController::class, 'restore'])->name('restore');
+
                         Route::delete('{postId}', [AdminPostController::class, 'delete'])->name('delete');
                     }
                 );

@@ -119,11 +119,20 @@ class Post implements PostInterface
     public function setApprovedBy(?UserInterface $approvedBy): void
     {
         $this->approvedBy = $approvedBy;
+
+        if ($approvedBy === null) {
+            $this->setApprovedAt(null);
+        }
     }
 
     public function isApproved(): bool
     {
         return isset($this->approvedBy);
+    }
+
+    private function setApprovedAt(?DateTimeInterface $approvedAt): void
+    {
+        $this->approvedAt = $approvedAt;
     }
 
     public function getApprovedAt(): ?DateTimeInterface

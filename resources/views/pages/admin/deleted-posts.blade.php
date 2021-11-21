@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Approvals')
+@section('title', 'Deleted posts')
 
-@section('page-title', 'Elfogadásra váró posztok')
+@section('page-title', 'Törölt posztok')
 
 @section('content')
     <div class="row">
@@ -15,11 +15,8 @@
                     </div>
                     <img src="{{ route('image', ['postId' => $post->getId()]) }}" class="card-img-bottom" alt="{{ $post->getName() }}">
                     <div class="card-footer">
-                        <button class="btn btn-sm btn-success approve-post" type="button" data-post-id="{{ $post->getId() }}" data-url="{{ route('admin.posts.approve', ['postId' => $post->getId()]) }}" data-bs-toggle="tooltip" title="Approve">
+                        <button class="btn btn-sm btn-success restore-post" type="button" data-post-id="{{ $post->getId() }}" data-url="{{ route('admin.posts.restore', ['postId' => $post->getId()]) }}" data-bs-toggle="tooltip" title="Visszaállítás">
                             <i class="bi bi-check-lg" style="bottom:0;"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-post" type="button" data-post-id="{{ $post->getId() }}" data-url="{{ route('admin.posts.delete', ['postId' => $post->getId()]) }}" data-bs-toggle="tooltip" title="Delete">
-                            <i class="bi bi-trash" style="bottom:0;"></i>
                         </button>
                     </div>
                 </div>

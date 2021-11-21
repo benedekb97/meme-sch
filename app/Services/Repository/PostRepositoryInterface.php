@@ -11,4 +11,10 @@ interface PostRepositoryInterface extends ObjectRepository
     public function findAllWithOffset(int $offset = 0): array;
 
     public function findAllUnapproved(): array;
+
+    public function findAllDeleted(): array;
+
+    public function countDeleted(): int;
+
+    public function countUnapproved(): int;
 }

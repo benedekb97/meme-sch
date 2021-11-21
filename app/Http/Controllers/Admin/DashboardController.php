@@ -45,4 +45,16 @@ class DashboardController extends Controller
             ]
         );
     }
+
+    public function deletedPosts()
+    {
+        $posts = $this->postRepository->findAllDeleted();
+
+        return view(
+            'pages.admin.deleted-posts',
+            [
+                'posts' => $posts,
+            ]
+        );
+    }
 }

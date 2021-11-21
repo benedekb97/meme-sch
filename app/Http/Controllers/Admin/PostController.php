@@ -71,7 +71,37 @@ class PostController extends Controller
             );
         }
 
+        $post->setApprovedBy(null);
         $post->delete();
+
+        $this->entityManager->persist($post);
+        $this->entityManager->flush();
+
+        return new JsonResponse(
+            [
+                'success' => true,
+            ],
+            Response::HTTP_OK
+        );
+    }
+
+    public function restore(int $postId): JsonResponse
+    {
+        /** @var PostInterface|null $post */
+        $post = $this->postRepository->find($postId);
+
+        if ($post === null) {
+            return new JsonResponse(
+                [
+                    'error' => sprintf('Could not find entity with id \'%d\'', $postId),
+                    'code' => Response::HTTP_NOT_FOUND,
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $post->setApprovedBy(null);
+        $post->restore();
 
         $this->entityManager->persist($post);
         $this->entityManager->flush();
