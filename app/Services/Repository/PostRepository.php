@@ -14,6 +14,7 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
             ->andWhere('o.deletedAt IS NULL')
             ->andWhere('o.anonymous = :anonymous')
             ->orWhere('o.approvedBy IS NOT NULL')
+            ->andWhere('o.deletedAt IS NULL')
             ->setParameter('anonymous', false)
             ->setFirstResult($offset)
             ->setMaxResults(20)

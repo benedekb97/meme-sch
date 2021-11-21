@@ -13,6 +13,8 @@ $(document).ready(function() {
     let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+
+    startListeners();
 });
 
 window.loadFile = function(event) {
@@ -126,6 +128,8 @@ window.submitNewPostForm = function (event) {
                 if (e.post !== null) {
                     $('#post-container').prepend(e.post);
                 }
+
+                startListeners();
             },
             error: function (e) {
                 let title = e.responseJSON.title;
@@ -175,72 +179,75 @@ window.submitNewPostForm = function (event) {
     )
 }
 
-$('.upvote-post').click(
-    function () {
-        let postId = $(this).data('post-id');
-        let url = $(this).data('url');
+window.startListeners = function () {
+    $('.upvote-post').click(
+        function () {
+            let postId = $(this).data('post-id');
+            let url = $(this).data('url');
 
-        $.ajax(
-            {
-                url: url,
-                type: 'PATCH',
-                data: {
-                    type: 'up',
-                    _token: $('#post-csrf-token').val()
-                },
-                success: function (e) {
-                    let upvoteButton = $(`#post-${postId}-upvote-button`);
-                    let downvoteButton = $(`#post-${postId}-downvote-button`);
+            $.ajax(
+                {
+                    url: url,
+                    type: 'PATCH',
+                    data: {
+                        type: 'up',
+                        _token: $('#post-csrf-token').val()
+                    },
+                    success: function (e) {
+                        let upvoteButton = $(`#post-${postId}-upvote-button`);
+                        let downvoteButton = $(`#post-${postId}-downvote-button`);
 
-                    downvoteButton.removeClass('bi-arrow-down-circle-fill');
-                    downvoteButton.addClass('bi-arrow-down-circle');
-
-                    if (e.vote === null) {
-                        upvoteButton.removeClass('bi-arrow-up-circle-fill');
-                        upvoteButton.addClass('bi-arrow-up-circle');
-                    } else {
-                        upvoteButton.removeClass('bi-arrow-up-circle');
-                        upvoteButton.addClass('bi-arrow-up-circle-fill');
-                    }
-
-                    $(`#post-${postId}-vote-count`).html(e.score);
-                }
-            }
-        )
-    }
-)
-
-$('.downvote-post').click(
-    function () {
-        let postId = $(this).data('post-id');
-        let url = $(this).data('url');
-
-        $.ajax(
-            {
-                url: url,
-                type: 'PATCH',
-                data: {
-                    type: 'down',
-                    _token: $('#post-csrf-token').val()
-                },
-                success: function (e) {
-                    let upvoteButton = $(`#post-${postId}-upvote-button`);
-                    let downvoteButton = $(`#post-${postId}-downvote-button`);
-
-                    upvoteButton.removeClass('bi-arrow-up-circle-fill');
-                    upvoteButton.addClass('bi-arrow-up-circle');
-
-                    if (e.vote === null) {
                         downvoteButton.removeClass('bi-arrow-down-circle-fill');
                         downvoteButton.addClass('bi-arrow-down-circle');
-                    } else {
-                        downvoteButton.addClass('bi-arrow-down-circle-fill');
-                        downvoteButton.removeClass('bi-arrow-down-circle');
-                    }
 
-                    $(`#post-${postId}-vote-count`).html(e.score);
+                        if (e.vote === null) {
+                            upvoteButton.removeClass('bi-arrow-up-circle-fill');
+                            upvoteButton.addClass('bi-arrow-up-circle');
+                        } else {
+                            upvoteButton.removeClass('bi-arrow-up-circle');
+                            upvoteButton.addClass('bi-arrow-up-circle-fill');
+                        }
+
+                        $(`#post-${postId}-vote-count`).html(e.score);
+                    }
                 }
-            }
-        )
-    }
-);
+            )
+        }
+    )
+
+    $('.downvote-post').click(
+        function () {
+            let postId = $(this).data('post-id');
+            let url = $(this).data('url');
+
+            $.ajax(
+                {
+                    url: url,
+                    type: 'PATCH',
+                    data: {
+                        type: 'down',
+                        _token: $('#post-csrf-token').val()
+                    },
+                    success: function (e) {
+                        let upvoteButton = $(`#post-${postId}-upvote-button`);
+                        let downvoteButton = $(`#post-${postId}-downvote-button`);
+
+                        upvoteButton.removeClass('bi-arrow-up-circle-fill');
+                        upvoteButton.addClass('bi-arrow-up-circle');
+
+                        if (e.vote === null) {
+                            downvoteButton.removeClass('bi-arrow-down-circle-fill');
+                            downvoteButton.addClass('bi-arrow-down-circle');
+                        } else {
+                            downvoteButton.addClass('bi-arrow-down-circle-fill');
+                            downvoteButton.removeClass('bi-arrow-down-circle');
+                        }
+
+                        $(`#post-${postId}-vote-count`).html(e.score);
+                    }
+                }
+            )
+        }
+    );
+}
+

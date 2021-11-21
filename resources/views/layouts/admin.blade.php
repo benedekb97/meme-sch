@@ -8,6 +8,9 @@
     </head>
     <body>
         <input type="hidden" id="_token" value="{{ csrf_token() }}"/>
+
+
+        <!-- SMALL SCREEN HEADER -->
         <nav class="navbar navbar-expand-md navbar-dark bg-dark show-md position-fixed top-0 w-100">
             <div class="container-fluid">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="offcanvas" data-bs-target="#nav-offcanvas">
@@ -15,10 +18,13 @@
                 </button>
             </div>
         </nav>
+
+
         <main>
+            <!-- LARGE SCREEN NAV -->
             <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark hidden-md">
-                <a href="{{ route('admin.index') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    Meme.SCH Admin
+                <a href="{{ route('index') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    Meme.SCH
                 </a>
                 <hr/>
                 <ul class="nav nav-pills flex-column mb-auto">
@@ -50,21 +56,30 @@
                     </ul>
                 </div>
             </div>
+
+
+            <!-- MAIN CONTENT -->
             <div class="container-fluid mt-2 mb-3 scrollarea mt-md-3-inverse">
                 <h1>@yield('page-title')</h1>
                 <hr class="mt-1">
                 @yield('content')
             </div>
         </main>
+
+        <!-- SCRIPTS -->
         <script src="{{ asset('js/admin.js') }}"></script>
-        <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="nav-offcanvas">
+
+
+
+        <!-- OFFCANVAS -->
+        <div class="offcanvas offcanvas-start bg-dark text-white d-flex flex-column flex-shrink-0" tabindex="-1" id="nav-offcanvas">
             <div class="offcanvas-header border-bottom">
-                <a href="{{ route('admin.index') }}" class="text-white text-decoration-none">
-                    <h5 class="offcanvas-title">MemeSCH</h5>
+                <a href="{{ route('index') }}" class="text-white text-decoration-none">
+                    <h5 class="offcanvas-title">Meme.SCH</h5>
                 </a>
                 <button type="button" class="btn-close bg-white" data-bs-dismiss="offcanvas"></button>
             </div>
-            <div class="offcanvas-body">
+            <div class="offcanvas-body d-flex flex-column flex-shrink-0">
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
                         <a href="{{ route('admin.index') }}" class="nav-link text-white @if(Route::currentRouteName() === 'admin.index'){{ 'active' }}@endif">
@@ -82,8 +97,21 @@
                         </a>
                     </li>
                 </ul>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <strong>{{ Auth::user()->getName() }}</strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('index') }}">Vissza a főoldalra</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
+
+
+        <!-- TOASTS -->
         <template id="toast-template">
             <div id="" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
