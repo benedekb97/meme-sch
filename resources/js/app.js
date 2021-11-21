@@ -2,6 +2,8 @@ require('./bootstrap');
 
 import 'bootstrap';
 
+window.bootstrap = require('bootstrap');
+
 window.$ = window.jQuery = require('jquery');
 
 window.loadFile = function(event) {
@@ -14,8 +16,50 @@ window.loadFile = function(event) {
     }
 }
 
-window.submitNewPostForm = function () {
+window.makeId = function (length) {
+    let result           = '';
+    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() *
+            charactersLength));
+    }
+
+    return result;
+}
+
+window.createToast = function (title, content) {
+    let template = document.querySelector('#toast-template');
+
+    let clone = template.content.cloneNode(true);
+    let toast = clone.querySelector('.toast');
+
+    let id = 'toast-' + makeId(16);
+
+    toast.setAttribute('id', id);
+
+    let body = toast.querySelector('.toast-body');
+    let header = toast.querySelector('strong');
+
+    body.innerHTML = content;
+    header.innerHTML = title;
+
+    return {
+        toast: toast,
+        id: id
+    };
+}
+
+window.submitNewPostForm = function (event) {
     let form = $('#new-post-form');
+    let saveButton = $('#new-post-save-button');
+
+    saveButton.html(`
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Feltöltés...
+    `);
+    saveButton.attr('disabled', 'disabled');
 
     let postTitle = $('#post-title');
     let postFile = $('#post-file');
@@ -37,7 +81,7 @@ window.submitNewPostForm = function () {
             data: fd,
             contentType: false,
             processData: false,
-            success: function () {
+            success: function (e) {
                 postTitle.removeClass('is-invalid');
                 postTitle.removeClass('is-valid');
                 postFile.removeClass('is-invalid');
@@ -48,6 +92,22 @@ window.submitNewPostForm = function () {
                 $('#image-preview').addClass('visually-hidden');
 
                 $('#new-post-modal').modal('hide');
+                saveButton.html('Mentés');
+                saveButton.removeAttr('disabled');
+
+                let toast = createToast(
+                    'Kép feltöltve!',
+                    'Sikeresen feltöltöttél egy memét! Kratulálog :)'
+                );
+
+                let toastId = toast.id
+                toast = toast.toast;
+
+                $('#toast-container').prepend(toast.outerHTML);
+
+                $(`#${toastId}`).toast('show');
+
+                $('#post-container').prepend(e.post);
             },
             error: function (e) {
                 let title = e.responseJSON.title;
@@ -89,6 +149,9 @@ window.submitNewPostForm = function () {
                     postTitle.removeClass('is-valid');
                     $('#post-title-invalid-feedback').html('A poszt címe maximum 255 karakter lehet!');
                 }
+
+                saveButton.html('Mentés');
+                saveButton.removeAttr('disabled');
             }
         }
     )

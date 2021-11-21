@@ -66,10 +66,25 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Mégse</button>
-                        <button class="btn btn-primary" type="button" onclick="submitNewPostForm()">Mentés</button>
+                        <button class="btn btn-primary" type="button" onclick="submitNewPostForm(event)" id="new-post-save-button">Mentés</button>
                     </div>
                 </div>
             </div>
+        </div>
+        <template id="toast-template">
+            <div id="" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto"></strong>
+                    <small>Épp most...</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Bezárás"></button>
+                </div>
+                <div class="toast-body">
+
+                </div>
+            </div>
+        </template>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container" style="z-index:11;">
+            @stack('toasts')
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
     </body>

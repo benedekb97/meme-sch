@@ -109,14 +109,12 @@ class PostController extends Controller
 
         $this->entityManager->refresh($post);
 
+        $postHtml = view('templates.post', ['post' => $post, 'user' => $this->getUser()])->render();
+
         return new JsonResponse(
             [
                 'success' => true,
-                'post' => [
-                    'title' => $post->getName(),
-                    'image' => route('image', $post->getId()),
-                    'creator' => $post->getUser()->getNickName() ?? $post->getUser()->getName(),
-                ],
+                'post' => $postHtml
             ],
             Response::HTTP_OK
         );
