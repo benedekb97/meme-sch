@@ -34,6 +34,14 @@
                 <cascade-all/>
             </cascade>
         </one-to-many>
+
+        <field name="anonymous" type="boolean"/>
+
+        <field name="approvedAt" column="approved_at" type="datetime" nullable="true"/>
+
+        <many-to-one field="approvedBy" target-entity="App\Entities\User">
+            <join-column name="approved_by_user_id"/>
+        </many-to-one>
     </entity>
 
 </doctrine-mapping>

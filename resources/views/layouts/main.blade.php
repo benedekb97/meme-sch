@@ -53,6 +53,12 @@
                                 <div class="invalid-feedback" id="post-title-invalid-feedback"></div>
                                 <div class="valid-feedback" id="post-title-valid-feedback"></div>
                             </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" value="" id="post-anonymous" />
+                                <label class="form-check-label" for="post-anonymous" data-bs-toggle="tooltip" data-bs-placement="top" title="Anonim feltöltés esetén egy adminnak el kell bírálnia a posztot mielőtt kikerül az oldalra!">
+                                    Anonim feltöltés
+                                </label>
+                            </div>
                             <div class="mb-3">
                                 <label for="post-file" class="form-label">Fájl kiválasztása</label>
                                 <input required accept="image/jpeg, image/png, image/gif" type="file" class="form-control" id="post-file" name="file" onchange="loadFile(event)"/>

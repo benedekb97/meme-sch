@@ -8,6 +8,8 @@ use App\Entities\Traits\NameableTrait;
 use App\Entities\Traits\ResourceTrait;
 use App\Entities\Traits\TimestampableTrait;
 use App\Entities\Traits\UserAwareTrait;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -23,6 +25,12 @@ class Post implements PostInterface
     private Collection $votes;
 
     private Collection $comments;
+
+    private bool $anonymous = false;
+
+    private ?UserInterface $approvedBy = null;
+
+    private ?DateTimeInterface $approvedAt = null;
 
     public function __construct()
     {
@@ -89,5 +97,40 @@ class Post implements PostInterface
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    public function isAnonymous(): bool
+    {
+        return $this->anonymous;
+    }
+
+    public function setAnonymous(bool $anonymous): void
+    {
+        $this->anonymous = $anonymous;
+    }
+
+    public function getApprovedBy(): ?UserInterface
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?UserInterface $approvedBy): void
+    {
+        $this->approvedBy = $approvedBy;
+    }
+
+    public function isApproved(): bool
+    {
+        return isset($this->approvedBy);
+    }
+
+    public function getApprovedAt(): ?DateTimeInterface
+    {
+        return $this->approvedAt;
+    }
+
+    public function setApprovedAtNow(): void
+    {
+        $this->approvedAt = new DateTime();
     }
 }

@@ -72,6 +72,8 @@ class PostController extends Controller
         /** @var UploadedFile $file */
         $file = $request->file('file');
 
+        $anonymous = ($request->get('anonymous') === 'true');
+
         if ($file === null) {
             $fileError = false;
         } elseif (!in_array($file->getMimeType(), self::ALLOWED_MIME_TYPES, true)) {
@@ -103,6 +105,7 @@ class PostController extends Controller
         $post = $this->postFactory->createWithUser($this->getUser());
         $post->setName($title);
         $post->setFilePath($filePath);
+        $post->setAnonymous($anonymous);
 
         $this->entityManager->persist($post);
         $this->entityManager->flush();
@@ -114,7 +117,7 @@ class PostController extends Controller
         return new JsonResponse(
             [
                 'success' => true,
-                'post' => $postHtml
+                'post' => !$anonymous ? $postHtml : null,
             ],
             Response::HTTP_OK
         );

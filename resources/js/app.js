@@ -2,9 +2,18 @@ require('./bootstrap');
 
 import 'bootstrap';
 
+window.Popper = require('popper.js');
 window.bootstrap = require('bootstrap');
 
 window.$ = window.jQuery = require('jquery');
+
+// enable tooltips
+$(document).ready(function() {
+    let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+});
 
 window.loadFile = function(event) {
     let output = $('#image-preview');
@@ -63,12 +72,14 @@ window.submitNewPostForm = function (event) {
 
     let postTitle = $('#post-title');
     let postFile = $('#post-file');
+    let postAnonymous = $('#post-anonymous');
 
     let fd = new FormData();
     let files = postFile[0].files;
 
     fd.set('title', postTitle.val());
     fd.set('_token', $('#post-csrf-token').val());
+    fd.set('anonymous', postAnonymous[0].checked);
 
     if (files.length > 0) {
         fd.append('file', files[0]);
@@ -95,10 +106,15 @@ window.submitNewPostForm = function (event) {
                 saveButton.html('Mentés');
                 saveButton.removeAttr('disabled');
 
-                let toast = createToast(
-                    'Kép feltöltve!',
-                    'Sikeresen feltöltöttél egy memét! Kratulálog :)'
-                );
+                let toastContent;
+
+                if (e.post === null) {
+                    toastContent = 'Sikeresen feltöltöttél egy memét! Kratulálog :)<br>Elbírálás után kikerül az oldalra ;)';
+                } else {
+                    toastContent = 'Sikeresen feltöltöttél egy memét! Kratulálog :)';
+                }
+
+                let toast = createToast('Poszt feltöltve!', toastContent)
 
                 let toastId = toast.id
                 toast = toast.toast;
@@ -107,7 +123,9 @@ window.submitNewPostForm = function (event) {
 
                 $(`#${toastId}`).toast('show');
 
-                $('#post-container').prepend(e.post);
+                if (e.post !== null) {
+                    $('#post-container').prepend(e.post);
+                }
             },
             error: function (e) {
                 let title = e.responseJSON.title;
