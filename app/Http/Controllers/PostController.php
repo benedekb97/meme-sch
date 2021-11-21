@@ -52,7 +52,20 @@ class PostController extends Controller
 
     public function show(int $postId)
     {
+        /** @var PostInterface|null $post */
+        $post = $this->postRepository->find($postId);
 
+        if ($post === null) {
+            abort(404);
+        }
+
+        return view(
+            'pages.posts.show',
+            [
+                'post' => $post,
+                'user' => $this->getUser(),
+            ]
+        );
     }
 
     public function edit(int $postId)

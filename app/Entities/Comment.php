@@ -22,9 +22,14 @@ class Comment implements CommentInterface
 
     private ?string $comment = null;
 
+    private ?CommentInterface $replyTo = null;
+
+    private Collection $replies;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
+        $this->replies = new ArrayCollection();
     }
 
     public function getVotes(): Collection
@@ -81,5 +86,71 @@ class Comment implements CommentInterface
     public function setComment(?string $comment): void
     {
         $this->comment = $comment;
+    }
+
+    public function getReplyTo(): ?CommentInterface
+    {
+        return $this->replyTo;
+    }
+
+    public function hasReplyTo(): bool
+    {
+        return isset($this->replyTo);
+    }
+
+    public function setReplyTo(?CommentInterface $comment): void
+    {
+        $this->replyTo = $comment;
+    }
+
+    public function getReplies(): Collection
+    {
+        $collection = $this->replies;
+
+        $iterator = $collection->getIterator();
+
+        $iterator->uasort(
+            static function (CommentInterface $a, CommentInterface $b): int
+            {
+                return ($b->getUpvoteCount() - $b->getDownvoteCount()) <=> ($a->getUpvoteCount() - $a->getDownvoteCount());
+            }
+        );
+
+        return new ArrayCollection(iterator_to_array($iterator));
+    }
+
+    public function hasReplies(): bool
+    {
+        return !$this->replies->isEmpty();
+    }
+
+    public function hasReply(CommentInterface $comment): bool
+    {
+        return $this->replies->contains($comment);
+    }
+
+    public function addReply(CommentInterface $comment): void
+    {
+        if (!$this->hasReply($comment)) {
+            $comment->setReplyTo($this);
+            $this->replies->add($comment);
+        }
+    }
+
+    public function removeReply(CommentInterface $comment): void
+    {
+        if ($this->hasReply($comment)) {
+            $comment->setReplyTo(null);
+            $this->replies->removeElement($comment);
+        }
+    }
+
+    public function getReplyLevel(): int
+    {
+        if (!$this->hasReplyTo()) {
+            return 0;
+        }
+
+        return $this->getReplyTo()->getReplyLevel() + 1;
     }
 }

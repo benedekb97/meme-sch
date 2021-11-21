@@ -7,7 +7,7 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <field name="comment" nullable="true"/>
+        <field name="comment" nullable="true" type="text"/>
 
         <field name="createdAt" type="datetime" nullable="true" column="created_at">
             <gedmo:timestampable on="create"/>
@@ -27,6 +27,11 @@
 
         <one-to-many field="votes" target-entity="App\Entities\Vote" mapped-by="comment"/>
 
+        <one-to-many field="replies" target-entity="App\Entities\Comment" mapped-by="replyTo"/>
+
+        <many-to-one field="replyTo" target-entity="App\Entities\Comment" inversed-by="replies">
+            <join-column name="reply_to_comment_id" on-delete="CASCADE"/>
+        </many-to-one>
     </entity>
 
 </doctrine-mapping>

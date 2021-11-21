@@ -3,6 +3,11 @@
                   xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
 
     <entity name="App\Entities\Vote" table="votes">
+        <unique-constraints>
+            <unique-constraint columns="user_id,comment_id"/>
+            <unique-constraint columns="user_id,post_id"/>
+        </unique-constraints>
+
         <id name="id">
             <generator strategy="AUTO"/>
         </id>

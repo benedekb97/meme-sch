@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PostController;
@@ -27,6 +28,20 @@ Route::group(
                 Route::post('', [PostController::class, 'create'])->name('create');
 
                 Route::patch('{postId}/vote', [PostController::class, 'vote'])->name('vote');
+
+                Route::get('{postId}', [PostController::class, 'show'])->name('show');
+            }
+        );
+
+        Route::group(
+            [
+                'prefix' => 'comments',
+                'as' => 'comments.',
+            ],
+            static function () {
+                Route::post('', [CommentController::class, 'create'])->name('create');
+
+                Route::patch('{commentId}/vote', [CommentController::class, 'vote'])->name('vote');
             }
         );
 

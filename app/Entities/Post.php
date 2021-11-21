@@ -98,7 +98,23 @@ class Post implements PostInterface
 
     public function getComments(): Collection
     {
-        return $this->comments;
+        $collection = $this->comments->filter(
+            static function (CommentInterface $comment): bool
+            {
+                return !$comment->hasReplyTo();
+            }
+        );
+
+        $iterator = $collection->getIterator();
+
+        $iterator->uasort(
+            static function (CommentInterface $a, CommentInterface $b): int
+            {
+                return ($b->getUpvoteCount() - $b->getDownvoteCount()) <=> ($a->getUpvoteCount() - $a->getDownvoteCount());
+            }
+        );
+
+        return new ArrayCollection(iterator_to_array($iterator));
     }
 
     public function isAnonymous(): bool

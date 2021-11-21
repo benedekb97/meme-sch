@@ -92,6 +92,7 @@
                 </div>
             </div>
         </template>
+        <input type="hidden" id="create-comment-url" value="{{ route('comments.create') }}"/>
         <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container" style="z-index:11;">
             @stack('toasts')
         </div>

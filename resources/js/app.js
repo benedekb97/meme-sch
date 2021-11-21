@@ -179,8 +179,136 @@ window.submitNewPostForm = function (event) {
     )
 }
 
+window.sendComment = function (event) {
+    let replyTo = event.target.getAttribute('data-comment-id') ?? null;
+    let postId = event.target.getAttribute('data-post-id');
+    let comment = event.target.value;
+    let url = $('#create-comment-url').val();
+
+    $.ajax(
+        {
+            url: url,
+            type: 'POST',
+            data: {
+                replyTo: replyTo,
+                post: postId,
+                comment: comment,
+                _token: $('#post-csrf-token').val()
+            },
+            success: function (e) {
+                if (replyTo !== null) {
+                    $(`#comment-${replyTo}-reply-form-section`).addClass('visually-hidden');
+                    $(`#comment-${replyTo}-comment`).val('');
+                    $(`#comment-${replyTo}-replies`).append(e.comment.html);
+                } else {
+                    $(`#post-${postId}-comments`).prepend(e.comment.html);
+                    $(`#post-${postId}-comment`).val('');
+                }
+
+                startListeners();
+            }
+        }
+    )
+}
+
 window.startListeners = function () {
-    $('.upvote-post').click(
+    let replyComment = $('.reply-comment');
+    let upvoteComment = $('.upvote-comment');
+    let downvoteComment = $('.downvote-comment');
+    let upvotePost = $('.upvote-post');
+    let downvotePost = $('.downvote-post');
+
+    replyComment.unbind();
+    upvoteComment.unbind();
+    downvoteComment.unbind();
+    upvotePost.unbind();
+    downvotePost.unbind();
+
+    replyComment.click(
+        function () {
+            let commentId = $(this).data('comment-id');
+            let commentFormSection = $(`#comment-${commentId}-reply-form-section`);
+
+            if (commentFormSection.hasClass('visually-hidden')) {
+                commentFormSection.removeClass('visually-hidden');
+                $(`#comment-${commentId}-comment`).focus();
+            } else {
+                commentFormSection.addClass('visually-hidden');
+            }
+        }
+    )
+
+    upvoteComment.click(
+        function () {
+            let commentId = $(this).data('comment-id');
+            let url = $(this).data('url');
+
+            $.ajax(
+                {
+                    url: url,
+                    type: 'PATCH',
+                    data: {
+                        type: 'up',
+                        _token: $('#post-csrf-token').val()
+                    },
+                    success: function (e) {
+                        let upvoteButton = $(`#comment-${commentId}-upvote-button`);
+                        let downvoteButton = $(`#comment-${commentId}-downvote-button`);
+
+                        downvoteButton.removeClass('bi-arrow-down-circle-fill');
+                        downvoteButton.addClass('bi-arrow-down-circle');
+
+                        if (e.vote === null) {
+                            upvoteButton.removeClass('bi-arrow-up-circle-fill');
+                            upvoteButton.addClass('bi-arrow-up-circle');
+                        } else {
+                            upvoteButton.removeClass('bi-arrow-up-circle');
+                            upvoteButton.addClass('bi-arrow-up-circle-fill');
+                        }
+
+                        $(`#comment-${commentId}-vote-count`).html(e.score);
+                    }
+                }
+            )
+        }
+    )
+
+    downvoteComment.click(
+        function () {
+            let commentId = $(this).data('comment-id');
+            let url = $(this).data('url');
+
+            $.ajax(
+                {
+                    url: url,
+                    type: 'PATCH',
+                    data: {
+                        type: 'down',
+                        _token: $('#post-csrf-token').val()
+                    },
+                    success: function (e) {
+                        let upvoteButton = $(`#comment-${commentId}-upvote-button`);
+                        let downvoteButton = $(`#comment-${commentId}-downvote-button`);
+
+                        upvoteButton.removeClass('bi-arrow-up-circle-fill');
+                        upvoteButton.addClass('bi-arrow-up-circle');
+
+                        if (e.vote === null) {
+                            downvoteButton.removeClass('bi-arrow-down-circle-fill');
+                            downvoteButton.addClass('bi-arrow-down-circle');
+                        } else {
+                            downvoteButton.addClass('bi-arrow-down-circle-fill');
+                            downvoteButton.removeClass('bi-arrow-down-circle');
+                        }
+
+                        $(`#comment-${commentId}-vote-count`).html(e.score);
+                    }
+                }
+            )
+        }
+    )
+
+    upvotePost.click(
         function () {
             let postId = $(this).data('post-id');
             let url = $(this).data('url');
@@ -215,7 +343,7 @@ window.startListeners = function () {
         }
     )
 
-    $('.downvote-post').click(
+    downvotePost.click(
         function () {
             let postId = $(this).data('post-id');
             let url = $(this).data('url');
