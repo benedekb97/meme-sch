@@ -39,11 +39,15 @@
 
         <field name="approvedAt" column="approved_at" type="datetime" nullable="true"/>
 
-        <field name="deletedAt" column="deleted_at" type="datetime" nullable="true"/>
-
         <many-to-one field="approvedBy" target-entity="App\Entities\User">
             <join-column name="approved_by_user_id"/>
         </many-to-one>
+
+        <many-to-one field="refusal" target-entity="App\Entities\Refusal">
+            <join-column name="refusal_id"/>
+        </many-to-one>
+
+        <one-to-many field="refusals" target-entity="App\Entities\Refusal" mapped-by="post"/>
     </entity>
 
 </doctrine-mapping>

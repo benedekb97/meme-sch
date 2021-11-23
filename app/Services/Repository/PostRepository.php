@@ -12,10 +12,10 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
     public function findAllWithOffset(int $offset = 0): array
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.deletedAt IS NULL')
+            ->andWhere('o.refusal IS NULL')
             ->andWhere('o.anonymous = :anonymous')
             ->orWhere('o.approvedBy IS NOT NULL')
-            ->andWhere('o.deletedAt IS NULL')
+            ->andWhere('o.refusal IS NULL')
             ->setParameter('anonymous', false)
             ->setFirstResult($offset)
             ->setMaxResults(20)
@@ -28,7 +28,7 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
     private function createUnapprovedQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.deletedAt IS NULL')
+            ->andWhere('o.refusal IS NULL')
             ->andWhere('o.anonymous = :anonymous')
             ->andWhere('o.approvedBy IS NULL')
             ->setParameter('anonymous', true);
@@ -37,8 +37,8 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
     private function createDeletedQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.deletedAt IS NOT NULL')
-            ->addOrderBy('o.deletedAt', 'DESC');
+            ->innerJoin('o.refusal', 'refusal')
+            ->addOrderBy('refusal.createdAt', 'DESC');
     }
 
     public function findAllUnapproved(): array

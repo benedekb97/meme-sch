@@ -6,14 +6,17 @@ namespace App\Providers;
 
 use App\Entities\Comment;
 use App\Entities\Post;
+use App\Entities\Refusal;
 use App\Entities\User;
 use App\Entities\Vote;
 use App\Services\Factory\CommentFactory;
 use App\Services\Factory\PostFactory;
+use App\Services\Factory\RefusalFactory;
 use App\Services\Factory\UserFactory;
 use App\Services\Factory\VoteFactory;
 use App\Services\Repository\CommentRepository;
 use App\Services\Repository\PostRepository;
+use App\Services\Repository\RefusalRepository;
 use App\Services\Repository\UserRepository;
 use App\Services\Repository\VoteRepository;
 use Illuminate\Foundation\Application;
@@ -26,6 +29,7 @@ class DoctrineServiceProvider extends ServiceProvider
         Post::class => PostRepository::class,
         Vote::class => VoteRepository::class,
         Comment::class => CommentRepository::class,
+        Refusal::class => RefusalRepository::class,
     ];
 
     private const ENTITY_FACTORY_MAP = [
@@ -33,6 +37,7 @@ class DoctrineServiceProvider extends ServiceProvider
         Post::class => PostFactory::class,
         Vote::class => VoteFactory::class,
         Comment::class => CommentFactory::class,
+        Refusal::class => RefusalFactory::class,
     ];
 
     public function register(): void

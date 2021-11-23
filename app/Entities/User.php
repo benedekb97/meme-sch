@@ -30,10 +30,13 @@ class User implements UserInterface
 
     private bool $administrator = false;
 
+    private Collection $refusals;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->votes = new ArrayCollection();
+        $this->refusals = new ArrayCollection();
     }
 
     public function getAuthIdentifierName(): string
@@ -191,5 +194,31 @@ class User implements UserInterface
     public function setAdministrator(bool $administrator): void
     {
         $this->administrator = $administrator;
+    }
+
+    public function getRefusals(): Collection
+    {
+        return $this->refusals;
+    }
+
+    public function hasRefusal(RefusalInterface $refusal): bool
+    {
+        return $this->refusals->contains($refusal);
+    }
+
+    public function addRefusal(RefusalInterface $refusal): void
+    {
+        if (!$this->hasRefusal($refusal)) {
+            $this->refusals->add($refusal);
+            $refusal->setUser($this);
+        }
+    }
+
+    public function removeRefusal(RefusalInterface $refusal): void
+    {
+        if ($this->hasRefusal($refusal)) {
+            $this->refusals->removeElement($refusal);
+            $refusal->setUser(null);
+        }
     }
 }

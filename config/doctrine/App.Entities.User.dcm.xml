@@ -30,6 +30,8 @@
         <one-to-many field="votes" target-entity="App\Entities\Vote" mapped-by="user"/>
 
         <field name="administrator" type="boolean"/>
+
+        <one-to-many field="refusals" target-entity="App\Entities\Refusal" mapped-by="user"/>
     </entity>
 
 </doctrine-mapping>

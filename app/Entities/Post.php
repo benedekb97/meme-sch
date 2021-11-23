@@ -32,12 +32,15 @@ class Post implements PostInterface
 
     private ?DateTimeInterface $approvedAt = null;
 
-    private ?DateTimeInterface $deletedAt = null;
+    private ?RefusalInterface $refusal = null;
+
+    private Collection $refusals;
 
     public function __construct()
     {
         $this->votes = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->refusals = new ArrayCollection();
     }
 
     public function getFilePath(): ?string
@@ -161,18 +164,62 @@ class Post implements PostInterface
         $this->approvedAt = new DateTime();
     }
 
-    public function isDeleted(): bool
+    public function getStatus(): string
     {
-        return isset($this->deletedAt);
+        if ($this->hasActiveRefusal()) {
+            return self::STATUS_REFUSED;
+        }
+
+        if ($this->isAnonymous() && !$this->isApproved()) {
+            return self::STATUS_AWAITING_APPROVAL;
+        }
+
+        return self::STATUS_APPROVED;
     }
 
-    public function delete(): void
+    public function getPostStyle(): string
     {
-        $this->deletedAt = new DateTime();
+        return self::STATUS_STYLE_MAP[$this->getStatus()] ?? self::STYLE_APPROVED;
     }
 
-    public function restore(): void
+    public function getRefusal(): ?RefusalInterface
     {
-        $this->deletedAt = null;
+        return $this->refusal;
+    }
+
+    public function setRefusal(?RefusalInterface $refusal): void
+    {
+        $this->refusal = $refusal;
+    }
+
+    public function hasActiveRefusal(): bool
+    {
+        return isset($this->refusal);
+    }
+
+    public function getRefusals(): Collection
+    {
+        return $this->refusals;
+    }
+
+    public function hasRefusal(RefusalInterface $refusal): bool
+    {
+        return $this->refusals->contains($refusal);
+    }
+
+    public function addRefusal(RefusalInterface $refusal): void
+    {
+        if (!$this->hasRefusal($refusal)) {
+            $this->refusals->add($refusal);
+            $refusal->setPost($this);
+        }
+    }
+
+    public function removeRefusal(RefusalInterface $refusal): void
+    {
+        if ($this->hasRefusal($refusal)) {
+            $this->refusals->removeElement($refusal);
+            $refusal->setPost(null);
+        }
     }
 }

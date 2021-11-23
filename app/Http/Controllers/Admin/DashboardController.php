@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Services\Repository\PostRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Auth\AuthManager;
+use Illuminate\View\Factory;
 
-class DashboardController extends Controller
+class DashboardController extends AdminController
 {
     private PostRepositoryInterface $postRepository;
 
     public function __construct(
         EntityManager $entityManager,
         AuthManager $authManager,
-        PostRepositoryInterface $postRepository
+        PostRepositoryInterface $postRepository,
+        Factory $viewFactory
     )
     {
         $this->postRepository = $postRepository;
 
-        parent::__construct($entityManager, $authManager);
+        parent::__construct($entityManager, $authManager, $postRepository, $viewFactory);
     }
 
     public function index()

@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 
 Route::group(
     [
@@ -16,6 +17,16 @@ Route::group(
     static function () {
         Route::get('', [HomeController::class, 'index'])->name('index');
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
+
+        Route::group(
+            [
+                'prefix' => 'profile',
+                'as' => 'profile.',
+            ],
+            static function () {
+                Route::get('settings', [ProfileController::class, 'settings'])->name('settings');
+            }
+        );
 
         Route::get('posts/{postId}/image', [ImageController::class, 'get'])->name('image');
 

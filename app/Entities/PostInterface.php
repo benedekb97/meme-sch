@@ -18,6 +18,20 @@ interface PostInterface extends
     UserAwareInterface,
     VoteableInterface
 {
+    public const STATUS_APPROVED = 'approved';
+    public const STATUS_AWAITING_APPROVAL = 'awaiting_approval';
+    public const STATUS_REFUSED = 'refused';
+
+    public const STYLE_APPROVED = 'border-success';
+    public const STYLE_AWAITING_APPROVAL = 'bg-warning';
+    public const STYLE_REFUSED = 'bg-danger text-white';
+
+    public const STATUS_STYLE_MAP = [
+        self::STATUS_APPROVED => self::STYLE_APPROVED,
+        self::STATUS_AWAITING_APPROVAL => self::STYLE_AWAITING_APPROVAL,
+        self::STATUS_REFUSED => self::STYLE_REFUSED,
+    ];
+
     public function getFilePath(): ?string;
 
     public function setFilePath(?string $filePath): void;
@@ -38,9 +52,21 @@ interface PostInterface extends
 
     public function setApprovedAtNow(): void;
 
-    public function isDeleted(): bool;
+    public function getStatus(): string;
 
-    public function delete(): void;
+    public function getPostStyle(): string;
 
-    public function restore(): void;
+    public function getRefusal(): ?RefusalInterface;
+
+    public function setRefusal(?RefusalInterface $refusal): void;
+
+    public function hasActiveRefusal(): bool;
+
+    public function getRefusals(): Collection;
+
+    public function hasRefusal(RefusalInterface $refusal): bool;
+
+    public function addRefusal(RefusalInterface $refusal): void;
+
+    public function removeRefusal(RefusalInterface $refusal): void;
 }

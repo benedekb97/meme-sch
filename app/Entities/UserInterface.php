@@ -57,4 +57,12 @@ interface UserInterface extends
     public function isAdministrator(): bool;
 
     public function setAdministrator(bool $administrator): void;
+
+    public function getRefusals(): Collection;
+
+    public function hasRefusal(RefusalInterface $refusal): bool;
+
+    public function addRefusal(RefusalInterface $refusal): void;
+
+    public function removeRefusal(RefusalInterface $refusal): void;
 }

@@ -5,26 +5,33 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Entities\PostInterface;
-use App\Http\Controllers\Controller;
+use App\Services\Factory\RefusalFactoryInterface;
 use App\Services\Repository\PostRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Auth\AuthManager;
+use Illuminate\View\Factory;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostController extends Controller
+class PostController extends AdminController
 {
     private PostRepositoryInterface $postRepository;
 
+    private RefusalFactoryInterface $refusalFactory;
+
     public function __construct(
-        EntityManager $entityManager,
-        AuthManager $authManager,
-        PostRepositoryInterface $postRepository
+        EntityManager           $entityManager,
+        AuthManager             $authManager,
+        PostRepositoryInterface $postRepository,
+        Factory                 $viewFactory,
+        RefusalFactoryInterface $refusalFactory
     )
     {
         $this->postRepository = $postRepository;
+        $this->refusalFactory = $refusalFactory;
 
-        parent::__construct($entityManager, $authManager);
+        parent::__construct($entityManager, $authManager, $postRepository, $viewFactory);
     }
 
     public function approve(int $postId): JsonResponse
@@ -56,7 +63,7 @@ class PostController extends Controller
         );
     }
 
-    public function delete(int $postId): JsonResponse
+    public function delete(Request $request, int $postId): JsonResponse
     {
         /** @var PostInterface|null $post */
         $post = $this->postRepository->find($postId);
@@ -72,9 +79,13 @@ class PostController extends Controller
         }
 
         $post->setApprovedBy(null);
-        $post->delete();
+
+        $refusal = $this->refusalFactory->createForPostByUser($post, $this->getUser());
+
+        $refusal->setReason($request->get('reason'));
 
         $this->entityManager->persist($post);
+        $this->entityManager->persist($refusal);
         $this->entityManager->flush();
 
         return new JsonResponse(
@@ -101,7 +112,7 @@ class PostController extends Controller
         }
 
         $post->setApprovedBy(null);
-        $post->restore();
+        $post->setRefusal(null);
 
         $this->entityManager->persist($post);
         $this->entityManager->flush();
