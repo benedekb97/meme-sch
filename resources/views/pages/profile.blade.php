@@ -19,19 +19,26 @@
                                 <div>
                                     <h5 class="card-title mb-0 ">{{ $post->getName() }}</h5>
                                 </div>
-                                @if (!$post->isApproved() && !$post->isDeleted() && $post->isAnonymous())
+                                @if (!$post->isApproved() && !$post->hasActiveRefusal() && $post->isAnonymous())
                                     <div>
                                         <i><small>Elfogadásra vár</small></i>
                                     </div>
-                                @elseif ($post->isDeleted())
-                                    <div class="text-white">
+                                @elseif ($post->hasActiveRefusal())
+                                    <div class="text-white" data-bs-toggle="popover" data-bs-placement="right" data-bs-trigger="hover" data-bs-html="true" data-bs-content="
+                                        @if ($post->getRefusal()->hasReason())
+                                            {{ $post->getRefusal()->getReason() }}<br><i>- {{ $post->getRefusal()->getUser()->getNickName() ?? $post->getRefusal()->getUser()->getName() }},
+                                            {{ (new Carbon\Carbon($post->getRefusal()->getCreatedAt()))->diffForHumans() }}</i>
+                                        @else
+                                            <i>Nincs indoklás...</i>
+                                        @endif
+                                        " title="Elutasítás indoklása">
                                         <i><small>Elutasítva</small></i>
                                     </div>
                                 @endif
                             </div>
                         </div>
                         <img src="{{ route('image', ['postId' => $post->getId()]) }}" alt="{{ $post->getName() }}">
-                        @if ($post->isDeleted())
+                        @if ($post->hasActiveRefusal())
                             <div class="card-footer">
 
                             </div>

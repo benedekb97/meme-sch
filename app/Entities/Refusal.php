@@ -27,4 +27,9 @@ class Refusal implements RefusalInterface
     {
         $this->reason = $reason;
     }
+
+    public function hasReason(): bool
+    {
+        return isset($this->reason);
+    }
 }

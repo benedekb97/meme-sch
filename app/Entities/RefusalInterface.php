@@ -18,4 +18,6 @@ interface RefusalInterface extends
     public function getReason(): ?string;
 
     public function setReason(?string $reason): void;
+
+    public function hasReason(): bool;
 }
