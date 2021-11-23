@@ -103,12 +103,7 @@ class AuthenticationController extends Controller
         $state = $request->get('state');
 
         if ($state !== $this->sessionStore->get(self::SESSION_STATE_KEY)) {
-            return new JsonResponse(
-                [
-                    'error' => 'Invalid state provided by auth.sch.bme.hu'
-                ],
-                Response::HTTP_UNAUTHORIZED
-            );
+            return $this->redirect();
         }
 
         $this->sessionStore->forget(self::SESSION_STATE_KEY);
