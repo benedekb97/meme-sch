@@ -18,6 +18,8 @@
         <field name="name" nullable="true"/>
 
         <one-to-many field="groupUsers" target-entity="App\Entities\GroupUser" mapped-by="group"/>
+
+        <one-to-many field="posts" target-entity="App\Entities\Post" mapped-by="group"/>
     </entity>
 
 </doctrine-mapping>

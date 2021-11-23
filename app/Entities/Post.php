@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
+use App\Entities\Traits\GroupAwareTrait;
 use App\Entities\Traits\NameableTrait;
 use App\Entities\Traits\ResourceTrait;
 use App\Entities\Traits\TimestampableTrait;
@@ -19,6 +20,7 @@ class Post implements PostInterface
     use TimestampableTrait;
     use NameableTrait;
     use UserAwareTrait;
+    use GroupAwareTrait;
 
     private Collection $votes;
 

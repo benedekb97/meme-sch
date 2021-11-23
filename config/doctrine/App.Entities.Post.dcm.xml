@@ -55,6 +55,10 @@
         </many-to-one>
 
         <one-to-many field="images" target-entity="App\Entities\Image" mapped-by="post"/>
+
+        <many-to-one field="group" target-entity="App\Entities\Group" inversed-by="posts">
+            <join-column name="group_id" on-delete="SET NULL"/>
+        </many-to-one>
     </entity>
 
 </doctrine-mapping>

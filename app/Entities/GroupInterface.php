@@ -21,4 +21,14 @@ interface GroupInterface extends
     public function addGroupUser(GroupUserInterface $groupUser): void;
 
     public function removeGroupUser(GroupUserInterface $groupUser): void;
+
+    public function hasUser(UserInterface $user): bool;
+
+    public function getPosts(): Collection;
+
+    public function hasPost(PostInterface $post): bool;
+
+    public function addPost(PostInterface $post): void;
+
+    public function removePost(PostInterface $post): void;
 }

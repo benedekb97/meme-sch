@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entities;
 
+use App\Entities\Traits\GroupAwareInterface;
 use App\Entities\Traits\ResourceInterface;
 use App\Entities\Traits\TimestampableInterface;
 use App\Entities\Traits\NameableInterface;
@@ -16,7 +17,8 @@ interface PostInterface extends
     TimestampableInterface,
     NameableInterface,
     UserAwareInterface,
-    VoteableInterface
+    VoteableInterface,
+    GroupAwareInterface
 {
     public const STATUS_APPROVED = 'approved';
     public const STATUS_AWAITING_APPROVAL = 'awaiting_approval';

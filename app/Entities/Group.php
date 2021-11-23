@@ -18,9 +18,12 @@ class Group implements GroupInterface
 
     private Collection $groupUsers;
 
+    private Collection $posts;
+
     public function __construct()
     {
         $this->groupUsers = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function getGroupUsers(): Collection
@@ -57,5 +60,31 @@ class Group implements GroupInterface
                 return $groupUser->getUser() === $user;
             }
         )->isEmpty();
+    }
+
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function hasPost(PostInterface $post): bool
+    {
+        return $this->posts->contains($post);
+    }
+
+    public function addPost(PostInterface $post): void
+    {
+        if (!$this->hasPost($post)) {
+            $this->posts->add($post);
+            $post->setGroup($this);
+        }
+    }
+
+    public function removePost(PostInterface $post): void
+    {
+        if ($this->hasPost($post)) {
+            $this->posts->removeElement($post);
+            $post->setGroup(null);
+        }
     }
 }
