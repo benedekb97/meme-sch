@@ -20,8 +20,6 @@ class Post implements PostInterface
     use NameableTrait;
     use UserAwareTrait;
 
-    private ?string $filePath = null;
-
     private Collection $votes;
 
     private Collection $comments;
@@ -38,21 +36,14 @@ class Post implements PostInterface
 
     private ?ImageInterface $image = null;
 
+    private Collection $images;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->refusals = new ArrayCollection();
-    }
-
-    public function getFilePath(): ?string
-    {
-        return $this->filePath;
-    }
-
-    public function setFilePath(?string $filePath): void
-    {
-        $this->filePath = $filePath;
+        $this->images = new ArrayCollection();
     }
 
     public function getVotes(): Collection
@@ -233,5 +224,31 @@ class Post implements PostInterface
     public function setImage(?ImageInterface $image): void
     {
         $this->image = $image;
+    }
+
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function hasImage(ImageInterface $image): bool
+    {
+        return $this->images->contains($image);
+    }
+
+    public function addImage(ImageInterface $image): void
+    {
+        if (!$this->hasImage($image)) {
+            $this->images->add($image);
+            $image->setPost($this);
+        }
+    }
+
+    public function removeImage(ImageInterface $image): void
+    {
+        if ($this->hasImage($image)) {
+            $this->images->removeElement($image);
+            $image->setPost(null);
+        }
     }
 }

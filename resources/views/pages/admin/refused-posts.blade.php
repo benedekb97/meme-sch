@@ -13,7 +13,7 @@
                         <span class="card-title">{{ $post->getName() }}</span><br>
                         <span class="card-subtitle text-muted">{{ $post->getUser()->getName() }}</span>
                     </div>
-                    <img src="{{ route('image', ['postId' => $post->getId()]) }}" class="card-img-bottom" alt="{{ $post->getName() }}">
+                    <img src="{{ route('posts.image', ['postId' => $post->getId()]) }}" class="card-img-bottom" alt="{{ $post->getName() }}">
                     <div class="table-responsive table-responsive-sm">
                         <table class="table table-striped table-sm mb-0">
                             <tr>

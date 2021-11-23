@@ -18,6 +18,8 @@ Route::group(
         Route::get('', [HomeController::class, 'index'])->name('index');
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
 
+        Route::get('image', [ImageController::class, 'image'])->name('image');
+
         Route::group(
             [
                 'prefix' => 'profile',
@@ -41,6 +43,8 @@ Route::group(
                 Route::patch('{postId}/vote', [PostController::class, 'vote'])->name('vote');
 
                 Route::get('{postId}', [PostController::class, 'show'])->name('show');
+
+                Route::get('{postId}/image', [ImageController::class, 'getPost'])->name('image');
             }
         );
 

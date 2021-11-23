@@ -27,8 +27,6 @@
             </cascade>
         </one-to-many>
 
-        <field name="filePath" column="file_path" nullable="true"/>
-
         <one-to-many field="votes" target-entity="App\Entities\Vote" mapped-by="post">
             <cascade>
                 <cascade-all/>
@@ -50,8 +48,13 @@
         <one-to-many field="refusals" target-entity="App\Entities\Refusal" mapped-by="post"/>
 
         <many-to-one field="image" target-entity="App\Entities\Image">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
             <join-column name="image_id" on-delete="CASCADE"/>
         </many-to-one>
+
+        <one-to-many field="images" target-entity="App\Entities\Image" mapped-by="post"/>
     </entity>
 
 </doctrine-mapping>

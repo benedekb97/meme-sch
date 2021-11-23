@@ -117,7 +117,7 @@ class PostController extends Controller
 
         $post = $this->postFactory->createWithUser($this->getUser());
         $post->setName($title);
-        $post->setFilePath($filePath);
+        $post->getImage()->setFilePath($filePath);
         $post->setAnonymous($anonymous);
 
         if (!$anonymous) {

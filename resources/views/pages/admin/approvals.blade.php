@@ -13,7 +13,7 @@
                         <span class="card-title">{{ $post->getName() }}</span><br>
                         <span class="card-subtitle text-muted">{{ $post->getUser()->getName() }}</span>
                     </div>
-                    <img src="{{ route('image', ['postId' => $post->getId()]) }}" class="card-img-bottom" alt="{{ $post->getName() }}">
+                    <img src="{{ route('posts.image', ['postId' => $post->getId()]) }}" class="card-img-bottom" alt="{{ $post->getName() }}">
                     <div class="card-footer">
                         <button class="btn btn-sm btn-success approve-post" type="button" data-post-id="{{ $post->getId() }}" data-url="{{ route('admin.posts.approve', ['postId' => $post->getId()]) }}" data-bs-toggle="tooltip" title="Elfogadás">
                             <i class="bi bi-check-lg" style="bottom:0;"></i>

@@ -32,10 +32,6 @@ interface PostInterface extends
         self::STATUS_REFUSED => self::STYLE_REFUSED,
     ];
 
-    public function getFilePath(): ?string;
-
-    public function setFilePath(?string $filePath): void;
-
     public function getComments(): Collection;
 
     public function isAnonymous(): bool;
@@ -73,4 +69,12 @@ interface PostInterface extends
     public function getImage(): ?ImageInterface;
 
     public function setImage(?ImageInterface $image): void;
+
+    public function getImages(): Collection;
+
+    public function hasImage(ImageInterface $image): bool;
+
+    public function addImage(ImageInterface $image): void;
+
+    public function removeImage(ImageInterface $image): void;
 }

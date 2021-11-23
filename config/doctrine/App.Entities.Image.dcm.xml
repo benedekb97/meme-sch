@@ -18,6 +18,10 @@
         </field>
 
         <field name="filePath" column="file_path" nullable="true"/>
+
+        <many-to-one field="post" target-entity="App\Entities\Post" inversed-by="images">
+            <join-column name="post_id" on-delete="SET NULL"/>
+        </many-to-one>
     </entity>
 
 </doctrine-mapping>

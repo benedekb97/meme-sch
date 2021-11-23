@@ -48,7 +48,7 @@
                                 @endif
                             </div>
                         </div>
-                        <img src="{{ route('image', ['postId' => $post->getId()]) }}" alt="{{ $post->getName() }}" class="mx-auto d-block img-fluid mb-0 mt-0 card-img-bottom">
+                        <img src="{{ route('posts.image', ['postId' => $post->getId()]) }}" alt="{{ $post->getName() }}" class="mx-auto d-block img-fluid mb-0 mt-0 card-img-bottom">
 
                         @if ($post->isApproved() || !$post->isAnonymous())
                         </a>
