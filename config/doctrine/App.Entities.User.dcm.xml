@@ -36,6 +36,8 @@
         <many-to-one field="profilePicture" target-entity="App\Entities\Image">
             <join-column name="profile_picture_image_id" on-delete="SET NULL"/>
         </many-to-one>
+
+        <one-to-many field="groupUsers" target-entity="App\Entities\GroupUser" mapped-by="user"/>
     </entity>
 
 </doctrine-mapping>

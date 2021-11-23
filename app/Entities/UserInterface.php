@@ -69,4 +69,12 @@ interface UserInterface extends
     public function getProfilePicture(): ?ImageInterface;
 
     public function setProfilePicture(?ImageInterface $profilePicture): void;
+
+    public function getGroupUsers(): Collection;
+
+    public function hasGroupUser(GroupUserInterface $groupUser): bool;
+
+    public function addGroupUser(GroupUserInterface $groupUser): void;
+
+    public function removeGroupUser(GroupUserInterface $groupUser): void;
 }

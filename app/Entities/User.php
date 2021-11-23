@@ -34,11 +34,14 @@ class User implements UserInterface
 
     private ?ImageInterface $profilePicture = null;
 
+    private Collection $groupUsers;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->refusals = new ArrayCollection();
+        $this->groupUsers = new ArrayCollection();
     }
 
     public function getAuthIdentifierName(): string
@@ -232,5 +235,31 @@ class User implements UserInterface
     public function setProfilePicture(?ImageInterface $profilePicture): void
     {
         $this->profilePicture = $profilePicture;
+    }
+
+    public function getGroupUsers(): Collection
+    {
+        return $this->groupUsers;
+    }
+
+    public function hasGroupUser(GroupUserInterface $groupUser): bool
+    {
+        return $this->groupUsers->contains($groupUser);
+    }
+
+    public function addGroupUser(GroupUserInterface $groupUser): void
+    {
+        if (!$this->hasGroupUser($groupUser)) {
+            $this->groupUsers->add($groupUser);
+            $groupUser->setUser($this);
+        }
+    }
+
+    public function removeGroupUser(GroupUserInterface $groupUser): void
+    {
+        if ($this->hasGroupUser($groupUser)) {
+            $this->groupUsers->removeElement($groupUser);
+            $groupUser->setUser(null);
+        }
     }
 }
