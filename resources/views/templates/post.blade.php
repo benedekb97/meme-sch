@@ -7,7 +7,7 @@
                         {{ $post->getName() }}
                     </h5>
                 </div>
-                <img alt="{{ $post->getName() }}" class="rounded mx-auto d-block img-fluid mb-0 mt-0 card-img-bottom" src="{{ route('image', ['postId' => $post->getId()]) }}"/>
+                <img alt="{{ $post->getName() }}" class="mx-auto d-block img-fluid mb-0 mt-0 card-img-bottom" src="{{ route('image', ['postId' => $post->getId()]) }}"/>
             </a>
             <div class="card-body">
                 <div class="d-flex justify-content-between">
