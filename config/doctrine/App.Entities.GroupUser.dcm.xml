@@ -21,5 +21,7 @@
         <many-to-one field="group" target-entity="App\Entities\Group" inversed-by="groupUsers">
             <join-column name="group_id"/>
         </many-to-one>
+
+        <field name="status" nullable="true"/>
     </entity>
 </doctrine-mapping>

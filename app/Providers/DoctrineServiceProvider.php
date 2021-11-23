@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Entities\Comment;
 use App\Entities\Group;
+use App\Entities\GroupUser;
 use App\Entities\Image;
 use App\Entities\Post;
 use App\Entities\Refusal;
@@ -13,6 +14,7 @@ use App\Entities\User;
 use App\Entities\Vote;
 use App\Services\Factory\CommentFactory;
 use App\Services\Factory\GroupFactory;
+use App\Services\Factory\GroupUserFactory;
 use App\Services\Factory\PostFactory;
 use App\Services\Factory\RefusalFactory;
 use App\Services\Factory\UserFactory;
@@ -46,6 +48,7 @@ class DoctrineServiceProvider extends ServiceProvider
         Comment::class => CommentFactory::class,
         Refusal::class => RefusalFactory::class,
         Group::class => GroupFactory::class,
+        GroupUser::class => GroupUserFactory::class,
     ];
 
     public function register(): void

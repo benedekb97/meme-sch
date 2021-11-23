@@ -30,6 +30,14 @@ class ProfileFactory implements ProfileFactoryInterface
         $profile->setGivenNames($response['givenName']);
         $profile->setEmailAddress($response['mail']);
 
+        foreach ($response['eduPersonEntitlement'] as $groupData) {
+            $group = $this->groupProvider->provide((int)$groupData['id']);
+
+            $group->setName($groupData['name']);
+
+            $profile->addGroup($groupData['status'], $group);
+        }
+
         return $profile;
     }
 }

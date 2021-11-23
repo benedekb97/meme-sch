@@ -77,4 +77,8 @@ interface UserInterface extends
     public function addGroupUser(GroupUserInterface $groupUser): void;
 
     public function removeGroupUser(GroupUserInterface $groupUser): void;
+
+    public function getGroups(): Collection;
+
+    public function hasGroup(GroupInterface $group): bool;
 }

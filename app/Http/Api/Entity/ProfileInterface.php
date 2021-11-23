@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Api\Entity;
 
+use App\Entities\GroupInterface;
+
 interface ProfileInterface
 {
     public function setInternalId(?string $internalId): void;
@@ -25,4 +27,10 @@ interface ProfileInterface
     public function setEmailAddress(?string $emailAddress): void;
 
     public function getEmailAddress(): ?string;
+
+    public function getGroups(): ?array;
+
+    public function addGroup(string $status, GroupInterface $group): void;
+
+    public function hasGroup(GroupInterface $group): bool;
 }

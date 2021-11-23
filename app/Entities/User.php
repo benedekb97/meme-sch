@@ -262,4 +262,14 @@ class User implements UserInterface
             $groupUser->setUser(null);
         }
     }
+
+    public function getGroups(): Collection
+    {
+        return $this->groupUsers->map(fn (GroupUserInterface $gu) => $gu->getGroup());
+    }
+
+    public function hasGroup(GroupInterface $group): bool
+    {
+        return $this->getGroups()->contains($group);
+    }
 }

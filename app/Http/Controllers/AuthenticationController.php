@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Entities\GroupInterface;
+use App\Entities\GroupUserInterface;
 use App\Entities\UserInterface;
+use App\Services\Factory\GroupUserFactoryInterface;
 use App\Services\Factory\UserFactoryInterface;
 use App\Http\Api\AuthSchApi;
 use App\Http\Api\AuthSchApiInterface;
@@ -50,19 +53,23 @@ class AuthenticationController extends Controller
 
     private UserFactoryInterface $userFactory;
 
+    private GroupUserFactoryInterface $groupUserFactory;
+
     public function __construct(
         EntityManager $entityManager,
         Store           $sessionStore,
         AuthSchApi      $authSchApi,
         UserRepositoryInterface $userRepository,
         UserFactoryInterface $userFactory,
-        AuthManager $authManager
+        AuthManager $authManager,
+        GroupUserFactoryInterface $groupUserFactory
     )
     {
         $this->sessionStore = $sessionStore;
         $this->authSchApi = $authSchApi;
         $this->userRepository = $userRepository;
         $this->userFactory = $userFactory;
+        $this->groupUserFactory = $groupUserFactory;
 
         parent::__construct($entityManager, $authManager);
     }
@@ -178,6 +185,43 @@ class AuthenticationController extends Controller
 
         if ($user->getAuthSchInternalId() === null) {
             $user->setAuthSchInternalId($profile->getInternalId());
+        }
+
+        /** @var GroupUserInterface $groupUser */
+        foreach ($user->getGroupUsers() as $groupUser) {
+            if (!$profile->hasGroup($groupUser->getGroup())) {
+                $user->removeGroupUser($groupUser);
+
+                $this->entityManager->remove($groupUser);
+            }
+        }
+
+        foreach ($profile->getGroups() as $groupData) {
+            $this->entityManager->persist($groupData['group']);
+
+            if (!$user->hasGroup($groupData['group'])) {
+                $groupUser = $this->groupUserFactory->createWithGroupUserAndStatus(
+                    $groupData['group'],
+                    $user,
+                    array_search($groupData['status'], GroupUserInterface::STATUS_AUTH_SCH_STATUS_MAP)
+                );
+            } else {
+                /** @var GroupUserInterface $groupUser */
+                $groupUser = $user->getGroupUsers()
+                    ->filter(
+                        static function (GroupUserInterface $groupUser) use ($groupData): bool
+                        {
+                            return $groupUser->getGroup() === $groupData['group'];
+                        }
+                    )
+                    ->first();
+
+                $groupUser->setStatus(
+                    array_search($groupData['status'], GroupUserInterface::STATUS_AUTH_SCH_STATUS_MAP)
+                );
+            }
+
+            $this->entityManager->persist($groupUser);
         }
 
         $this->entityManager->persist($user);

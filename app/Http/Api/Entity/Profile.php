@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Api\Entity;
 
+use App\Entities\GroupInterface;
+
 class Profile implements ProfileInterface
 {
     private ?string $internalId = null;
@@ -15,6 +17,8 @@ class Profile implements ProfileInterface
     private ?string $givenNames = null;
 
     private ?string $emailAddress = null;
+
+    private ?array $groups = null;
 
     public function setInternalId(?string $internalId): void
     {
@@ -64,5 +68,29 @@ class Profile implements ProfileInterface
     public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
+    }
+
+    public function getGroups(): ?array
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(string $status, GroupInterface $group): void
+    {
+        $this->groups[] = [
+            'status' => $status,
+            'group' => $group
+        ];
+    }
+
+    public function hasGroup(GroupInterface $group): bool
+    {
+        foreach ($this->groups as $groupData) {
+            if ($group === $groupData['group']) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
