@@ -7,6 +7,7 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet"/>
     </head>
     <body>
+    @isset($group) <input type="hidden" id="groupId" value="{{ $group->getId() }}"/> @endisset
         <header class="p-3 bg-dark text-white">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -89,9 +90,11 @@
                             <div class="input-group mb-3">
                                 <label class="input-group-text" for="post-group">Kör</label>
                                 <select class="form-select" id="post-group">
-                                    <option disabled selected>Válassz kört</option>
-                                    @foreach (Auth::user()->getGroupUsers() as $group)
-                                        <option value="{{ $group->getGroup()->getId() }}">{{ $group->getGroup()->getName() }}</option>
+                                    <option selected>Schönherz</option>
+                                    @foreach (Auth::user()->getGroupUsers() as $groupUser)
+                                        @if ($groupUser->canPost())
+                                            <option value="{{ $groupUser->getGroup()->getId() }}" @isset($group) @if($group === $groupUser->getGroup()) selected @endif @endisset>{{ $groupUser->getGroup()->getName() }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>

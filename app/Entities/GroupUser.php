@@ -37,4 +37,9 @@ class GroupUser implements GroupUserInterface
     {
         $this->status = $status;
     }
+
+    public function canPost(): bool
+    {
+        return $this->status !== self::STATUS_ARCHIVED_MEMBER;
+    }
 }

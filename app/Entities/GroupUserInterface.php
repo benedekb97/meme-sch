@@ -34,4 +34,6 @@ interface GroupUserInterface extends
     public function getStatus(): ?string;
 
     public function setStatus(?string $status): void;
+
+    public function canPost(): bool;
 }

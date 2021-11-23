@@ -282,4 +282,20 @@ class User implements UserInterface
             }
         )->isEmpty();
     }
+
+    public function canPostInGroup(GroupInterface $group): bool
+    {
+        $groupUser = $this->groupUsers->filter(
+            static function (GroupUserInterface $groupUser) use ($group): bool
+            {
+                return $groupUser->getGroup() === $group;
+            }
+        )->first();
+
+        if (!isset($groupUser)) {
+            return false;
+        }
+
+        return $groupUser->canPost();
+    }
 }
