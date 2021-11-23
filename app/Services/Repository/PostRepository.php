@@ -48,14 +48,14 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
             ->getResult();
     }
 
-    public function findAllDeleted(): array
+    public function findAllRefused(): array
     {
         return $this->createDeletedQueryBuilder()
             ->getQuery()
             ->getResult();
     }
 
-    public function countDeleted(): int
+    public function countRefused(): int
     {
         return (int)$this->createDeletedQueryBuilder()
             ->select('count(o.id)')

@@ -13,6 +13,8 @@ $(document).ready(function() {
     let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+
+    startListeners();
 });
 
 window.createToast = function (title, content, border = null) {
@@ -54,173 +56,191 @@ window.makeId = function (length) {
     return result;
 }
 
-$('.delete-post').click(
-    function () {
-        let postId = $(this).data('post-id');
-        let url = $(this).data('url');
+window.startListeners = function ()
+{
+    let refusePost = $('.refuse-post');
+    let approvePost = $('.approve-post');
+    let restorePost = $('.restore-post');
 
-        $.ajax(
-            {
-                url: url,
-                type: 'DELETE',
-                data: {
-                    _token: $('#_token').val()
-                },
-                success: function (e) {
-                    if (e.success === true) {
-                        let offcanvasDeleted = $('#deleted-count-offcanvas');
-                        let sidebarDeleted = $('#deleted-count-sidebar');
-                        let offcanvasUnapproved = $('#unapproved-count-offcanvas');
-                        let sidebarUnapproved = $('#unapproved-count-sidebar');
+    refusePost.unbind();
+    approvePost.unbind();
+    restorePost.unbind();
 
-                        let currentDeleted = parseInt(offcanvasDeleted.html());
-                        let currentUnapproved = parseInt(offcanvasUnapproved.html());
+    refusePost.click(
+        function () {
+            let postId = $(this).data('post-id');
+            let url = $(this).data('url');
+            let refusalReason = $(`#refuse-reason-${postId}`);
 
-                        offcanvasDeleted.html(currentDeleted + 1);
-                        sidebarDeleted.html(currentDeleted + 1);
-                        offcanvasUnapproved.html(currentUnapproved - 1);
-                        sidebarUnapproved.html(currentUnapproved - 1);
+            $.ajax(
+                {
+                    url: url,
+                    type: 'DELETE',
+                    data: {
+                        _token: $('#_token').val(),
+                        reason: refusalReason.val()
+                    },
+                    success: function (e) {
+                        if (e.success === true) {
+                            let offcanvasRefused = $('#refused-count-offcanvas');
+                            let sidebarRefused = $('#refused-count-sidebar');
+                            let offcanvasUnapproved = $('#unapproved-count-offcanvas');
+                            let sidebarUnapproved = $('#unapproved-count-sidebar');
 
-                        if (currentUnapproved - 1 === 0) {
-                            offcanvasUnapproved.addClass('visually-hidden');
-                            sidebarUnapproved.addClass('visually-hidden');
+                            let currentRefused = parseInt(offcanvasRefused.html());
+                            let currentUnapproved = parseInt(offcanvasUnapproved.html());
+
+                            offcanvasRefused.html(currentRefused + 1);
+                            sidebarRefused.html(currentRefused + 1);
+                            offcanvasUnapproved.html(currentUnapproved - 1);
+                            sidebarUnapproved.html(currentUnapproved - 1);
+
+                            if (currentUnapproved - 1 === 0) {
+                                offcanvasUnapproved.addClass('visually-hidden');
+                                sidebarUnapproved.addClass('visually-hidden');
+                            }
+
+                            if (currentRefused === 0) {
+                                offcanvasRefused.removeClass('visually-hidden');
+                                sidebarRefused.removeClass('visually-hidden');
+                            }
+
+                            let post = $(`#post-${postId}`);
+
+                            post.fadeOut('fast');
+
+                            let toast = createToast(
+                                'Poszt törölve!',
+                                'Törölted a psoztot! Megtalálod (majd) a törölt posztok között.',
+                                'border-danger'
+                            )
+
+                            let toastId = toast.id;
+                            toast = toast.toast;
+
+                            $('#toast-container').prepend(toast.outerHTML);
+
+                            $(`#${toastId}`).toast('show');
+
+                            $(`#refuse-post-modal-${postId}`).modal('hide');
+                            refusalReason.val('');
                         }
-
-                        if (currentDeleted === 0) {
-                            offcanvasDeleted.removeClass('visually-hidden');
-                            sidebarDeleted.removeClass('visually-hidden');
-                        }
-
-                        let post = $(`#post-${postId}`);
-
-                        post.fadeOut('fast');
-
-                        let toast = createToast(
-                            'Poszt törölve!',
-                            'Törölted a psoztot! Megtalálod (majd) a törölt posztok között.',
-                            'border-danger'
-                        )
-
-                        let toastId = toast.id;
-                        toast = toast.toast;
-
-                        $('#toast-container').prepend(toast.outerHTML);
-
-                        $(`#${toastId}`).toast('show');
                     }
                 }
-            }
-        )
-    }
-)
+            )
+        }
+    )
 
-$('.restore-post').click(
-    function () {
-        let postId = $(this).data('post-id');
-        let url = $(this).data('url');
+    restorePost.click(
+        function () {
+            let postId = $(this).data('post-id');
+            let url = $(this).data('url');
 
-        $.ajax(
-            {
-                url: url,
-                type: 'PATCH',
-                data: {
-                    _token: $('#_token').val()
-                },
-                success: function (e) {
-                    if (e.success === true) {
-                        let offcanvasDeleted = $('#deleted-count-offcanvas');
-                        let sidebarDeleted = $('#deleted-count-sidebar');
-                        let offcanvasUnapproved = $('#unapproved-count-offcanvas');
-                        let sidebarUnapproved = $('#unapproved-count-sidebar');
+            $.ajax(
+                {
+                    url: url,
+                    type: 'PATCH',
+                    data: {
+                        _token: $('#_token').val()
+                    },
+                    success: function (e) {
+                        if (e.success === true) {
+                            let offcanvasRefused = $('#refused-count-offcanvas');
+                            let sidebarRefused = $('#refused-count-sidebar');
+                            let offcanvasUnapproved = $('#unapproved-count-offcanvas');
+                            let sidebarUnapproved = $('#unapproved-count-sidebar');
 
-                        let currentDeleted = parseInt(offcanvasDeleted.html());
-                        let currentUnapproved = parseInt(offcanvasUnapproved.html());
+                            let currentRefused = parseInt(offcanvasRefused.html());
+                            let currentUnapproved = parseInt(offcanvasUnapproved.html());
 
-                        offcanvasDeleted.html(currentDeleted - 1);
-                        sidebarDeleted.html(currentDeleted - 1);
-                        offcanvasUnapproved.html(currentUnapproved + 1);
-                        sidebarUnapproved.html(currentUnapproved + 1);
+                            offcanvasRefused.html(currentRefused - 1);
+                            sidebarRefused.html(currentRefused - 1);
+                            offcanvasUnapproved.html(currentUnapproved + 1);
+                            sidebarUnapproved.html(currentUnapproved + 1);
 
-                        if (currentDeleted - 1 === 0) {
-                            offcanvasDeleted.addClass('visually-hidden');
-                            sidebarDeleted.addClass('visually-hidden');
+                            if (currentRefused - 1 === 0) {
+                                offcanvasRefused.addClass('visually-hidden');
+                                sidebarRefused.addClass('visually-hidden');
+                            }
+
+                            if (currentUnapproved === 0) {
+                                offcanvasUnapproved.removeClass('visually-hidden');
+                                sidebarUnapproved.removeClass('visually-hidden');
+                            }
+
+                            let post = $(`#post-${postId}`);
+
+                            post.fadeOut('slow');
+
+                            let toast = createToast(
+                                'Poszt visszaállítva!',
+                                'Visszaállítottad a posztot! Lehet még el kell fogadni, de am zsíros',
+                                'border-success'
+                            );
+
+                            let toastId = toast.id;
+                            toast = toast.toast;
+
+                            $('#toast-container').prepend(toast.outerHTML);
+
+                            $(`#${toastId}`).toast('show');
                         }
-
-                        if (currentUnapproved === 0) {
-                            offcanvasUnapproved.removeClass('visually-hidden');
-                            sidebarUnapproved.removeClass('visually-hidden');
-                        }
-
-                        let post = $(`#post-${postId}`);
-
-                        post.fadeOut('slow');
-
-                        let toast = createToast(
-                            'Poszt visszaállítva!',
-                            'Visszaállítottad a posztot! Lehet még el kell fogadni, de am zsíros',
-                            'border-success'
-                        );
-
-                        let toastId = toast.id;
-                        toast = toast.toast;
-
-                        $('#toast-container').prepend(toast.outerHTML);
-
-                        $(`#${toastId}`).toast('show');
                     }
                 }
-            }
-        );
-    }
-);
+            );
+        }
+    );
 
-$('.approve-post').click(
-    function () {
-        let postId = $(this).data('post-id');
-        let url = $(this).data('url');
+    approvePost.click(
+        function () {
+            let postId = $(this).data('post-id');
+            let url = $(this).data('url');
 
-        $.ajax(
-            {
-                url: url,
-                type: 'PATCH',
-                data: {
-                    _token: $('#_token').val()
-                },
-                success: function (e) {
-                    if (e.success === true) {
-                        let offcanvasUnapproved = $('#unapproved-count-offcanvas');
-                        let sidebarUnapproved = $('#unapproved-count-sidebar');
+            $.ajax(
+                {
+                    url: url,
+                    type: 'PATCH',
+                    data: {
+                        _token: $('#_token').val()
+                    },
+                    success: function (e) {
+                        if (e.success === true) {
+                            let offcanvasUnapproved = $('#unapproved-count-offcanvas');
+                            let sidebarUnapproved = $('#unapproved-count-sidebar');
 
-                        let currentUnapproved = parseInt(offcanvasUnapproved.html());
+                            let currentUnapproved = parseInt(offcanvasUnapproved.html());
 
-                        offcanvasUnapproved.html(currentUnapproved - 1);
-                        sidebarUnapproved.html(currentUnapproved - 1);
+                            offcanvasUnapproved.html(currentUnapproved - 1);
+                            sidebarUnapproved.html(currentUnapproved - 1);
 
-                        if (currentUnapproved - 1 === 0) {
-                            offcanvasUnapproved.addClass('visually-hidden');
-                            sidebarUnapproved.addClass('visually-hidden');
+                            if (currentUnapproved - 1 === 0) {
+                                offcanvasUnapproved.addClass('visually-hidden');
+                                sidebarUnapproved.addClass('visually-hidden');
+                            }
+
+                            let post = $(`#post-${postId}`);
+
+                            post.fadeOut('slow');
+
+                            let toast = createToast(
+                                'Poszt elfogadva!',
+                                'Elfogadtad a posztot! Már látható lesz a főoldalon.',
+                                'border-success'
+                            );
+
+                            let toastId = toast.id;
+                            toast = toast.toast;
+
+                            $('#toast-container').prepend(toast.outerHTML);
+
+                            $(`#${toastId}`).toast('show');
                         }
-
-                        let post = $(`#post-${postId}`);
-
-                        post.fadeOut('slow');
-
-                        let toast = createToast(
-                            'Poszt elfogadva!',
-                            'Elfogadtad a posztot! Már látható lesz a főoldalon.',
-                            'border-success'
-                        );
-
-                        let toastId = toast.id;
-                        toast = toast.toast;
-
-                        $('#toast-container').prepend(toast.outerHTML);
-
-                        $(`#${toastId}`).toast('show');
                     }
                 }
-            }
-        )
+            )
 
-    }
-)
+        }
+    )
+
+}
+

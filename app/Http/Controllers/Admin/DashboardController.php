@@ -47,12 +47,12 @@ class DashboardController extends AdminController
         );
     }
 
-    public function deletedPosts()
+    public function refusedPosts()
     {
-        $posts = $this->postRepository->findAllDeleted();
+        $posts = $this->postRepository->findAllRefused();
 
         return view(
-            'pages.admin.deleted-posts',
+            'pages.admin.refused-posts',
             [
                 'posts' => $posts,
             ]

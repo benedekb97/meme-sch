@@ -52,13 +52,13 @@
                         </a>
                     </li>
                     <li class="nav-item mt-3">
-                        <a class="position-relative nav-link text-white @if(Route::currentRouteName() === 'admin.deleted-posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.deleted-posts') }}">
+                        <a class="position-relative nav-link text-white @if(Route::currentRouteName() === 'admin.refused-posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.refused-posts') }}">
                             <i class="bi bi-trash-fill"></i>
                             <div class="position-relative d-inline" style="left:3px;" >
-                                Törölt posztok
-                                @isset($deletedPostCount)
-                                    <span class="badge rounded-pill bg-secondary mx-1 @if($deletedPostCount === 0) visually-hidden @endif" id="deleted-count-sidebar">
-                                        {{ $deletedPostCount }}
+                                Elutasított posztok
+                                @isset($refusedPostCount)
+                                    <span class="badge rounded-pill bg-secondary mx-1 @if($refusedPostCount === 0) visually-hidden @endif" id="refused-count-sidebar">
+                                        {{ $refusedPostCount }}
                                     </span>
                                 @endisset
                             </div>
@@ -126,13 +126,13 @@
                         </a>
                     </li>
                     <li class="nav-item mt-3">
-                        <a class="position-relative nav-link text-white @if(Route::currentRouteName() === 'admin.deleted-posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.deleted-posts') }}">
+                        <a class="position-relative nav-link text-white @if(Route::currentRouteName() === 'admin.refused-posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.refused-posts') }}">
                             <i class="bi bi-trash-fill"></i>
                             <div class="position-relative d-inline" style="left:3px;" >
-                                Törölt posztok
-                                @isset($deletedPostCount)
-                                    <span class="badge rounded-pill bg-secondary mx-1 @if($deletedPostCount === 0) visually-hidden @endif" id="deleted-count-offcanvas">
-                                        {{ $deletedPostCount }}
+                                Elutasított posztok
+                                @isset($refusedPostCount)
+                                    <span class="badge rounded-pill bg-secondary mx-1 @if($refusedPostCount === 0) visually-hidden @endif" id="refused-count-offcanvas">
+                                        {{ $refusedPostCount }}
                                     </span>
                                 @endisset
                             </div>
@@ -169,5 +169,7 @@
         <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container" style="z-index:11;">
             @stack('toasts')
         </div>
+
+        @stack('modals')
     </body>
 </html>

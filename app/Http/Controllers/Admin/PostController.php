@@ -63,7 +63,7 @@ class PostController extends AdminController
         );
     }
 
-    public function delete(Request $request, int $postId): JsonResponse
+    public function refuse(Request $request, int $postId): JsonResponse
     {
         /** @var PostInterface|null $post */
         $post = $this->postRepository->find($postId);

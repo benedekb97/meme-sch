@@ -26,7 +26,7 @@ class AdminController extends Controller
         );
 
         $viewFactory->share(
-            'deletedPostCount', $postRepository->countDeleted()
+            'refusedPostCount', $postRepository->countRefused()
         );
     }
 }

@@ -12,9 +12,9 @@ interface PostRepositoryInterface extends ObjectRepository
 
     public function findAllUnapproved(): array;
 
-    public function findAllDeleted(): array;
+    public function findAllRefused(): array;
 
-    public function countDeleted(): int;
+    public function countRefused(): int;
 
     public function countUnapproved(): int;
 }

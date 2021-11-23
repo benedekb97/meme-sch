@@ -44,7 +44,7 @@
         </many-to-one>
 
         <many-to-one field="refusal" target-entity="App\Entities\Refusal">
-            <join-column name="refusal_id"/>
+            <join-column name="refusal_id" on-delete="SET NULL"/>
         </many-to-one>
 
         <one-to-many field="refusals" target-entity="App\Entities\Refusal" mapped-by="post"/>
