@@ -272,4 +272,14 @@ class User implements UserInterface
     {
         return $this->getGroups()->contains($group);
     }
+
+    public function isGroupLeader(): bool
+    {
+        return !$this->groupUsers->filter(
+            static function (GroupUserInterface $groupUser): bool
+            {
+                return $groupUser->getStatus() === GroupUserInterface::STATUS_LEADER;
+            }
+        )->isEmpty();
+    }
 }

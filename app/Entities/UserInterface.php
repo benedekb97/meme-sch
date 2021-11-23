@@ -81,4 +81,6 @@ interface UserInterface extends
     public function getGroups(): Collection;
 
     public function hasGroup(GroupInterface $group): bool;
+
+    public function isGroupLeader(): bool;
 }
