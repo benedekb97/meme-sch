@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PostController;
@@ -27,6 +28,16 @@ Route::group(
             ],
             static function () {
                 Route::get('settings', [ProfileController::class, 'settings'])->name('settings');
+            }
+        );
+
+        Route::group(
+            [
+                'prefix' => 'groups',
+                'as' => 'groups.',
+            ],
+            static function () {
+                Route::get('{groupId}',  [GroupController::class, 'posts'])->name('posts');
             }
         );
 

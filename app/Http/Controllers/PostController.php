@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Entities\GroupInterface;
 use App\Entities\PostInterface;
 use App\Entities\VoteInterface;
 use App\Services\Factory\PostFactoryInterface;
 use App\Services\Provider\VoteProvider;
 use App\Services\Provider\VoteProviderInterface;
+use App\Services\Repository\GroupRepositoryInterface;
 use App\Services\Repository\PostRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Auth\AuthManager;
@@ -26,16 +28,20 @@ class PostController extends Controller
 
     private VoteProviderInterface $voteProvider;
 
+    private GroupRepositoryInterface $groupRepository;
+
     public function __construct(
         EntityManager $entityManager,
         AuthManager $authManager,
         PostFactoryInterface $postFactory,
         PostRepositoryInterface $postRepository,
-        VoteProvider $voteProvider
+        VoteProvider $voteProvider,
+        GroupRepositoryInterface $groupRepository
     ) {
         $this->postFactory = $postFactory;
         $this->postRepository = $postRepository;
         $this->voteProvider = $voteProvider;
+        $this->groupRepository = $groupRepository;
 
         parent::__construct($entityManager, $authManager);
     }
@@ -85,6 +91,17 @@ class PostController extends Controller
         /** @var UploadedFile $file */
         $file = $request->file('file');
 
+        $groupId = $request->get('groupId');
+
+        $user = $this->getUser();
+
+        /** @var GroupInterface $group */
+        $group = $this->groupRepository->find($groupId);
+
+        if ($group === null || !$user->hasGroup($group)) {
+            $groupError = false;
+        }
+
         $anonymous = ($request->get('anonymous') === 'true');
 
         if ($file === null) {
@@ -99,11 +116,12 @@ class PostController extends Controller
             $titleError = 'length';
         }
 
-        if (isset($fileError) || isset($titleError)) {
+        if (isset($fileError) || isset($titleError) || isset($groupError)) {
             return new JsonResponse(
                 [
                     'title' => $titleError ?? true,
                     'file' => $fileError ?? true,
+                    'group' => $groupError ?? true,
                 ],
                 Response::HTTP_BAD_REQUEST
             );
@@ -119,6 +137,10 @@ class PostController extends Controller
         $post->setName($title);
         $post->getImage()->setFilePath($filePath);
         $post->setAnonymous($anonymous);
+
+        if (isset($group)) {
+            $post->setGroup($group);
+        }
 
         if (!$anonymous) {
             $post->setApprovedAtNow();

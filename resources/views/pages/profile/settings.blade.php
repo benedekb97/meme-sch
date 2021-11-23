@@ -15,9 +15,9 @@
                 <div class="card-header">
                     <p class="card-title">Beállítások</p>
                 </div>
-                <form action="{{ route('profile.edit') }}" method="POST">
-
-                </form>
+{{--                <form action="{{ route('profile.edit') }}" method="POST">--}}
+{{----}}
+{{--                </form>--}}
                 <div class="card-body">
 
                 </div>

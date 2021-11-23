@@ -80,6 +80,7 @@ window.submitNewPostForm = function (event) {
     let postTitle = $('#post-title');
     let postFile = $('#post-file');
     let postAnonymous = $('#post-anonymous');
+    let postGroup = $('#post-group');
 
     let fd = new FormData();
     let files = postFile[0].files;
@@ -87,6 +88,7 @@ window.submitNewPostForm = function (event) {
     fd.set('title', postTitle.val());
     fd.set('_token', $('#post-csrf-token').val());
     fd.set('anonymous', postAnonymous[0].checked);
+    fd.set('groupId', postGroup.val() ?? null);
 
     if (files.length > 0) {
         fd.append('file', files[0]);

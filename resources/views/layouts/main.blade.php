@@ -14,6 +14,21 @@
                         <li>
                             <a href="{{ route('index') }}" class="nav-link px-2 text-white">Főoldal</a>
                         </li>
+                        <li class="mx-2">
+                            <div class="dropdown">
+                                <a class="btn bg-opacity-10 btn-outline-light dropdown-toggle" href="#" role="button" id="groupDropdownLink" data-bs-toggle="dropdown">
+                                    @isset($group) {{ $group->getName() }} @else Körök @endisset
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    @foreach (Auth::user()->getGroupUsers() as $groupUser)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('groups.posts', ['groupId' => $groupUser->getGroup()->getId()]) }}">{{ $groupUser->getGroup()->getName() }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                     <div class="text-end mb-3 mb-lg-0 me-lg-3">
                         <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#new-post-modal">
@@ -70,6 +85,15 @@
                             </div>
                             <div class="mb-3 text-center">
                                 <img id="image-preview" src="" class="visually-hidden img-fluid" alt="Upload preview"/>
+                            </div>
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="post-group">Kör</label>
+                                <select class="form-select" id="post-group">
+                                    <option disabled selected>Válassz kört</option>
+                                    @foreach (Auth::user()->getGroupUsers() as $group)
+                                        <option value="{{ $group->getGroup()->getId() }}">{{ $group->getGroup()->getName() }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </form>
                     </div>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Repository;
 
+use App\Entities\GroupInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -12,10 +13,12 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
     public function findAllWithOffset(int $offset = 0): array
     {
         return $this->createQueryBuilder('o')
+            ->andWhere('o.group IS NULL')
             ->andWhere('o.refusal IS NULL')
             ->andWhere('o.anonymous = :anonymous')
             ->orWhere('o.approvedBy IS NOT NULL')
             ->andWhere('o.refusal IS NULL')
+            ->andWhere('o.group IS NULL')
             ->setParameter('anonymous', false)
             ->setFirstResult($offset)
             ->setMaxResults(20)
@@ -69,5 +72,24 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
             ->select('count(o.id)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    public function findAllForGroup(GroupInterface $group, int $offset = 0): array
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.group = :group')
+            ->andWhere('o.refusal IS NULL')
+            ->andWhere('o.anonymous = :anonymous')
+            ->orWhere('o.approvedBy IS NOT NULL')
+            ->andWhere('o.refusal IS NULL')
+            ->andWhere('o.group = :group')
+            ->setParameter('anonymous', false)
+            ->setParameter('group', $group)
+            ->setFirstResult($offset)
+            ->setMaxResults(20)
+            ->addOrderBy('o.approvedAt', 'DESC')
+            ->addOrderBy('o.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }
