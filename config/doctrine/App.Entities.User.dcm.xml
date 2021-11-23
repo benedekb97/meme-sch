@@ -32,6 +32,10 @@
         <field name="administrator" type="boolean"/>
 
         <one-to-many field="refusals" target-entity="App\Entities\Refusal" mapped-by="user"/>
+
+        <many-to-one field="profilePicture" target-entity="App\Entities\Image">
+            <join-column name="profile_picture_image_id" on-delete="SET NULL"/>
+        </many-to-one>
     </entity>
 
 </doctrine-mapping>

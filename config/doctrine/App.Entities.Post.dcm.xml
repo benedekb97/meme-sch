@@ -48,6 +48,10 @@
         </many-to-one>
 
         <one-to-many field="refusals" target-entity="App\Entities\Refusal" mapped-by="post"/>
+
+        <many-to-one field="image" target-entity="App\Entities\Image">
+            <join-column name="image_id" on-delete="CASCADE"/>
+        </many-to-one>
     </entity>
 
 </doctrine-mapping>

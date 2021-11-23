@@ -36,6 +36,8 @@ class Post implements PostInterface
 
     private Collection $refusals;
 
+    private ?ImageInterface $image = null;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
@@ -221,5 +223,15 @@ class Post implements PostInterface
             $this->refusals->removeElement($refusal);
             $refusal->setPost(null);
         }
+    }
+
+    public function getImage(): ?ImageInterface
+    {
+        return $this->image;
+    }
+
+    public function setImage(?ImageInterface $image): void
+    {
+        $this->image = $image;
     }
 }

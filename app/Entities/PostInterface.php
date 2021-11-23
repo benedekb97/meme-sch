@@ -69,4 +69,8 @@ interface PostInterface extends
     public function addRefusal(RefusalInterface $refusal): void;
 
     public function removeRefusal(RefusalInterface $refusal): void;
+
+    public function getImage(): ?ImageInterface;
+
+    public function setImage(?ImageInterface $image): void;
 }

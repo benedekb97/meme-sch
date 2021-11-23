@@ -32,6 +32,8 @@ class User implements UserInterface
 
     private Collection $refusals;
 
+    private ?ImageInterface $profilePicture = null;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -220,5 +222,15 @@ class User implements UserInterface
             $this->refusals->removeElement($refusal);
             $refusal->setUser(null);
         }
+    }
+
+    public function getProfilePicture(): ?ImageInterface
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?ImageInterface $profilePicture): void
+    {
+        $this->profilePicture = $profilePicture;
     }
 }

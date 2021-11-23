@@ -65,4 +65,8 @@ interface UserInterface extends
     public function addRefusal(RefusalInterface $refusal): void;
 
     public function removeRefusal(RefusalInterface $refusal): void;
+
+    public function getProfilePicture(): ?ImageInterface;
+
+    public function setProfilePicture(?ImageInterface $profilePicture): void;
 }

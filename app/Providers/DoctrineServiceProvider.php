@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Entities\Comment;
+use App\Entities\Image;
 use App\Entities\Post;
 use App\Entities\Refusal;
 use App\Entities\User;
@@ -15,6 +16,7 @@ use App\Services\Factory\RefusalFactory;
 use App\Services\Factory\UserFactory;
 use App\Services\Factory\VoteFactory;
 use App\Services\Repository\CommentRepository;
+use App\Services\Repository\ImageRepository;
 use App\Services\Repository\PostRepository;
 use App\Services\Repository\RefusalRepository;
 use App\Services\Repository\UserRepository;
@@ -30,6 +32,7 @@ class DoctrineServiceProvider extends ServiceProvider
         Vote::class => VoteRepository::class,
         Comment::class => CommentRepository::class,
         Refusal::class => RefusalRepository::class,
+        Image::class => ImageRepository::class,
     ];
 
     private const ENTITY_FACTORY_MAP = [
