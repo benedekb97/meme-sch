@@ -233,4 +233,22 @@ class PostController extends Controller
             Response::HTTP_OK
         );
     }
+
+    public function search(Request $request)
+    {
+        $term = $request->get('search', '');
+
+        $groups = $this->getUser()->getGroups();
+
+        $posts = $this->postRepository->searchByGroups($groups, $term);
+
+        return view(
+            'pages.index',
+            [
+                'user' => $this->getUser(),
+                'posts' => $posts,
+                'search' => $term,
+            ]
+        );
+    }
 }

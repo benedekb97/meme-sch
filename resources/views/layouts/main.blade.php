@@ -36,8 +36,8 @@
                             <i class="bi bi-cloud-plus"></i>&nbsp;Új poszt
                         </button>
                     </div>
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                        <input type="search" class="form-control form-control-dark" placeholder="Keresés..." aria-label="Keresés"/>
+                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{{ route('search') }}" method="GET">
+                        <input @isset($search) value="{{ $search }}" @endisset name="search" type="search" class="form-control form-control-dark" placeholder="Keresés..." aria-label="Keresés"/>
                     </form>
                     <div class="text-end">
                         @if (!Auth::check())

@@ -11,6 +11,52 @@ use Doctrine\ORM\QueryBuilder;
 
 class PostRepository extends EntityRepository implements PostRepositoryInterface
 {
+    public function searchByGroups(Collection $groups, string $term): array
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        return $qb
+            ->where(
+                $qb->expr()->andX(
+                    'o.group IS NULL',
+                    'o.refusal IS NULL',
+                    'o.anonymous = :anonymous',
+                    'o.name LIKE :term'
+                )
+            )
+            ->orWhere(
+                $qb->expr()->andX(
+                    'o.approvedBy IS NOT NULL',
+                    'o.refusal IS NULL',
+                    'o.group IS NULL',
+                    'o.name LIKE :term'
+                )
+            )
+            ->orWhere(
+                $qb->expr()->andX(
+                    'o.group IN (:groups)',
+                    'o.anonymous = :anonymous',
+                    'o.refusal IS NULL',
+                    'o.name LIKE :term'
+                )
+            )
+            ->orWhere(
+                $qb->expr()->andX(
+                    'o.approvedBy IS NOT NULL',
+                    'o.refusal IS NULL',
+                    'o.group IN (:groups)',
+                    'o.name LIKE :term'
+                )
+            )
+            ->setParameter('term', '%' . $term . '%')
+            ->setParameter('anonymous', false)
+            ->setParameter('groups', $groups)
+            ->addOrderBy('o.approvedAt', 'DESC')
+            ->addOrderBy('o.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllWithOffset(int $offset = 0): array
     {
         return $this->createQueryBuilder('o')

@@ -10,6 +10,8 @@ use Doctrine\Persistence\ObjectRepository;
 
 interface PostRepositoryInterface extends ObjectRepository
 {
+    public function searchByGroups(Collection $groups, string $term): array;
+
     public function findAllWithOffset(int $offset = 0): array;
 
     public function findAllUnapprovedForGroups(Collection $groups): array;

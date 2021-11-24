@@ -21,6 +21,8 @@ Route::group(
 
         Route::get('image', [ImageController::class, 'image'])->name('image');
 
+        Route::get('search', [PostController::class, 'search'])->name('search');
+
         Route::group(
             [
                 'prefix' => 'profile',
