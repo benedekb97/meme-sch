@@ -10,7 +10,7 @@
             <div class="col-lg-3 col-12 mb-3">
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Szűrés (SZAR MÉG)</span>
+                        <span class="card-title">Szűrés</span>
                     </div>
                     <div class="list-group">
                         <button type="button" class="list-group-item list-group-item-action dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#group-filters">

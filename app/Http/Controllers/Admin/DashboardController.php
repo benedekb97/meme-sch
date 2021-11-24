@@ -88,10 +88,26 @@ class DashboardController extends AdminController
             $posts = $this->postRepository->findAllRefused();
         }
 
+        $groups = new ArrayCollection();
+        $users = new ArrayCollection();
+
+        foreach ($posts as $post) {
+            if (!$groups->contains($post->getGroup())) {
+                $groups->add($post->getGroup());
+            }
+
+            if (!$users->contains($post->getUser())) {
+                $users->add($post->getUser());
+            }
+        }
+
         return view(
             'pages.admin.refused-posts',
             [
                 'posts' => $posts,
+                'user' => $this->getUser(),
+                'users' => $users,
+                'groups' => $groups,
             ]
         );
     }
