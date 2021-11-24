@@ -28,6 +28,10 @@ class ProfileController extends Controller
 
         $nickName = $request->get('nickname');
 
+        if (strlen($nickName) > 64) {
+            return new RedirectResponse(route('profile.settings'));
+        }
+
         $user->setNickName($nickName);
 
         /** @var UploadedFile|null $profilePicture */
