@@ -19,7 +19,7 @@ Route::group(
         Route::get('', [HomeController::class, 'index'])->name('index');
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
 
-        Route::get('image', [ImageController::class, 'image'])->name('image');
+        Route::get('image/{imageId}', [ImageController::class, 'get'])->name('image');
 
         Route::get('search', [PostController::class, 'search'])->name('search');
 

@@ -20,6 +20,7 @@ class PostFactory implements PostFactoryInterface
         $image = new Image();
 
         $post->setImage($image);
+        $post->addImage($image);
 
         return $post;
     }

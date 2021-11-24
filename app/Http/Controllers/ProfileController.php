@@ -35,11 +35,11 @@ class ProfileController extends Controller
         $user->setNickName($nickName);
 
         /** @var UploadedFile|null $profilePicture */
-        $profilePicture = $request->file('image');
+        $profilePicture = $request->file('file');
 
         if (
-            $profilePicture !== null &&
-            in_array($profilePicture->getMimeType(), PostController::ALLOWED_MIME_TYPES, true)
+            $profilePicture !== null //&&
+            /*in_array($profilePicture->getMimeType(), PostController::ALLOWED_MIME_TYPES, true)*/
         ) {
             $fileName = Str::random() . '.' . $profilePicture->getClientOriginalExtension();
 

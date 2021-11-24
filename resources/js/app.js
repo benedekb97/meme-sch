@@ -32,6 +32,16 @@ window.loadFile = function(event) {
     }
 }
 
+window.loadProfilePicture = function (event) {
+    let output = $('#profile-picture-preview');
+
+    output.attr('src', URL.createObjectURL(event.target.files[0]));
+    output.removeClass('visually-hidden');
+    output.onLoad = function () {
+        URL.revokeObjectURL(output.src);
+    }
+}
+
 window.makeId = function (length) {
     let result           = '';
     let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -65,6 +75,53 @@ window.createToast = function (title, content) {
         toast: toast,
         id: id
     };
+}
+
+window.submitProfileForm = function (event) {
+    let form = $('#profile-form');
+    let saveButton = $('#profile-save-button');
+
+    saveButton.html(`
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Töltés...
+    `);
+    saveButton.attr('disabled', 'disabled');
+
+    let nickname = $('#nickname');
+    let file = $('#profile-picture');
+
+    let fd = new FormData();
+    let files = file[0].files;
+
+    fd.set('_token', $('#post-csrf-token').val());
+    fd.set('nickname', nickname.val());
+
+    if (files.length > 0) {
+        fd.append('file', files[0]);
+    }
+
+    $.ajax(
+        {
+            type: 'POST',
+            url: form[0].action,
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function (e) {
+                saveButton.removeAttr('disabled');
+                saveButton.html('Mentés');
+
+                let toast = createToast('Profil mentve!', 'A profilod el lett mentve!');
+
+                let toastId = toast.id;
+                toast = toast.toast;
+
+                $('#toast-container').prepend(toast.outerHTML);
+
+                $(`#${toastId}`).toast('show');
+            }
+        }
+    )
 }
 
 window.submitNewPostForm = function (event) {

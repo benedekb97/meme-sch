@@ -17,13 +17,19 @@
                         <span class="card-title">Beállítások</span>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('profile.edit') }}" method="POST">
+                        <form onkeydown="return event.key !== 'Enter';" id="profile-form" action="{{ route('profile.edit') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-floating mb-3">
                                 <input maxlength="64" id="nickname" name="nickname" type="text" class="form-control" value="{{ $user->getNickName() }}" placeholder="Becenév">
                                 <label for="nickname">Becenév</label>
                             </div>
-                            <button type="submit" class="btn btn-primary">Mentés</button>
+                            <div class="mb-3">
+                                <input accept="image/jpeg, image/png" type="file" class="form-control" id="profile-picture" onchange="loadProfilePicture(event)"/>
+                            </div>
+                            <div class="mb-3">
+                                <img id="profile-picture-preview" alt="{{ $user->getName() }}" src="{{ $user->getProfilePicture() !== null ? route('image', ['imageId' => $user->getProfilePicture()->getId()]) : '' }}" class="img-fluid @if ($user->getProfilePicture() === null) visually-hidden @endif">
+                            </div>
+                            <button type="button" class="btn btn-primary" id="profile-save-button" onclick="submitProfileForm(event)">Mentés</button>
                         </form>
                     </div>
                 </div>

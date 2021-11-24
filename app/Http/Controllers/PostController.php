@@ -95,10 +95,12 @@ class PostController extends Controller
 
         $user = $this->getUser();
 
-        /** @var GroupInterface $group */
-        $group = $this->groupRepository->find($groupId);
+        if ($groupId !== null) {
+            /** @var GroupInterface $group */
+            $group = $this->groupRepository->find($groupId);
+        }
 
-        if ($group === null || !$user->hasGroup($group) || !$user->canPostInGroup($group)) {
+        if (isset($group) && (!$user->hasGroup($group) || !$user->canPostInGroup($group))) {
             $groupError = false;
         }
 

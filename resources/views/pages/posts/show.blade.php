@@ -25,7 +25,12 @@
                 <img alt="{{ $post->getName() }}" class="rounded mx-auto d-block img-fluid mb-0 mt-0 card-img-bottom" src="{{ route('posts.image', ['postId' => $post->getId()]) }}"/>
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <div class="text-muted @if($post->isAnonymous()) {{ 'fst-italic' }} @endif">{{ !$post->isAnonymous() ? $post->getUser()->getNickName() ?? $post->getUser()->getName() : 'Anonymous' }}</div>
+                        <div class="text-muted @if($post->isAnonymous()) {{ 'fst-italic' }} @endif">
+                            @if (!$post->isAnonymous() && $post->getUser()->getProfilePicture() !== null)
+                                <img src="{{ route('image', ['imageId' => $post->getUser()->getProfilePicture()->getId()]) }}" style="max-height:32px; margin-right:3px;" class="rounded">
+                            @endif
+                            {{ !$post->isAnonymous() ? $post->getUser()->getNickName() ?? $post->getUser()->getName() : 'Anonymous' }}
+                        </div>
                         <div class="">
                             <button type="button" class="btn btn-light upvote-post" data-post-id="{{ $post->getId() }}" data-url="{{ route('posts.vote', ['postId' => $post->getId()]) }}">
                                 @if ($user->hasUpvoted($post))
