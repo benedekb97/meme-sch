@@ -56,8 +56,140 @@ window.makeId = function (length) {
     return result;
 }
 
+window.startFilterListeners = function ()
+{
+    let userFilter = $('.user-filter');
+    let groupFilter = $('.group-filter');
+
+    let selectedGroups = [];
+    let selectedUsers = [];
+
+    let allUsers = window.allUsers;
+    let allGroups = window.allGroups;
+
+    groupFilter.click(
+        function () {
+            let groupId = $(this).data('select-group-id') !== null ? $(this).data('select-group-id') : 'null';
+
+            if (!selectedGroups.includes(groupId)) {
+                selectedGroups.push(groupId);
+            } else {
+                let newSelectedGroups = [];
+
+                selectedGroups.forEach(
+                    function (item) {
+                        if (item !== groupId) {
+                            newSelectedGroups.push(item);
+                        }
+                    }
+                )
+
+                selectedGroups = newSelectedGroups;
+            }
+
+            updateSelections();
+        }
+    );
+
+    userFilter.click(
+        function () {
+            let userId = $(this).data('select-user-id');
+
+            if (!selectedUsers.includes(userId)) {
+                selectedUsers.push(userId);
+            } else {
+                let newSelectedUsers = [];
+
+                selectedUsers.forEach(
+                    function (item) {
+                        if (item !== userId) {
+                            newSelectedUsers.push(item);
+                        }
+                    }
+                )
+
+                selectedUsers = newSelectedUsers;
+            }
+
+            updateSelections();
+        }
+    );
+
+    function updateSelections() {
+        // fix buttons for selected items
+        allUsers.forEach(
+            function (item) {
+                let button = $(`*[data-select-user-id="${item}"]`);
+
+                if (selectedUsers.includes(item)) {
+                    button.addClass('bg-primary');
+                    button.addClass('text-white');
+                } else {
+                    button.removeClass('bg-primary');
+                    button.removeClass('text-white');
+                }
+            }
+        )
+        allGroups.forEach(
+            function (item) {
+                let button = $(`*[data-select-group-id="${item ?? 'null'}"]`);
+
+                if (selectedGroups.includes(item)) {
+                    button.addClass('bg-primary');
+                    button.addClass('text-white');
+                } else {
+                    button.removeClass('bg-primary');
+                    button.removeClass('text-white');
+                }
+            }
+        )
+
+        if (selectedUsers.length === 0 && selectedGroups.length === 0) {
+            $('.post').removeClass('visually-hidden');
+        } else if (selectedUsers.length === 0) {
+            $('.post').removeClass('visually-hidden');
+
+            allGroups.forEach(
+                function (item) {
+                    if (!selectedGroups.includes(item)) {
+                        $(`*[data-group-id="${item}"]`).addClass('visually-hidden');
+                    }
+                }
+            );
+        } else if (selectedGroups.length === 0) {
+            $('.post').removeClass('visually-hidden');
+
+            allUsers.forEach(
+                function (item) {
+                    if (!selectedUsers.includes(item)) {
+                        $(`*[data-user-id="${item}"]`).addClass('visually-hidden');
+                    }
+                }
+            )
+        } else {
+            $('.post').addClass('visually-hidden');
+
+            selectedUsers.forEach(
+                function (item) {
+                    $(`*[data-user-id="${item}"]`).removeClass('visually-hidden');
+                }
+            )
+            selectedGroups.forEach(
+                function (item) {
+                    $(`*[data-group-id="${item}"]`).removeClass('visually-hidden');
+                }
+            )
+        }
+
+        $('#user-filters-selected-count').html(selectedUsers.length === 0 ? '' : selectedUsers.length);
+        $('#group-filters-selected-count').html(selectedGroups.length === 0 ? '' : selectedGroups.length);
+    }
+}
+
 window.startListeners = function ()
 {
+    startFilterListeners();
+
     let refusePost = $('.refuse-post');
     let approvePost = $('.approve-post');
     let restorePost = $('.restore-post');
