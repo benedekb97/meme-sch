@@ -50,6 +50,7 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
     public function searchByGroups(Collection $groups, string $term): array
     {
         return $this->createListQueryBuilder($groups)
+            ->andWhere('o.name LIKE :term')
             ->setParameter('term', '%' . $term . '%')
             ->getQuery()
             ->getResult();

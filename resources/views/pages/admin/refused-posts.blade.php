@@ -10,8 +10,21 @@
             <div class="col-sm-6 col-lg-4 mb-3 col-xl-3" id="post-{{ $post->getId() }}">
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">{{ $post->getName() }}</span><br>
-                        <span class="card-subtitle text-muted">{{ $post->getUser()->getName() }}</span>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <span class="card-title">{{ $post->getName() }}</span><br>
+                                <span class="card-subtitle text-muted">{{ $post->getUser()->getName() }}</span>
+                            </div>
+                            <div>
+                                <span class="badge bg-secondary">
+                                    @if ($post->hasGroup())
+                                        {{ $post->getGroup()->getName() }}
+                                    @else
+                                        Schönherz
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <img src="{{ route('posts.image', ['postId' => $post->getId()]) }}" class="card-img-bottom" alt="{{ $post->getName() }}">
                     <div class="table-responsive table-responsive-sm">
