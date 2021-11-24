@@ -46,11 +46,11 @@ class PostController extends Controller
         parent::__construct($entityManager, $authManager);
     }
 
-    private const MIME_TYPE_JPEG = 'image/jpeg';
-    private const MIME_TYPE_PNG = 'image/png';
-    private const MIME_TYPE_GIF = 'image/gif';
+    public const MIME_TYPE_JPEG = 'image/jpeg';
+    public const MIME_TYPE_PNG = 'image/png';
+    public const MIME_TYPE_GIF = 'image/gif';
 
-    private const ALLOWED_MIME_TYPES = [
+    public const ALLOWED_MIME_TYPES = [
         self::MIME_TYPE_JPEG,
         self::MIME_TYPE_PNG,
         self::MIME_TYPE_GIF,

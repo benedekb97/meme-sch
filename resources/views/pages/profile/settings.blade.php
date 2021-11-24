@@ -15,11 +15,15 @@
                 <div class="card-header">
                     <p class="card-title">Beállítások</p>
                 </div>
-{{--                <form action="{{ route('profile.edit') }}" method="POST">--}}
-{{----}}
-{{--                </form>--}}
                 <div class="card-body">
-
+                    <form action="{{ route('profile.edit') }}" method="POST">
+                        @csrf
+                        <div class="form-floating mb-3">
+                            <input id="nickname" name="nickname" type="text" class="form-control" value="{{ $user->getNickName() }}" placeholder="Becenév">
+                            <label for="nickname">Becenév</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Mentés</button>
+                    </form>
                 </div>
             </div>
         </div>

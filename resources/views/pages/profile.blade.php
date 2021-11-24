@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="col-lg">
-            <div class="col-lg-6 mx-auto">
+            <div class="col-lg-8 mx-auto">
 
                 <div class="card border-white">
                     <div class="card-body">

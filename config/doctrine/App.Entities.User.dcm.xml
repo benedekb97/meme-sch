@@ -34,6 +34,9 @@
         <one-to-many field="refusals" target-entity="App\Entities\Refusal" mapped-by="user"/>
 
         <many-to-one field="profilePicture" target-entity="App\Entities\Image">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
             <join-column name="profile_picture_image_id" on-delete="SET NULL"/>
         </many-to-one>
 

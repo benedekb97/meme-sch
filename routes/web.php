@@ -30,6 +30,8 @@ Route::group(
             ],
             static function () {
                 Route::get('settings', [ProfileController::class, 'settings'])->name('settings');
+
+                Route::post('edit', [ProfileController::class, 'edit'])->name('edit');
             }
         );
 
