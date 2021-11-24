@@ -11,33 +11,29 @@ use Illuminate\View\Factory;
 
 class DashboardController extends AdminController
 {
-    private PostRepositoryInterface $postRepository;
-
-    public function __construct(
-        EntityManager $entityManager,
-        AuthManager $authManager,
-        PostRepositoryInterface $postRepository,
-        Factory $viewFactory
-    )
-    {
-        $this->postRepository = $postRepository;
-
-        parent::__construct($entityManager, $authManager, $postRepository, $viewFactory);
-    }
-
     public function index()
     {
+        $this->load();
+
         return view('pages.admin.index');
     }
 
     public function posts()
     {
+        $this->load();
+
         return view('pages.admin.posts');
     }
 
     public function approvals()
     {
-        $posts = $this->postRepository->findAllUnapproved();
+        $this->load();
+
+        if (isset($this->adminGroups)) {
+            $posts = $this->postRepository->findAllUnapprovedForGroups($this->adminGroups);
+        } else {
+            $posts = $this->postRepository->findAllUnapproved();
+        }
 
         return view(
             'pages.admin.approvals',
@@ -49,7 +45,13 @@ class DashboardController extends AdminController
 
     public function refusedPosts()
     {
-        $posts = $this->postRepository->findAllRefused();
+        $this->load();
+
+        if (isset($this->adminGroups)) {
+            $posts = $this->postRepository->findAllRefusedForGroups($this->adminGroups);
+        } else {
+            $posts = $this->postRepository->findAllRefused();
+        }
 
         return view(
             'pages.admin.refused-posts',

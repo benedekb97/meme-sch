@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Repository;
 
 use App\Entities\GroupInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -37,11 +38,22 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
             ->setParameter('anonymous', true);
     }
 
-    private function createDeletedQueryBuilder(): QueryBuilder
+    private function createRefusedQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.refusal', 'refusal')
             ->addOrderBy('refusal.createdAt', 'DESC');
+    }
+
+    public function findAllUnapprovedForGroups(Collection $groups): array
+    {
+        $qb = $this->createUnapprovedQueryBuilder();
+
+        return $qb
+            ->andWhere('o.group IN (:groups)')
+            ->setParameter('groups', $groups)
+            ->getQuery()
+            ->getResult();
     }
 
     public function findAllUnapproved(): array
@@ -51,16 +63,39 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
             ->getResult();
     }
 
+    public function findAllRefusedForGroups(Collection $groups): array
+    {
+        $qb = $this->createRefusedQueryBuilder();
+
+        return $qb
+            ->andWhere('o.group IN (:groups)')
+            ->setParameter('groups', $groups)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllRefused(): array
     {
-        return $this->createDeletedQueryBuilder()
+        return $this->createRefusedQueryBuilder()
             ->getQuery()
             ->getResult();
     }
 
     public function countRefused(): int
     {
-        return (int)$this->createDeletedQueryBuilder()
+        return (int)$this->createRefusedQueryBuilder()
+            ->select('count(o.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countRefusedForGroups(Collection $groups): int
+    {
+        $qb = $this->createRefusedQueryBuilder();
+
+        return (int)$qb
+            ->andWhere('o.group IN (:groups)')
+            ->setParameter('groups', $groups)
             ->select('count(o.id)')
             ->getQuery()
             ->getSingleScalarResult();
@@ -69,6 +104,18 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
     public function countUnapproved(): int
     {
         return (int)$this->createUnapprovedQueryBuilder()
+            ->select('count(o.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countUnapprovedForGroups(Collection $groups): int
+    {
+        $qb = $this->createUnapprovedQueryBuilder();
+
+        return (int)$qb
+            ->andWhere('o.group IN (:groups)')
+            ->setParameter('groups', $groups)
             ->select('count(o.id)')
             ->getQuery()
             ->getSingleScalarResult();

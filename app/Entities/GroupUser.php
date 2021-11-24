@@ -42,4 +42,9 @@ class GroupUser implements GroupUserInterface
     {
         return $this->status !== self::STATUS_ARCHIVED_MEMBER;
     }
+
+    public function isLeader(): bool
+    {
+        return $this->status === self::STATUS_LEADER;
+    }
 }

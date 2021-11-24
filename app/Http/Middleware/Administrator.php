@@ -19,7 +19,7 @@ class Administrator
             abort(403);
         }
 
-        if (!$user->isAdministrator()) {
+        if (!$user->isAdministrator() && !$user->isGroupLeader()) {
             abort(401);
         }
 

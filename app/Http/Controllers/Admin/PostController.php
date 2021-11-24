@@ -16,8 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends AdminController
 {
-    private PostRepositoryInterface $postRepository;
-
     private RefusalFactoryInterface $refusalFactory;
 
     public function __construct(
@@ -28,7 +26,6 @@ class PostController extends AdminController
         RefusalFactoryInterface $refusalFactory
     )
     {
-        $this->postRepository = $postRepository;
         $this->refusalFactory = $refusalFactory;
 
         parent::__construct($entityManager, $authManager, $postRepository, $viewFactory);
@@ -36,6 +33,8 @@ class PostController extends AdminController
 
     public function approve(int $postId): JsonResponse
     {
+        $this->load();
+
         /** @var PostInterface|null $post */
         $post = $this->postRepository->find($postId);
 
@@ -46,6 +45,16 @@ class PostController extends AdminController
                     'code' => Response::HTTP_NOT_FOUND,
                 ],
                 Response::HTTP_NOT_FOUND
+            );
+        }
+
+        if (!$this->hasPermission($post)) {
+            return new JsonResponse(
+                [
+                    'error' => 'You do not have permission to modify that entity!',
+                    'code' => Response::HTTP_UNAUTHORIZED,
+                ],
+                Response::HTTP_UNAUTHORIZED
             );
         }
 
@@ -65,6 +74,8 @@ class PostController extends AdminController
 
     public function refuse(Request $request, int $postId): JsonResponse
     {
+        $this->load();
+
         /** @var PostInterface|null $post */
         $post = $this->postRepository->find($postId);
 
@@ -75,6 +86,16 @@ class PostController extends AdminController
                     'code' => Response::HTTP_NOT_FOUND,
                 ],
                 Response::HTTP_NOT_FOUND
+            );
+        }
+
+        if (!$this->hasPermission($post)) {
+            return new JsonResponse(
+                [
+                    'error' => 'You do not have permission to modify that entity!',
+                    'code' => Response::HTTP_UNAUTHORIZED,
+                ],
+                Response::HTTP_UNAUTHORIZED
             );
         }
 
@@ -98,6 +119,8 @@ class PostController extends AdminController
 
     public function restore(int $postId): JsonResponse
     {
+        $this->load();
+
         /** @var PostInterface|null $post */
         $post = $this->postRepository->find($postId);
 
@@ -108,6 +131,16 @@ class PostController extends AdminController
                     'code' => Response::HTTP_NOT_FOUND,
                 ],
                 Response::HTTP_NOT_FOUND
+            );
+        }
+
+        if (!$this->hasPermission($post)) {
+            return new JsonResponse(
+                [
+                    'error' => 'You do not have permission to modify that entity!',
+                    'code' => Response::HTTP_UNAUTHORIZED,
+                ],
+                Response::HTTP_UNAUTHORIZED
             );
         }
 

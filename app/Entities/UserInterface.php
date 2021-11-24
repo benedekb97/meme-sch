@@ -85,4 +85,6 @@ interface UserInterface extends
     public function isGroupLeader(): bool;
 
     public function canPostInGroup(GroupInterface $group): bool;
+
+    public function getGroupsWithLeadership(): Collection;
 }

@@ -45,7 +45,7 @@
                         @else
                             <a href="{{ route('auth.logout') }}" class="btn btn-outline-light me-2">Kijelentkezés</a>
                             <a href="{{ route('profile') }}" class="btn btn-outline-light me-2">Profilom</a>
-                            @if (Auth::user()->isAdministrator())
+                            @if (Auth::user()->isAdministrator() || Auth::user()->isGroupLeader())
                                 <a href="{{ route('admin.index') }}" class="btn btn-outline-warning me-2">Admin</a>
                             @endif
                         @endif

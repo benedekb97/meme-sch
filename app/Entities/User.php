@@ -288,7 +288,7 @@ class User implements UserInterface
         $groupUser = $this->groupUsers->filter(
             static function (GroupUserInterface $groupUser) use ($group): bool
             {
-                return $groupUser->getGroup() === $group;
+                return $groupUser->isLeader();
             }
         )->first();
 
@@ -297,5 +297,20 @@ class User implements UserInterface
         }
 
         return $groupUser->canPost();
+    }
+
+    public function getGroupsWithLeadership(): Collection
+    {
+        return $this->groupUsers->filter(
+            static function (GroupUserInterface $groupUser): bool
+            {
+                return $groupUser->isLeader();
+            }
+        )->map(
+            static function (GroupUserInterface $groupUser): GroupInterface
+            {
+                return $groupUser->getGroup();
+            }
+        );
     }
 }
