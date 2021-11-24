@@ -313,4 +313,18 @@ class User implements UserInterface
             }
         );
     }
+
+    public function getSortedPosts(): Collection
+    {
+        $iterator = $this->posts->getIterator();
+
+        $iterator->uasort(
+            static function (PostInterface $a, PostInterface $b): int
+            {
+                return ($b->getApprovedAt() ?? $b->getCreatedAt()) <=> ($a->getApprovedAt() ?? $a->getCreatedAt());
+            }
+        );
+
+        return new ArrayCollection(iterator_to_array($iterator));
+    }
 }

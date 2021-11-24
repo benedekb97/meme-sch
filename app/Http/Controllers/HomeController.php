@@ -24,7 +24,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $posts = $this->postRepository->findAllWithOffset();
+        $posts = $this->postRepository->findAllWithOffset($this->getUser()->getGroups());
 
         return view(
             'pages.index',

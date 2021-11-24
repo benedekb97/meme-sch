@@ -87,4 +87,6 @@ interface UserInterface extends
     public function canPostInGroup(GroupInterface $group): bool;
 
     public function getGroupsWithLeadership(): Collection;
+
+    public function getSortedPosts(): Collection;
 }

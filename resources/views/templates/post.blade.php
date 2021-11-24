@@ -3,9 +3,14 @@
         <div class="card">
             <a class="text-decoration-none text-black" href="{{ route('posts.show', ['postId' => $post->getId()]) }}">
                 <div class="card-body">
-                    <h5 class="card-title mb-0">
-                        {{ $post->getName() }}
-                    </h5>
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title mb-0">
+                            {{ $post->getName() }}
+                        </h5>
+                        <div>
+                            <span class="badge bg-secondary">@if ($post->hasGroup()) {{ $post->getGroup()->getName() }} @else Schönherz @endif</span>
+                        </div>
+                    </div>
                 </div>
                 <img alt="{{ $post->getName() }}" class="mx-auto d-block img-fluid mb-0 mt-0 card-img-bottom" src="{{ route('posts.image', ['postId' => $post->getId()]) }}"/>
             </a>

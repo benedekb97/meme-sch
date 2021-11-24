@@ -19,8 +19,8 @@
                     </div>
                 </div>
             </div>
-            @foreach ($user->getPosts() as $post)
-                <div class="col-lg-6 mx-auto">
+            @foreach ($user->getSortedPosts() as $post)
+                <div class="col-lg-8 mx-auto">
                     <div class="card mb-3 {{ $post->getPostStyle() }}">
                         @if ($post->isApproved() && !$post->hasActiveRefusal() || !$post->isAnonymous())
                             <a href="{{ route('posts.show', ['postId' => $post->getId()]) }}" class="text-decoration-none text-black">
@@ -28,7 +28,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h5 class="card-title mb-0 ">{{ $post->getName() }}</h5>
+                                    <h5 class="card-title mb-0 ">{{ $post->getName() }} <small class="badge bg-secondary position-relative mx-1" style="bottom:2px;"> @if($post->hasGroup()) {{ $post->getGroup()->getName() }} @else Schönherz @endif </small></h5>
                                 </div>
                                 @if (!$post->isApproved() && !$post->hasActiveRefusal() && $post->isAnonymous())
                                     <div>

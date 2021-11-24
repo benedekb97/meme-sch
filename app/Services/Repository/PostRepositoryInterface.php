@@ -6,13 +6,16 @@ namespace App\Services\Repository;
 
 use App\Entities\GroupInterface;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ObjectRepository;
 
 interface PostRepositoryInterface extends ObjectRepository
 {
+    public function createListQueryBuilder(Collection $groups, string $alias = 'o'): QueryBuilder;
+
     public function searchByGroups(Collection $groups, string $term): array;
 
-    public function findAllWithOffset(int $offset = 0): array;
+    public function findAllWithOffset(Collection $groups, int $offset = 0): array;
 
     public function findAllUnapprovedForGroups(Collection $groups): array;
 

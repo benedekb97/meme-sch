@@ -11,66 +11,55 @@ use Doctrine\ORM\QueryBuilder;
 
 class PostRepository extends EntityRepository implements PostRepositoryInterface
 {
-    public function searchByGroups(Collection $groups, string $term): array
+    public function createListQueryBuilder(Collection $groups, string $alias = 'o'): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('o');
+        $qb = $this->createQueryBuilder($alias);
 
         return $qb
             ->where(
                 $qb->expr()->andX(
                     'o.group IS NULL',
-                    'o.refusal IS NULL',
-                    'o.anonymous = :anonymous',
-                    'o.name LIKE :term'
+                    'o.anonymous = :anonymous'
                 )
             )
             ->orWhere(
                 $qb->expr()->andX(
                     'o.approvedBy IS NOT NULL',
-                    'o.refusal IS NULL',
-                    'o.group IS NULL',
-                    'o.name LIKE :term'
+                    'o.group IS NULL'
                 )
             )
             ->orWhere(
                 $qb->expr()->andX(
                     'o.group IN (:groups)',
-                    'o.anonymous = :anonymous',
-                    'o.refusal IS NULL',
-                    'o.name LIKE :term'
+                    'o.anonymous = :anonymous'
                 )
             )
             ->orWhere(
                 $qb->expr()->andX(
-                    'o.approvedBy IS NOT NULL',
-                    'o.refusal IS NULL',
                     'o.group IN (:groups)',
-                    'o.name LIKE :term'
+                    'o.approvedBy IS NOT NULL'
                 )
             )
-            ->setParameter('term', '%' . $term . '%')
-            ->setParameter('anonymous', false)
+            ->andWhere('o.refusal IS NULL')
             ->setParameter('groups', $groups)
+            ->setParameter('anonymous', false)
             ->addOrderBy('o.approvedAt', 'DESC')
-            ->addOrderBy('o.createdAt', 'DESC')
+            ->addOrderBy('o.createdAt', 'DESC');
+    }
+
+    public function searchByGroups(Collection $groups, string $term): array
+    {
+        return $this->createListQueryBuilder($groups)
+            ->setParameter('term', '%' . $term . '%')
             ->getQuery()
             ->getResult();
     }
 
-    public function findAllWithOffset(int $offset = 0): array
+    public function findAllWithOffset(Collection $groups, int $offset = 0): array
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.group IS NULL')
-            ->andWhere('o.refusal IS NULL')
-            ->andWhere('o.anonymous = :anonymous')
-            ->orWhere('o.approvedBy IS NOT NULL')
-            ->andWhere('o.refusal IS NULL')
-            ->andWhere('o.group IS NULL')
-            ->setParameter('anonymous', false)
+        return $this->createListQueryBuilder($groups)
             ->setFirstResult($offset)
             ->setMaxResults(20)
-            ->addOrderBy('o.approvedAt', 'DESC')
-            ->addOrderBy('o.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }
