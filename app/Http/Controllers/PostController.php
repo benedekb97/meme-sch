@@ -236,7 +236,7 @@ class PostController extends Controller
 
     public function search(Request $request)
     {
-        $term = $request->get('search', '');
+        $term = $request->get('search') ?? '';
 
         $groups = $this->getUser()->getGroups();
 
