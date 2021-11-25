@@ -12,6 +12,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ProfileController extends Controller
 {
+    public const MIME_TYPE_IMAGE_PNG = 'image/png';
+    public const MIME_TYPE_IMAGE_JPEG = 'image/jpeg';
+
+    public const ALLOWED_MIME_TYPES = [
+        self::MIME_TYPE_IMAGE_JPEG,
+        self::MIME_TYPE_IMAGE_PNG,
+    ];
+
     public function settings()
     {
         return view(
@@ -38,8 +46,8 @@ class ProfileController extends Controller
         $profilePicture = $request->file('file');
 
         if (
-            $profilePicture !== null //&&
-            /*in_array($profilePicture->getMimeType(), PostController::ALLOWED_MIME_TYPES, true)*/
+            $profilePicture !== null &&
+            in_array($profilePicture->getMimeType(), PostController::ALLOWED_MIME_TYPES, true)
         ) {
             $fileName = Str::random() . '.' . $profilePicture->getClientOriginalExtension();
 

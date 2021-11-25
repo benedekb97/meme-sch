@@ -9,7 +9,7 @@
 
     </div>
     <div class="row">
-        <div class="col-lg-3 col-12 mb-3">
+        <div class="col-lg-3 mb-3">
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">Szűrés</span>
@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-9 col-12">
+        <div class="col-lg-9">
             @foreach ($posts as $post)
                 <div class="col-sm-6 col-lg-4 mb-3 col-xl-3 post" id="post-{{ $post->getId() }}" data-group-id="{{ $post->hasGroup() ? $post->getGroup()->getId() : 'null' }}" data-user-id="{{ $post->getUser()->getId() }}">
                     <div class="card">
