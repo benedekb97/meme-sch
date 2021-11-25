@@ -8,5 +8,5 @@ use Doctrine\Persistence\ObjectRepository;
 
 interface ImageRepositoryInterface extends ObjectRepository
 {
-
+    public function findAllNonConverted(): array;
 }

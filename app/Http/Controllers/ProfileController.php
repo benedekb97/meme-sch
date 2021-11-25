@@ -59,6 +59,7 @@ class ProfileController extends Controller
 
             $image->setFilePath($filePath);
             $image->setName($user->getName());
+            $image->setConvertable(true);
 
             $this->entityManager->persist($image);
 

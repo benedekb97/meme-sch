@@ -22,6 +22,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
+    public const MIME_TYPE_JPEG = 'image/jpeg';
+    public const MIME_TYPE_PNG = 'image/png';
+    public const MIME_TYPE_GIF = 'image/gif';
+
+    public const ALLOWED_MIME_TYPES = [
+        self::MIME_TYPE_JPEG,
+        self::MIME_TYPE_PNG,
+        self::MIME_TYPE_GIF,
+    ];
+
+    public const CONVERTABLE_MIME_TYPES = [
+        self::MIME_TYPE_JPEG,
+        self::MIME_TYPE_PNG,
+    ];
+
     private PostFactoryInterface $postFactory;
 
     private PostRepositoryInterface $postRepository;
@@ -45,16 +60,6 @@ class PostController extends Controller
 
         parent::__construct($entityManager, $authManager);
     }
-
-    public const MIME_TYPE_JPEG = 'image/jpeg';
-    public const MIME_TYPE_PNG = 'image/png';
-    public const MIME_TYPE_GIF = 'image/gif';
-
-    public const ALLOWED_MIME_TYPES = [
-        self::MIME_TYPE_JPEG,
-        self::MIME_TYPE_PNG,
-        self::MIME_TYPE_GIF,
-    ];
 
     public function show(int $postId)
     {
@@ -108,7 +113,7 @@ class PostController extends Controller
 
         if ($file === null) {
             $fileError = false;
-        } elseif (!in_array($file->getMimeType(), self::ALLOWED_MIME_TYPES, true)) {
+        } elseif (!in_array($mimeType = $file->getMimeType(), self::ALLOWED_MIME_TYPES, true)) {
             $fileError = 'mimeType';
         }
 
@@ -138,6 +143,7 @@ class PostController extends Controller
         $post = $this->postFactory->createWithUser($this->getUser());
         $post->setName($title);
         $post->getImage()->setFilePath($filePath);
+        $post->getImage()->setConvertable(in_array($mimeType ?? null, self::CONVERTABLE_MIME_TYPES, true));
         $post->setAnonymous($anonymous);
 
         if (isset($group)) {

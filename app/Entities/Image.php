@@ -18,6 +18,10 @@ class Image implements ImageInterface
 
     private ?string $filePath = null;
 
+    private ?array $sourceSet = null;
+
+    private bool $convertable = false;
+
     public function getFilePath(): ?string
     {
         return $this->filePath;
@@ -26,5 +30,30 @@ class Image implements ImageInterface
     public function setFilePath(?string $filePath): void
     {
         $this->filePath = $filePath;
+    }
+
+    public function getSourceSet(): ?array
+    {
+        return $this->sourceSet;
+    }
+
+    public function setSourceSet(?array $sourceSet): void
+    {
+        $this->sourceSet = $sourceSet;
+    }
+
+    public function hasSourceSet(): bool
+    {
+        return isset($this->sourceSet);
+    }
+
+    public function isConvertable(): bool
+    {
+        return $this->convertable;
+    }
+
+    public function setConvertable(bool $convertable): void
+    {
+        $this->convertable = $convertable;
     }
 }

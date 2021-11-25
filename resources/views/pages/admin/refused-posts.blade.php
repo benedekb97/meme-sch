@@ -5,11 +5,8 @@
 @section('page-title', 'Elutasított posztok')
 
 @section('content')
-    <div class="d-flex">
-
-    </div>
     <div class="row">
-        <div class="col-lg-3 mb-3">
+        <div class="col-lg-3 col-12 mb-3">
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">Szűrés</span>
@@ -39,8 +36,9 @@
             </div>
         </div>
         <div class="col-lg-9">
+            <div class="row">
             @foreach ($posts as $post)
-                <div class="col-sm-6 col-lg-4 mb-3 col-xl-3 post" id="post-{{ $post->getId() }}" data-group-id="{{ $post->hasGroup() ? $post->getGroup()->getId() : 'null' }}" data-user-id="{{ $post->getUser()->getId() }}">
+                <div class="col-lg-6 mb-3 col-xl-4 post" id="post-{{ $post->getId() }}" data-group-id="{{ $post->hasGroup() ? $post->getGroup()->getId() : 'null' }}" data-user-id="{{ $post->getUser()->getId() }}">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex justify-content-between">
@@ -59,7 +57,16 @@
                                 </div>
                             </div>
                         </div>
-                        <img src="{{ route('posts.image', ['postId' => $post->getId()]) }}" class="card-img-bottom" alt="{{ $post->getName() }}">
+                        @if ($post->getImage()->hasSourceSet())
+                            <picture>
+                                @foreach ($post->getImage()->getSourceSet() as $width => $source)
+                                    <source srcset="{{ route('posts.image.source', ['postId' => $post->getId(), 'width' => $width]) }}" media="(max-width:{{ $width }}px)"/>
+                                @endforeach
+                                <img src="{{ route('posts.image', ['postId' => $post->getId()]) }}" class="card-img-bottom" alt="{{ $post->getName() }}"/>
+                            </picture>
+                        @else
+                            <img src="{{ route('posts.image', ['postId' => $post->getId()]) }}" class="card-img-bottom" alt="{{ $post->getName() }}">
+                        @endif
                         <div class="table-responsive table-responsive-sm">
                             <table class="table table-striped table-sm mb-0">
                                 <tr>
@@ -88,6 +95,8 @@
                     </div>
                 </div>
             @endforeach
+
+            </div>
         </div>
     </div>
 @endsection

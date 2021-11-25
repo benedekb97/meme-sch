@@ -12,13 +12,31 @@
                         </div>
                     </div>
                 </div>
-                <img alt="{{ $post->getName() }}" class="mx-auto d-block img-fluid mb-0 mt-0 card-img-bottom" src="{{ route('posts.image', ['postId' => $post->getId()]) }}"/>
+                @if ($post->getImage()->hasSourceSet())
+                    <picture>
+                        @foreach ($post->getImage()->getSourceSet() as $width => $source)
+                            <source srcset="{{ route('posts.image.source', ['postId' => $post->getId(), 'width' => $width]) }}" media="(max-width:{{ $width }}px)">
+                        @endforeach
+                        <img alt="{{ $post->getName() }}" class="mx-auto d-block img-fluid mb-0 mt-0 card-img-bottom" src="{{ route('posts.image.source', ['postId' => $post->getId(), 'width' => $width]) }}"/>
+                    </picture>
+                @else
+                    <img alt="{{ $post->getName() }}" class="mx-auto d-block img-fluid mb-0 mt-0 card-img-bottom" src="{{ route('posts.image', ['postId' => $post->getId()]) }}"/>
+                @endif
             </a>
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div class="text-muted @if($post->isAnonymous()) {{ 'fst-italic' }} @endif">
                         @if (!$post->isAnonymous() && $post->getUser()->getProfilePicture() !== null)
-                            <img src="{{ route('image', ['imageId' => $post->getUser()->getProfilePicture()->getId()]) }}" style="max-height:32px; margin-right:3px;" class="rounded">
+                            @if ($post->getUser()->getProfilePicture()->hasSourceSet())
+                                <picture>
+                                    @foreach ($post->getUser()->getProfilePicture()->getSourceSet() as $width => $source)
+                                        <source srcset="{{ route('image.source', ['imageId' => $post->getUser()->getProfilePicture()->getId(), 'width' => $width]) }}" media="(max-width:{{ $width }}px)">
+                                    @endforeach
+                                    <img alt="{{ $post->getName() }}" class="rounded" style="max-height:32px; margin-right:3px;" src="{{ route('image', ['imageId' => $post->getUser()->getProfilePicture()->getId()]) }}"/>
+                                </picture>
+                            @else
+                                <img src="{{ route('image', ['imageId' => $post->getUser()->getProfilePicture()->getId()]) }}" style="max-height:32px; margin-right:3px;" class="rounded" alt="{{ $post->getUser()->getName() }}">
+                            @endif
                         @endif
                         {{ !$post->isAnonymous() ? $post->getUser()->getNickName() ?? $post->getUser()->getName() : 'Anonymous' }}
                     </div>

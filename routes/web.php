@@ -20,6 +20,7 @@ Route::group(
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
 
         Route::get('image/{imageId}', [ImageController::class, 'get'])->name('image');
+        Route::get('image/{imageId}/{width}', [ImageController::class, 'getImageWithSource'])->name('image.source');
 
         Route::get('search', [PostController::class, 'search'])->name('search');
 
@@ -45,8 +46,6 @@ Route::group(
             }
         );
 
-        Route::get('posts/{postId}/image', [ImageController::class, 'get'])->name('image');
-
         Route::group(
             [
                 'prefix' => 'posts',
@@ -60,6 +59,7 @@ Route::group(
                 Route::get('{postId}', [PostController::class, 'show'])->name('show');
 
                 Route::get('{postId}/image', [ImageController::class, 'getPost'])->name('image');
+                Route::get('{postId}/image/{width}', [ImageController::class, 'getPostWithSource'])->name('image.source');
             }
         );
 

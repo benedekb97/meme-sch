@@ -22,6 +22,10 @@
         <many-to-one field="post" target-entity="App\Entities\Post" inversed-by="images">
             <join-column name="post_id" on-delete="SET NULL"/>
         </many-to-one>
+
+        <field name="sourceSet" column="source_set" nullable="true" type="json"/>
+
+        <field name="convertable" nullable="true" type="boolean"/>
     </entity>
 
 </doctrine-mapping>

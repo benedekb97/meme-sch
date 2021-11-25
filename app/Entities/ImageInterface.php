@@ -18,4 +18,14 @@ interface ImageInterface extends
     public function getFilePath(): ?string;
 
     public function setFilePath(?string $filePath): void;
+
+    public function getSourceSet(): ?array;
+
+    public function setSourceSet(?array $sourceSet): void;
+
+    public function hasSourceSet(): bool;
+
+    public function isConvertable(): bool;
+
+    public function setConvertable(bool $convertable): void;
 }
