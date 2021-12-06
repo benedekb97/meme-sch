@@ -296,7 +296,7 @@ class User implements UserInterface
             }
         )->first();
 
-        if (!isset($groupUser)) {
+        if (!isset($groupUser) || $groupUser === false) {
             return false;
         }
 

@@ -36,7 +36,7 @@ class ProfileController extends Controller
 
         $nickName = $request->get('nickname');
 
-        if (strlen($nickName) > 64) {
+        if ($nickName !== null && strlen($nickName) > 64) {
             return new RedirectResponse(route('profile.settings'));
         }
 
