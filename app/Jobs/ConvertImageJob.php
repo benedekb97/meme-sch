@@ -73,14 +73,10 @@ class ConvertImageJob
                         $constraint->aspectRatio();
                     });
 
-                    if (!$this->filesystem->exists('images/' . $width)) {
-                        $this->filesystem->makeDirectory('images/' . $width);
-                    }
-
                     $convertedImageObject->save(
                         storage_path(
                             'app/' . $sourceSets[$width] = sprintf(
-                                'images/%d/%s',
+                                'images/%d_%s',
                                 $width,
                                 $fileName
                             )
@@ -98,7 +94,7 @@ class ConvertImageJob
                     $convertedImageObject->save(
                         storage_path(
                             'app/' . $sourceSets[$width] = sprintf(
-                                'images/%d/%s',
+                                'images/%d_%s',
                                 $width,
                                 $fileName
                             )
