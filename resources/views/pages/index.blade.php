@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'meme.sch.bme.hu')
+@section('title', 'Meme.SCH')
 
 @section('content')
     <div id="post-container">

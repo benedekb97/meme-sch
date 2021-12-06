@@ -89,4 +89,8 @@ interface UserInterface extends
     public function getGroupsWithLeadership(): Collection;
 
     public function getSortedPosts(): Collection;
+
+    public function hasAcceptedTerms(): bool;
+
+    public function setAcceptedTerms(bool $acceptedTerms): void;
 }

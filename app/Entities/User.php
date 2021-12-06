@@ -36,6 +36,8 @@ class User implements UserInterface
 
     private Collection $groupUsers;
 
+    private bool $acceptedTerms = false;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -326,5 +328,15 @@ class User implements UserInterface
         );
 
         return new ArrayCollection(iterator_to_array($iterator));
+    }
+
+    public function hasAcceptedTerms(): bool
+    {
+        return $this->acceptedTerms;
+    }
+
+    public function setAcceptedTerms(bool $acceptedTerms): void
+    {
+        $this->acceptedTerms = $acceptedTerms;
     }
 }
