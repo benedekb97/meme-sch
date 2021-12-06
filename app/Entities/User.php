@@ -292,7 +292,7 @@ class User implements UserInterface
         $groupUser = $this->groupUsers->filter(
             static function (GroupUserInterface $groupUser) use ($group): bool
             {
-                return $groupUser->isLeader();
+                return $groupUser->getGroup() === $group;
             }
         )->first();
 
