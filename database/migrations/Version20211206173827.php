@@ -14,7 +14,7 @@ class Version20211206173827 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE users CHANGE accepted_terms accepted_terms TINYINT(1) DEFAULT \'0\' NOT NULL');
+        $this->addSql('ALTER TABLE users CHANGE administrator administrator TINYINT(1) DEFAULT \'0\' NOT NULL');
     }
 
     /**
@@ -24,6 +24,6 @@ class Version20211206173827 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE users CHANGE accepted_terms accepted_terms TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE users CHANGE administrator administrator TINYINT(1) NOT NULL');
     }
 }
