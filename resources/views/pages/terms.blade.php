@@ -38,31 +38,6 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-center mt-3">
-                <div class="col-md-6">
-                    <div class="card p-3">
-                        <h4 class="card-title">Fejlesztés alatt</h4>
-                        <p>Kiemelném, hogy az oldalt <b>egyedül</b> fejlesztem <b data-bs-toggle="tooltip" data-bs-placement="right" title="amiből nem sok van mostanság">szabadidőmben</b>.
-                            Így ha helyeken szar, ezért bocsánatot szeretnék kérni :D Nem minden bugról tudok, és nincs minden kész.
-                        </p>
-                        <p>A frontend <span
-                            style="
-                                text-decoration:underline;
-                                text-decoration-style:dotted;
-                                cursor:help;
-                            "
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="(bootstrap + jQuery)"
-                            >szar</span>, mert ehhez értek.</p>
-                        <p class="mb-0"><b>VISZONT</b>, ha</p>
-                        <ul class="mt-0 mb-0">
-                            <li>találsz egy bugot, akkor jelezd: <a href="mailto:support@mail.memesch.net">support@mail.memesch.net</a></li>
-                            <li>ötleted van új feature-höz, akkor jelezd: <a href="mailto:support@mail.memesch.net">support@mail.memesch.net</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
             <div class="d-flex mt-3 justify-content-center">
                 <div class="col-md-6">
                     <div class="card p-3">
@@ -73,6 +48,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="d-flex mt-3 justify-content-center">
                 <div class="col-md-6">
                     <div class="card p-3">
@@ -89,6 +65,33 @@
                     </div>
                 </div>
             </div>
+
+            <div class="d-flex justify-content-center mt-3">
+                <div class="col-md-6">
+                    <div class="card p-3">
+                        <h4 class="card-title">Fejlesztés alatt</h4>
+                        <p>Kiemelném, hogy az oldalt <b>egyedül</b> fejlesztem <b data-bs-toggle="tooltip" data-bs-placement="right" title="amiből nem sok van mostanság">szabadidőmben</b>.
+                            Így ha helyeken szar, ezért bocsánatot szeretnék kérni :D Nem minden bugról tudok, és nincs minden kész.
+                        </p>
+                        <p>A frontend <span
+                                style="
+                                text-decoration:underline;
+                                text-decoration-style:dotted;
+                                cursor:help;
+                            "
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title="(bootstrap + jQuery)"
+                            >szar</span>, mert ehhez értek.</p>
+                        <p class="mb-0"><b>VISZONT</b>, ha</p>
+                        <ul class="mt-0 mb-0">
+                            <li>találsz egy bugot, akkor jelezd: <a href="mailto:support@mail.memesch.net">support@mail.memesch.net</a></li>
+                            <li>ötleted van új feature-höz, akkor jelezd: <a href="mailto:support@mail.memesch.net">support@mail.memesch.net</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <div class="d-flex mt-3 justify-content-center">
                 <div class="col-md-6">
                     <div class="card p-3">
