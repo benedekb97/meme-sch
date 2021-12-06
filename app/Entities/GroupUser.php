@@ -40,7 +40,7 @@ class GroupUser implements GroupUserInterface
 
     public function canPost(): bool
     {
-        return $this->status !== self::STATUS_ARCHIVED_MEMBER;
+        return true;
     }
 
     public function isLeader(): bool
