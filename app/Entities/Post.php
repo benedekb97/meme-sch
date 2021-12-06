@@ -40,12 +40,15 @@ class Post implements PostInterface
 
     private Collection $images;
 
+    private Collection $reports;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->refusals = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getVotes(): Collection
@@ -251,6 +254,44 @@ class Post implements PostInterface
         if ($this->hasImage($image)) {
             $this->images->removeElement($image);
             $image->setPost(null);
+        }
+    }
+
+    public function hasReportByUser(UserInterface $user): bool
+    {
+        return !$this->reports
+            ->filter(
+                static function (ReportInterface $report) use ($user): bool
+                {
+                    return $report->getUser() === $user;
+                }
+            )
+            ->isEmpty();
+    }
+
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function hasReport(ReportInterface $report): bool
+    {
+        return $this->reports->contains($report);
+    }
+
+    public function addReport(ReportInterface $report): void
+    {
+        if (!$this->hasReport($report)) {
+            $this->reports->add($report);
+            $report->setPost($this);
+        }
+    }
+
+    public function removeReport(ReportInterface $report): void
+    {
+        if ($this->hasReport($report)) {
+            $this->reports->removeElement($report);
+            $report->setPost(null);
         }
     }
 }

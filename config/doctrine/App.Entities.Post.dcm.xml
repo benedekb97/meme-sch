@@ -59,6 +59,8 @@
         <many-to-one field="group" target-entity="App\Entities\Group" inversed-by="posts">
             <join-column name="group_id" on-delete="SET NULL"/>
         </many-to-one>
+
+        <one-to-many field="reports" target-entity="App\Entities\Report" mapped-by="post"/>
     </entity>
 
 </doctrine-mapping>

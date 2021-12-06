@@ -41,6 +41,17 @@
                         {{ !$post->isAnonymous() ? $post->getUser()->getNickName() ?? $post->getUser()->getName() : 'Anonymous' }}
                     </div>
                     <div>
+                        @if (!$post->hasReportByUser($user))
+                            <span id="report-post-container-{{ $post->getId() }}" title="Jelentés" data-bs-toggle="tooltip">
+                                <button id="flag-post-button-{{ $post->getId() }}" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#report-post-{{ $post->getId() }}">
+                                    <i id="flag-post-{{ $post->getId() }}" class="bi bi-flag"></i>
+                                </button>
+                            </span>
+                        @else
+                            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" title="Jelentve!">
+                                <i class="bi bi-flag-fill"></i>
+                            </button>
+                        @endif
                         <button type="button" class="btn btn-light upvote-post" data-post-id="{{ $post->getId() }}" data-url="{{ route('posts.vote', ['postId' => $post->getId()]) }}">
                             @if ($user->hasUpvoted($post))
                                 <i class="bi bi-arrow-up-circle-fill" id="post-{{ $post->getId() }}-upvote-button"></i>
@@ -62,3 +73,31 @@
         </div>
     </div>
 </div>
+@if (!$post->hasReportByUser($user))
+    <div class="modal fade" id="report-post-{{ $post->getId() }}">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Poszt jelentése</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form onkeydown="return event.key !== 'Enter';" action="{{ route('report') }}" method="POST" id="report-post-form" novalidate>
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" id="post-csrf-token"/>
+                    <div class="modal-body">
+                        <p>Miért szeretnéd reportolni a posztot?</p>
+                        @foreach (\App\Entities\ReportInterface::REASON_MAP as $reason => $name)
+                            <div class="form-check mx-3">
+                                <input type="radio" name="reason-{{ $post->getId() }}" class="form-check-input" id="{{ $name }}" value="{{ $name }}">
+                                <label for="{{ $name }}" class="form-check-label">{{ $reason }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" onclick="submitReportForm(event)" data-post-id="{{ $post->getId() }}">Jelentés!</button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Mégse</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endif

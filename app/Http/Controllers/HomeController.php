@@ -4,27 +4,31 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Entities\PostInterface;
+use App\Entities\ReportInterface;
+use App\Services\Factory\ReportFactoryInterface;
 use App\Services\Repository\PostRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Http\Request;
-use Illuminate\Mail\PendingMail;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends Controller
 {
     private PostRepositoryInterface $postRepository;
 
-    private PendingMail $mailer;
+    private ReportFactoryInterface $reportFactory;
 
     public function __construct(
         EntityManager $entityManager,
         AuthManager $authManager,
         PostRepositoryInterface $postRepository,
-        PendingMail $mailer
+        ReportFactoryInterface $reportFactory
     ) {
         $this->postRepository = $postRepository;
-        $this->mailer = $mailer;
+        $this->reportFactory = $reportFactory;
 
         parent::__construct($entityManager, $authManager);
     }
@@ -86,5 +90,60 @@ class HomeController extends Controller
         }
 
         return new RedirectResponse(route('terms'));
+    }
+
+    public function report(Request $request): JsonResponse
+    {
+        $postId = $request->get('post');
+        $reason = $request->get('reason');
+
+        if ($postId === null) {
+            return new JsonResponse(
+                [
+                    'error' => 'No postId provided!',
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        if ($reason === null || !in_array($reason, ReportInterface::REASON_MAP, true)) {
+            return new JsonResponse(
+                [
+                    'error' => 'Invalid reason provided!',
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        /** @var PostInterface $post */
+        $post = $this->postRepository->find($postId);
+
+        if ($post === null) {
+            return new JsonResponse(
+                [
+                    'error' => 'Specified post could not be found!'
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        if ($post->hasReportByUser($user = $this->getUser())) {
+            return new JsonResponse(
+                [
+                    'error' => 'Post already reported by user!',
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $report = $this->reportFactory->createForUserAndPost($user, $post);
+
+        $report->setReason($reason);
+        $report->setStatus(ReportInterface::STATUS_AWAITING_JUDGEMENT);
+
+        $this->entityManager->persist($report);
+        $this->entityManager->flush();
+
+        return new JsonResponse(null, Response::HTTP_CREATED);
     }
 }

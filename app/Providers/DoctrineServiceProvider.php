@@ -10,6 +10,7 @@ use App\Entities\GroupUser;
 use App\Entities\Image;
 use App\Entities\Post;
 use App\Entities\Refusal;
+use App\Entities\Report;
 use App\Entities\User;
 use App\Entities\Vote;
 use App\Services\Factory\CommentFactory;
@@ -17,6 +18,7 @@ use App\Services\Factory\GroupFactory;
 use App\Services\Factory\GroupUserFactory;
 use App\Services\Factory\PostFactory;
 use App\Services\Factory\RefusalFactory;
+use App\Services\Factory\ReportFactory;
 use App\Services\Factory\UserFactory;
 use App\Services\Factory\VoteFactory;
 use App\Services\Repository\CommentRepository;
@@ -47,6 +49,7 @@ class DoctrineServiceProvider extends ServiceProvider
         Vote::class => VoteFactory::class,
         Comment::class => CommentFactory::class,
         Refusal::class => RefusalFactory::class,
+        Report::class => ReportFactory::class,
         Group::class => GroupFactory::class,
         GroupUser::class => GroupUserFactory::class,
     ];

@@ -79,4 +79,14 @@ interface PostInterface extends
     public function addImage(ImageInterface $image): void;
 
     public function removeImage(ImageInterface $image): void;
+
+    public function hasReportByUser(UserInterface $user): bool;
+
+    public function getReports(): Collection;
+
+    public function hasReport(ReportInterface $report): bool;
+
+    public function addReport(ReportInterface $report): void;
+
+    public function removeReport(ReportInterface $report): void;
 }

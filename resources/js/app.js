@@ -124,6 +124,52 @@ window.submitProfileForm = function (event) {
     )
 }
 
+window.submitReportForm = function (event) {
+    let postId = event.target.getAttribute('data-post-id');
+
+    let reason = $(`input[type='radio'][name="reason-${postId}"]:checked`).val();
+
+    let url = $(`#report-post-form`).attr('action');
+
+    if (reason === null) {
+        return;
+    }
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            _token: $('#post-csrf-token').val(),
+            post: postId,
+            reason: reason
+        },
+        success: function (e) {
+            let flagIcon = $(`#flag-post-${postId}`);
+            let flagButton = $(`#flag-post-button-${postId}`);
+
+            flagIcon.removeClass('bi-flag');
+            flagIcon.addClass('bi-flag-fill');
+
+            flagButton.removeAttr('data-bs-target');
+            flagButton.removeAttr('data-bs-toggle');
+
+            let toast = createToast('Poszt jelentve!', 'A poszt jelentve lett! Ha törölve lesz a poszt kapsz róla majd egy emailt, addig meg légy türelmes :)');
+
+            let toastId = toast.id;
+            toast = toast.toast;
+
+            $('#toast-container').prepend(toast.outerHTML);
+
+            $(`#${toastId}`).toast('show');
+
+            $(`#report-post-${postId}`).modal('hide');
+        },
+        error: function () {
+
+        }
+    })
+}
+
 window.submitNewPostForm = function (event) {
     let form = $('#new-post-form');
     let saveButton = $('#new-post-save-button');

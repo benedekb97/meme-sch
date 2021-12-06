@@ -19,6 +19,8 @@ Route::group(
         Route::get('terms', [HomeController::class, 'terms'])->name('terms');
         Route::post('terms/accept', [HomeController::class, 'acceptTerms'])->name('terms.accept');
 
+        Route::post('report', [HomeController::class, 'report'])->name('report');
+
         Route::group(
             [
                 'middleware' => 'terms',
