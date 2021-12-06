@@ -29,7 +29,11 @@
 
         <one-to-many field="votes" target-entity="App\Entities\Vote" mapped-by="user"/>
 
-        <field name="administrator" type="boolean"/>
+        <field name="administrator" type="boolean">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
 
         <one-to-many field="refusals" target-entity="App\Entities\Refusal" mapped-by="user"/>
 
