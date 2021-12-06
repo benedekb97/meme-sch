@@ -62,7 +62,7 @@
                         <ol class="mb-0">
                             <li>Gyermekpornográfia kurvára off <small>(reméltem ez alap, de mint kiderült: nem)</small></li>
                             <li>Gyűlöletkeltő posztokat hanyagoljuk</li>
-                            <li>Egy ember buzizását mellőzzük <small>(ne személyeskedjünk pls)</small></li>
+                            <li>Egy ember baszogatását mellőzzük <small>(ne személyeskedjünk pls)</small></li>
                         </ol>
                     </div>
                 </div>
