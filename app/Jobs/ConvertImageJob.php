@@ -73,6 +73,10 @@ class ConvertImageJob
                         $constraint->aspectRatio();
                     });
 
+                    if (!$this->filesystem->exists('images/' . $width)) {
+                        $this->filesystem->makeDirectory('images/' . $width);
+                    }
+
                     $convertedImageObject->save(
                         storage_path(
                             'app/' . $sourceSets[$width] = sprintf(
@@ -82,6 +86,26 @@ class ConvertImageJob
                             )
                         )
                     );
+                } else {
+                    $width = $imageObject->getWidth();
+
+                    $convertedImageObject = clone $imageObject;
+
+                    $convertedImageObject->resize($width, null, function (Constraint $constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $convertedImageObject->save(
+                        storage_path(
+                            'app/' . $sourceSets[$width] = sprintf(
+                                'images/%d/%s',
+                                $width,
+                                $fileName
+                            )
+                        )
+                    );
+
+                    break;
                 }
             }
 
