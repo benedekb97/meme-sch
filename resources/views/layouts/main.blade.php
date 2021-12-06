@@ -18,10 +18,13 @@
                         <li class="mx-2">
                             <div class="dropdown">
                                 <a class="btn bg-opacity-10 btn-outline-light dropdown-toggle" href="#" role="button" id="groupDropdownLink" data-bs-toggle="dropdown">
-                                    @isset($group) {{ $group->getName() }} @else Körök @endisset
+                                    @isset($group) {{ $group->getName() }} @else Schönherz @endisset
                                 </a>
 
                                 <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('index') }}">Schönherz</a>
+                                    </li>
                                     @foreach (Auth::user()->getGroupUsers() as $groupUser)
                                         <li>
                                             <a class="dropdown-item" href="{{ route('groups.posts', ['groupId' => $groupUser->getGroup()->getId()]) }}">{{ $groupUser->getGroup()->getName() }}</a>

@@ -23,12 +23,12 @@
                                         <form action="{{ route('terms.accept') }}" method="POST">
                                             @csrf
                                             <p><b>Ne legyél faszszopó</b></p>
-                                            <div class="form-check form-switch mb-3">
-                                                <input type="checkbox" class="form-check-input" id="accept-tldr" name="accept-tldr" required>
-                                                <label for="accept-tldr" class="form-check-label">Hagyjmár elfogadom baszod</label>
-                                            </div>
-                                            <input type="submit" class="btn btn-primary btn-sm" value="Zsa">
                                             @if (!$user->hasAcceptedTerms())
+                                                <div class="form-check form-switch mb-3">
+                                                    <input type="checkbox" class="form-check-input" id="accept-tldr" name="accept-tldr" required>
+                                                    <label for="accept-tldr" class="form-check-label">Hagyjmár elfogadom baszod</label>
+                                                </div>
+                                                <input type="submit" class="btn btn-primary btn-sm" value="Zsa">
                                                 <a class="btn btn-secondary btn-sm" href="{{ route('auth.logout') }}">Esélytelen</a>
                                             @endif
                                         </form>
@@ -113,21 +113,23 @@
             <div class="d-flex mt-3 justify-content-center mb-3">
                 <div class="col-md-6">
                     <div class="card">
-                        <form action="{{ route('terms.accept') }}" method="POST">
-                            <div class="card-body">
-                                @csrf
-                                <div class="form-check form-switch mb-0">
-                                    <input type="checkbox" class="form-check-input" name="accept" id="accept" required>
-                                    <label for="accept" class="form-check-label">Elfogadom a fent leírt szabályokat, és megpróbálok nem csicska lenni.</label>
+                        @if (!$user->hasAcceptedTerms())
+                            <form action="{{ route('terms.accept') }}" method="POST">
+                                <div class="card-body">
+                                    @csrf
+                                    <div class="form-check form-switch mb-0">
+                                        <input type="checkbox" class="form-check-input" name="accept" id="accept" required>
+                                        <label for="accept" class="form-check-label">Elfogadom a fent leírt szabályokat, és megpróbálok nem csicska lenni.</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Tovább &raquo;</button>
-                                @if (!$user->hasAcceptedTerms())
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Tovább &raquo;</button>
                                     <a href="{{ route('auth.logout') }}" class="btn btn-secondary">Inkább nem</a>
-                                @endif
-                            </div>
-                        </form>
+                                </div>
+                            </form>
+                        @else
+                            <a href="#" onclick="history.back()" class="btn btn-secondary">Vissza</a>
+                        @endif
                     </div>
                 </div>
             </div>
