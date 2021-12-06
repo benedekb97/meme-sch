@@ -61,7 +61,7 @@
                         <p>a nagy közös kolis rész más kérdés, ott a következő szabályok élnek:</p>
                         <ol class="mb-0">
                             <li>Gyermekpornográfia kurvára off <small>(reméltem ez alap, de mint kiderült: nem)</small></li>
-                            <li>Gyűlöletkeltő posztokat hanyaguljuk</li>
+                            <li>Gyűlöletkeltő posztokat hanyagoljuk</li>
                             <li>Egy ember buzizását mellőzzük <small>(ne személyeskedjünk pls)</small></li>
                         </ol>
                     </div>
