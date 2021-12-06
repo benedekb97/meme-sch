@@ -52,12 +52,12 @@
                 </div>
             </div>
 
-            <h5 class="mt-3">Kommentek:</h5>
+            <h5 class="mt-3">Hozzászólások:</h5>
 
             <div class="mt-3" id="post-{{ $post->getId() }}-reply-form-section">
                 <div class="form-floating mb-3">
-                    <input data-post-id="{{ $post->getId() }}" onkeydown="if (event.key === 'Enter') {sendComment(event)}" type="text" class="form-control form-control-sm" id="post-{{ $post->getId() }}-comment" placeholder="Új komment..."/>
-                    <label for="post-{{ $post->getId() }}-comment">Új komment...</label>
+                    <input data-post-id="{{ $post->getId() }}" onkeydown="if (event.key === 'Enter') {sendComment(event)}" type="text" class="form-control form-control-sm" id="post-{{ $post->getId() }}-comment" placeholder="Új hozzászólás..."/>
+                    <label for="post-{{ $post->getId() }}-comment">Új hozzászólás...</label>
                 </div>
             </div>
 
