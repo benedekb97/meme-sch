@@ -44,16 +44,7 @@
                 <div class="col-md-6">
                     <div class="card p-3">
                         <h4 class="card-title">Csak viccek</h4>
-                        <p>Az oldalon található kontent csak a humor célját szolglája, ha valami nem tetszik akkor <span
-                                style="
-                                text-decoration:underline;
-                                text-decoration-style:dotted;
-                                cursor:help;
-                            "
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                title="(fejlesztés in progress)"
-                            >reportold</span> és egyik adminunk majd eldönti, hogy tényleg para-e ami ki lett rakva.</p>
+                        <p>Az oldalon található kontent csak a humor célját szolglája, ha valami nem tetszik akkor reportold és egyik adminunk majd eldönti, hogy tényleg para-e ami ki lett rakva.</p>
                         <p>Ha végül úgy döntünk, hogy nem para és nem töröljük, akkor <b>légyszi</b> ne foglalkozz vele többet, mert <u>mi sem fogunk.</u></p>
                         <p class="mb-0">Alapvetően úgy gondoljuk, hogy a cenzúra egy <b>rossz</b> dolog, bármit is gondoljon az aktuális miniszterelnök Úr.</p>
                     </div>
