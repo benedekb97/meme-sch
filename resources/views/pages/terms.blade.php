@@ -22,7 +22,7 @@
                                     <div class="accordion-body">
                                         <form action="{{ route('terms.accept') }}" method="POST">
                                             @csrf
-                                            <p><b>Ne legyél faszszopó</b></p>
+                                            <p @if($user->hasAcceptedTerms()) class="mb-0" @endif><b>Ne legyél faszszopó</b></p>
                                             @if (!$user->hasAcceptedTerms())
                                                 <div class="form-check form-switch mb-3">
                                                     <input type="checkbox" class="form-check-input" id="accept-tldr" name="accept-tldr" required>
