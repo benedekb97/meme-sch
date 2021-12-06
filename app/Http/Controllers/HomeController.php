@@ -54,7 +54,12 @@ class HomeController extends Controller
 
     public function terms()
     {
-        return view('pages.terms');
+        return view(
+            'pages.terms',
+            [
+                'user' => $this->getUser(),
+            ]
+        );
     }
 
     public function acceptTerms(Request $request): RedirectResponse
