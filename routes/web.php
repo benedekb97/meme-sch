@@ -17,6 +17,7 @@ Route::group(
     ],
     static function () {
         Route::get('terms', [HomeController::class, 'terms'])->name('terms');
+        Route::post('terms/accept', [HomeController::class, 'acceptTerms'])->name('terms.accept');
 
         Route::group(
             [

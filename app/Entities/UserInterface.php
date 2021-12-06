@@ -93,4 +93,8 @@ interface UserInterface extends
     public function hasAcceptedTerms(): bool;
 
     public function setAcceptedTerms(bool $acceptedTerms): void;
+
+    public function hasReadTerms(): bool;
+
+    public function setReadTerms(bool $readTerms): void;
 }

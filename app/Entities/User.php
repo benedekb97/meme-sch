@@ -38,6 +38,8 @@ class User implements UserInterface
 
     private bool $acceptedTerms = false;
 
+    private bool $readTerms = false;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -338,5 +340,15 @@ class User implements UserInterface
     public function setAcceptedTerms(bool $acceptedTerms): void
     {
         $this->acceptedTerms = $acceptedTerms;
+    }
+
+    public function hasReadTerms(): bool
+    {
+        return $this->readTerms;
+    }
+
+    public function setReadTerms(bool $readTerms): void
+    {
+        $this->readTerms = $readTerms;
     }
 }
