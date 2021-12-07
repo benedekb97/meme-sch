@@ -498,12 +498,7 @@ window.startListeners = function () {
     );
 
     let scrollFunction = function (e) {
-        console.log(body.scrollTop());
-        console.log(body.height());
-        console.log($(document).height());
-
-
-        if (Math.ceil(body.scrollTop()) + body.height() >= $(document).height()) {
+        if (Math.ceil(body.scrollTop()) + Math.ceil(body.height()) >= $(document).height()) {
             window.currentOffset += offsetSize;
             let url = $('#offset-url').val() + `/${window.currentOffset}`;
             let groupId = $('#group-id').val() ?? null;
