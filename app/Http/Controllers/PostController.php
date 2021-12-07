@@ -61,6 +61,50 @@ class PostController extends Controller
         parent::__construct($entityManager, $authManager);
     }
 
+    public function index(Request $request, ?int $offset = 0): JsonResponse
+    {
+        if (($groupId = $request->get('groupId')) !== null) {
+            $group = $this->groupRepository->find($groupId);
+
+            if ($group === null) {
+                return new JsonResponse(
+                    [
+                        'error' => 'Group could not be found!',
+                    ],
+                    Response::HTTP_NOT_FOUND
+                );
+            }
+
+            if (!$this->getUser()->hasGroup($group)) {
+                return new JsonResponse(
+                    [
+                        'error' => 'User cannot view posts in group!',
+                    ],
+                    Response::HTTP_FORBIDDEN
+                );
+            }
+
+            $posts = $this->postRepository->findAllForGroup($group, $offset);
+        } else {
+            $posts = $this->postRepository->findAllWithOffset($this->getUser()->getGroups(), $offset);
+        }
+
+        $postsHtml = [];
+
+        /** @var PostInterface $post */
+        foreach ($posts as $post) {
+            $postsHtml[] = view(
+                'templates.post',
+                [
+                    'post' => $post,
+                    'user' => $this->getUser(),
+                ]
+            )->render();
+        }
+
+        return new JsonResponse($postsHtml, Response::HTTP_OK);
+    }
+
     public function show(int $postId)
     {
         /** @var PostInterface|null $post */

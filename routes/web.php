@@ -62,6 +62,7 @@ Route::group(
                         'as' => 'posts.',
                     ],
                     static function () {
+                        Route::get('{offset}', [PostController::class, 'index'])->name('index');
                         Route::post('', [PostController::class, 'create'])->name('create');
 
                         Route::patch('{postId}/vote', [PostController::class, 'vote'])->name('vote');

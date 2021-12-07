@@ -60,7 +60,7 @@ class PostRepository extends EntityRepository implements PostRepositoryInterface
     {
         return $this->createListQueryBuilder($groups)
             ->setFirstResult($offset)
-            ->setMaxResults(20)
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult();
     }

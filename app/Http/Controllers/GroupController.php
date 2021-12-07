@@ -28,7 +28,7 @@ class GroupController extends Controller
         $this->groupRepository = $groupRepository;
     }
 
-    public function posts(int $groupId)
+    public function posts(int $groupId, int $offset = 0)
     {
         $group = $this->groupRepository->find($groupId);
 
@@ -40,7 +40,7 @@ class GroupController extends Controller
             abort(404);
         }
 
-        $posts = $this->postRepository->findAllForGroup($group);
+        $posts = $this->postRepository->findAllForGroup($group, $offset);
 
         return view(
             'pages.index',

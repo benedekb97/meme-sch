@@ -7,6 +7,10 @@ window.bootstrap = require('bootstrap');
 
 window.$ = window.jQuery = require('jquery');
 
+window.currentOffset = 0;
+
+const offsetSize = 5;
+
 // enable tooltips
 $(document).ready(function() {
     let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -328,11 +332,14 @@ window.startListeners = function () {
     let upvotePost = $('.upvote-post');
     let downvotePost = $('.downvote-post');
 
+    let autoScroll = $('#scroll-auto').val() === 'true';
+
     replyComment.unbind();
     upvoteComment.unbind();
     downvoteComment.unbind();
     upvotePost.unbind();
     downvotePost.unbind();
+    $(window).unbind();
 
     replyComment.click(
         function () {
@@ -487,5 +494,40 @@ window.startListeners = function () {
             )
         }
     );
+
+    if (autoScroll) {
+        $(window).scroll(
+            function () {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    window.currentOffset += offsetSize;
+                    let url = $('#offset-url').val() + `/${window.currentOffset}`;
+                    let groupId = $('#group-id').val() ?? null;
+
+                    $.ajax(
+                        {
+                            url: url,
+                            type: 'GET',
+                            data: {
+                                groupId: groupId
+                            },
+                            success: function (e) {
+                                e.forEach(
+                                    function (element) {
+                                        $('#post-container').append(element);
+                                    }
+                                )
+
+                                if (e.length !== offsetSize) {
+                                    window.currentOffset -= (offsetSize - e.length);
+                                }
+
+                                startListeners();
+                            }
+                        }
+                    );
+                }
+            }
+        )
+    }
 }
 
