@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GroupController as AdminGroupController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GroupController;
@@ -110,6 +112,26 @@ Route::group(
                                 Route::patch('{postId}/restore', [AdminPostController::class, 'restore'])->name('restore');
 
                                 Route::delete('{postId}', [AdminPostController::class, 'refuse'])->name('refuse');
+                            }
+                        );
+
+                        Route::group(
+                            [
+                                'prefix' => 'groups',
+                                'as' => 'groups.',
+                            ],
+                            static function () {
+                                Route::get('', [AdminGroupController::class, 'index'])->name('index');
+                            }
+                        );
+
+                        Route::group(
+                            [
+                                'prefix' => 'users',
+                                'as' => 'users.',
+                            ],
+                            static function () {
+                                Route::get('', [UserController::class, 'index'])->name('index');
                             }
                         );
                     }

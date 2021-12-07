@@ -34,6 +34,18 @@
                         </a>
                     </li>
                     <li class="nav-item mt-3">
+                        <a class="position-relative nav-link text-white @if(\Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.groups')) active @endif" role="button" href="{{ route('admin.groups.index') }}">
+                            <i class="bi bi-circle-half"></i> Körök
+                        </a>
+                    </li>
+                    @if (Auth::user()->isAdministrator())
+                        <li class="nav-item mt-3">
+                            <a class="nav-link text-white @if(\Illuminate\Support\Str::startsWith(Route::currentRouteName(),'admin.users')) active @endif" role="button" href="{{ route('admin.users.index') }}">
+                                <i class="bi bi-people"></i> Felhasználók
+                            </a>
+                        </li>
+                    @endif
+                    <li class="nav-item mt-3">
                         <a class="position-relative nav-link text-white @if(Route::currentRouteName() === 'admin.posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.posts') }}">
                             <i class="bi bi-file-earmark-post"></i> Posztok
                         </a>
@@ -108,6 +120,18 @@
                             <i class="bi bi-house-door-fill"></i> Főoldal
                         </a>
                     </li>
+                    <li class="nav-item mt-3">
+                        <a class="nav-link text-white @if(\Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'admin.groups')) active @endif" role="button" href="{{ route('admin.groups.index') }}">
+                            <i class="bi bi-circle-half"></i> Körök
+                        </a>
+                    </li>
+                    @if (Auth::user()->isAdministrator())
+                        <li class="nav-item mt-3">
+                            <a class="nav-link text-white @if(\Illuminate\Support\Str::startsWith(Route::currentRouteName(),'admin.users')) active @endif" role="button" href="{{ route('admin.users.index') }}">
+                                <i class="bi bi-people"></i> Felhasználók
+                            </a>
+                        </li>
+                    @endif
                     <li class="nav-item mt-3">
                         <a class="nav-link text-white @if(Route::currentRouteName() === 'admin.posts'){{ 'active' }}@endif" role="button" href="{{ route('admin.posts') }}">
                             <i class="bi bi-file-earmark-post"></i> Posztok
