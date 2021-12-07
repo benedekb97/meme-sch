@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Jobs\ConvertImageJob;
+use App\Jobs\PocokGeciJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(ConvertImageJob::class)->everyMinute();
+        $schedule->job(PocokGeciJob::class)->everyMinute();
         // $schedule->command('inspire')->hourly();
     }
 
