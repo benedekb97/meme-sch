@@ -119,6 +119,7 @@ Route::group(
                             [
                                 'prefix' => 'groups',
                                 'as' => 'groups.',
+                                'middleware' => 'superadmin',
                             ],
                             static function () {
                                 Route::get('', [AdminGroupController::class, 'index'])->name('index');
@@ -129,6 +130,7 @@ Route::group(
                             [
                                 'prefix' => 'users',
                                 'as' => 'users.',
+                                'middleware' => 'superadmin',
                             ],
                             static function () {
                                 Route::get('', [UserController::class, 'index'])->name('index');

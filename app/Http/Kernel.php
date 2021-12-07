@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\Administrator;
+use App\Http\Middleware\SuperAdministrator;
 use App\Http\Middleware\Terms;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => Administrator::class,
         'terms' => Terms::class,
+        'superadmin' => SuperAdministrator::class,
     ];
 }
