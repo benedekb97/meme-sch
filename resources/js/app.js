@@ -495,39 +495,40 @@ window.startListeners = function () {
         }
     );
 
-    if (autoScroll) {
-        $(window).scroll(
-            function () {
-                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-                    window.currentOffset += offsetSize;
-                    let url = $('#offset-url').val() + `/${window.currentOffset}`;
-                    let groupId = $('#group-id').val() ?? null;
+    let scrollFunction = function (e) {
+        if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            window.currentOffset += offsetSize;
+            let url = $('#offset-url').val() + `/${window.currentOffset}`;
+            let groupId = $('#group-id').val() ?? null;
 
-                    $.ajax(
-                        {
-                            url: url,
-                            type: 'GET',
-                            data: {
-                                groupId: groupId
-                            },
-                            success: function (e) {
-                                e.forEach(
-                                    function (element) {
-                                        $('#post-container').append(element);
-                                    }
-                                )
-
-                                if (e.length !== offsetSize) {
-                                    window.currentOffset -= (offsetSize - e.length);
-                                }
-
-                                startListeners();
+            $.ajax(
+                {
+                    url: url,
+                    type: 'GET',
+                    data: {
+                        groupId: groupId
+                    },
+                    success: function (e) {
+                        e.forEach(
+                            function (element) {
+                                $('#post-container').append(element);
                             }
+                        )
+
+                        if (e.length !== offsetSize) {
+                            window.currentOffset -= (offsetSize - e.length);
                         }
-                    );
+
+                        startListeners();
+                    }
                 }
-            }
-        )
+            );
+        }
+    }
+
+    if (autoScroll) {
+        $(window).bind('touchmove', scrollFunction);
+        $(window).scroll(scrollFunction);
     }
 }
 
