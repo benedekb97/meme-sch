@@ -536,7 +536,7 @@ window.startListeners = function () {
     }
 
     if (autoScroll) {
-        body.bind('touchmove', scrollFunction);
+        // body.bind('touchmove', scrollFunction);
         $(window).scroll(scrollFunction);
     }
 }
