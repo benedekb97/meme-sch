@@ -500,7 +500,7 @@ window.startListeners = function () {
     let loadMore = function () {
         window.currentOffset += offsetSize;
 
-        let url = $('#offset-url').val() + `/${window.currentOffset}`;
+        let url = $('#offset-url').val() + `/offset/${window.currentOffset}`;
         let groupId = $('#group-id').val() ?? null;
 
         $.ajax(
