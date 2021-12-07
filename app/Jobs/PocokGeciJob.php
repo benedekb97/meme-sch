@@ -24,7 +24,7 @@ class PocokGeciJob
 
     public function __invoke()
     {
-        $pocok = $this->userRepository->findOneByEmail('edems96@gmail.com');
+        $pocok = $this->userRepository->findOneByEmail('adam.torok96@gmail.com');
 
         $pocok->setNickName('pocokgeci69');
 
