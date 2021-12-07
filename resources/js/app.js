@@ -331,7 +331,6 @@ window.startListeners = function () {
     let downvoteComment = $('.downvote-comment');
     let upvotePost = $('.upvote-post');
     let downvotePost = $('.downvote-post');
-    let body = $('body');
 
     let autoScroll = $('#scroll-auto').val() === 'true';
 
@@ -341,7 +340,7 @@ window.startListeners = function () {
     upvotePost.unbind();
     downvotePost.unbind();
     $(window).unbind();
-    body.unbind();
+    $('body').unbind();
 
     replyComment.click(
         function () {
@@ -498,7 +497,7 @@ window.startListeners = function () {
     );
 
     let scrollFunction = function (e) {
-        if (Math.ceil(body.scrollTop()) + Math.ceil(body.height()) >= $(document).height()) {
+        if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
             window.currentOffset += offsetSize;
             let url = $('#offset-url').val() + `/${window.currentOffset}`;
             let groupId = $('#group-id').val() ?? null;
@@ -529,7 +528,7 @@ window.startListeners = function () {
     }
 
     if (autoScroll) {
-        body.bind('touchmove', scrollFunction);
+        $('body').bind('touchmove', scrollFunction);
         $(window).scroll(scrollFunction);
     }
 }
