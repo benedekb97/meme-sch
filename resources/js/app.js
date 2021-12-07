@@ -331,6 +331,7 @@ window.startListeners = function () {
     let downvoteComment = $('.downvote-comment');
     let upvotePost = $('.upvote-post');
     let downvotePost = $('.downvote-post');
+    let body = $('body');
 
     let autoScroll = $('#scroll-auto').val() === 'true';
 
@@ -340,6 +341,7 @@ window.startListeners = function () {
     upvotePost.unbind();
     downvotePost.unbind();
     $(window).unbind();
+    body.unbind();
 
     replyComment.click(
         function () {
@@ -496,6 +498,13 @@ window.startListeners = function () {
     );
 
     let scrollFunction = function (e) {
+        console.log('kagi');
+
+        console.log($(window).scrollTop());
+        console.log($(window).height());
+        console.log($(document).height());
+
+
         if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
             window.currentOffset += offsetSize;
             let url = $('#offset-url').val() + `/${window.currentOffset}`;
@@ -527,7 +536,7 @@ window.startListeners = function () {
     }
 
     if (autoScroll) {
-        $(window).bind('touchmove', scrollFunction);
+        body.bind('touchmove', scrollFunction);
         $(window).scroll(scrollFunction);
     }
 }
