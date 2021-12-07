@@ -531,6 +531,9 @@ window.startListeners = function () {
                     } else {
                         startListeners();
                     }
+                },
+                error: function () {
+                    window.currentOffset -= offsetSize;
                 }
             }
         );
