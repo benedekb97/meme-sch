@@ -332,6 +332,7 @@ window.startListeners = function () {
     let upvotePost = $('.upvote-post');
     let downvotePost = $('.downvote-post');
 
+    let loadMoreButton = $('.load-more');
     let autoScroll = $('#scroll-auto').val() === 'true';
 
     replyComment.unbind();
@@ -339,8 +340,8 @@ window.startListeners = function () {
     downvoteComment.unbind();
     upvotePost.unbind();
     downvotePost.unbind();
+    loadMoreButton.unbind();
     $(window).unbind();
-    $('body').unbind();
 
     replyComment.click(
         function () {
@@ -496,40 +497,54 @@ window.startListeners = function () {
         }
     );
 
-    let scrollFunction = function (e) {
-        if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-            window.currentOffset += offsetSize;
-            let url = $('#offset-url').val() + `/${window.currentOffset}`;
-            let groupId = $('#group-id').val() ?? null;
+    let loadMore = function () {
+        window.currentOffset += offsetSize;
 
-            $.ajax(
-                {
-                    url: url,
-                    type: 'GET',
-                    data: {
-                        groupId: groupId
-                    },
-                    success: function (e) {
-                        e.forEach(
-                            function (element) {
-                                $('#post-container').append(element);
-                            }
-                        )
+        let url = $('#offset-url').val() + `/${window.currentOffset}`;
+        let groupId = $('#group-id').val() ?? null;
 
-                        if (e.length !== offsetSize) {
-                            window.currentOffset -= (offsetSize - e.length);
+        $.ajax(
+            {
+                url: url,
+                type: 'GET',
+                data: {
+                    groupId: groupId
+                },
+                success: function (e) {
+                    e.forEach(
+                        function (element) {
+                            $('#post-container').append(element);
                         }
+                    )
 
+                    if (e.length !== offsetSize) {
+                        window.currentOffset -= (offsetSize - e.length);
+                    }
+
+                    if (e.length === 0) {
+                        loadMoreButton.addClass('visually-hidden');
+
+                        startListeners();
+
+                        loadMoreButton.unbind();
+                        $(window).unbind();
+                    } else {
                         startListeners();
                     }
                 }
-            );
+            }
+        );
+    }
+
+    let scrollFunction = function (e) {
+        if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+            loadMore();
         }
     }
 
     if (autoScroll) {
-        $('body').bind('touchmove', scrollFunction);
         $(window).scroll(scrollFunction);
+        loadMoreButton.click(loadMore);
     }
 }
 
