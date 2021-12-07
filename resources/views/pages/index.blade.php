@@ -19,7 +19,7 @@
             @include('templates.post', ['post' => $post, 'user' => $user])
         @endforeach
     </div>
-    <div class="d-flex text-center justify-content-center mt-3">
+    <div class="d-flex text-center justify-content-center my-3">
         <button class="btn btn-outline-secondary load-more" type="button">Továbbiak betöltése</button>
     </div>
 @endsection
